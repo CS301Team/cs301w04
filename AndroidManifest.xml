@@ -17,6 +17,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <activity
+            android:name="ComparePhotoView"
+            android:label="@string/ComparePhotoView" >
+        	</activity>
+        	<activity
+            android:name="DisplayPhotoView"
+            android:label="@string/DisplayPhotoView" >
+        	</activity>
+        	<activity
+            android:name="PhotoLayoutView"
+            android:label="@string/PhotoLayoutView" >
+        	</activity>
+        	<activity
+            android:name="PhotoView"
+            android:label="@string/PhotoView" >
+        	</activity>
+        
         </activity>
     </application>
 
