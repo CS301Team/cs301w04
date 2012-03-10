@@ -17,12 +17,12 @@ public final class R {
         public static final int date=0x7f050008;
         public static final int delete=0x7f050006;
         public static final int grid_view=0x7f050007;
+        public static final int imageView1=0x7f050000;
         public static final int new_entry=0x7f050005;
         public static final int save=0x7f05000a;
-        public static final int spacer=0x7f050001;
         public static final int station=0x7f050009;
         public static final int stats=0x7f050004;
-        public static final int text1=0x7f050000;
+        public static final int text1=0x7f050001;
         public static final int text2=0x7f050002;
         public static final int welcome=0x7f050003;
     }
