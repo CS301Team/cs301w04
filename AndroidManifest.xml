@@ -29,10 +29,6 @@
             android:name="PhotoLayoutView"
             android:label="@string/PhotoLayoutView" >
         	</activity>
-        	<activity
-            android:name="PhotoView"
-            android:label="@string/PhotoView" >
-        	</activity>
         
         </activity>
     </application>
