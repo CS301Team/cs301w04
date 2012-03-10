@@ -1,6 +1,6 @@
 package cmpt301.assign1;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -10,7 +10,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
 
-public class CameraDatabaseTest extends ListActivity
+public class CameraDatabaseTest extends Activity
 {
 	private static final int PICK_CONTACT = 0;
 	
