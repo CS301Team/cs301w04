@@ -10,4 +10,6 @@ public class MoleFinderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
     }
+    
+    
 }

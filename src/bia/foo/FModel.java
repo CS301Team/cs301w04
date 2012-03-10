@@ -1,5 +1,7 @@
 package bia.foo;
 
+import java.util.ArrayList;
+
 public class FModel<V extends FView> {
 	private ArrayList<V> views;
 	
