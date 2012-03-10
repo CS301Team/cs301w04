@@ -7,7 +7,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/photogroupname"
+        android:text="@+id/photogroupname"
         android:textColor="#66CCFF"
         android:textSize="20dp"
         android:textStyle="bold" />
@@ -34,7 +34,7 @@
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/phototimestamp"
+        android:text="@+id/phototimestamp"
         android:textColor="#66CCFF"
         android:textSize="20dp"
         android:textStyle="bold" />

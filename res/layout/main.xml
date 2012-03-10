@@ -19,7 +19,7 @@
         android:background="#FFFFFF" />
     
     <ListView
-        android:id="@+id/fuel_log_list"
+        android:id="@+id/photo_grouping_list"
         android:layout_width="fill_parent"
         android:layout_height="408dp"
         android:stackFromBottom="true" >
