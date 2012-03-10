@@ -1,5 +1,5 @@
 package bia.foo;
 
-public class FController {
+public interface FController {
 
 }
