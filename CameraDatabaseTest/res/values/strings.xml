@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Welcome to Fuel Consumption Tracking!</string>
+    <string name="app_name">Assignment 1</string>
+    <string name="new_entry">New Entry</string>
+    <string name="delete">Delete Entry</string>
+    <string name="date">Date (yyyy-mm-dd)</string>
+    <string name="station">Gas Station Name</string>
+    <string name="fuel_grade">Fuel Grade</string>
+    <string name="fuel_amount">Fuel Amount (L)</string>
+    <string name="fuel_unit_cost">Fuel Unit Cost (Cents/L)</string>
+    <string name="fuel_cost">Total Fuel Cost</string>
+    <string name="trip_distance">Trip Distance (km)</string>
+    <string name="stats">Statistics:</string>
+    <string name="no_notes">No Entries Yet!</string>
+    <string name="spacer">&quot; : &quot;</string>
+    <string name="liters_of">&quot; L of &quot;</string>
+    <string name="at">&quot; at &quot;</string>
+    <string name="total_cost">Total Cost: $</string>
+    <string name="trip_distance_spacer">Trip Distance:&quot; &quot;</string>
+    <string name="km">&quot; km&quot;</string>
+    <string name="cents_per">&quot; &quot;cents/Litre</string>
+    <string name="total_cost_blank">0.00</string>
+    <string name="total_distance">Total Distance Travelled:&quot; &quot;</string>
+    <string name="basic_blank">0.0</string>
+    <string name="fuel_consume_rate">Fuel Consumption Rate:&quot; &quot;</string>
+    <string name="litres_per_km">&quot; &quot;(Litres/100 km)</string>
+    <string name="save">Save</string>
+
+</resources>
