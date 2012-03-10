@@ -7,6 +7,6 @@ public class PhotoLayoutView extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main); //insert proper layout here
+        setContentView(R.layout.photogridview);
     }
 }
