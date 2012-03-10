@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <string name="hello">Hello World, MoleFinderActivity!</string>
-    <string name="app_name">Mole Finder</string>
+    <string name="app_name">Skin Conditions Tracker</string>
+    <string name="grouping_title">Folders</string>
+    <string name="new_group">New Folder</string>
+    <string name="delete_group">Delete Folder</string>
+    <string name="new_photo">New Photo</string>
+    <string name="delete_photo">Delete Photo</string>
 
 </resources>
