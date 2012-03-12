@@ -17,7 +17,7 @@ public final class R {
         public static final int date=0x7f050008;
         public static final int delete=0x7f050006;
         public static final int grid_view=0x7f050007;
-        public static final int imageView1=0x7f050000;
+        public static final int image1=0x7f050000;
         public static final int new_entry=0x7f050005;
         public static final int save=0x7f05000a;
         public static final int station=0x7f050009;

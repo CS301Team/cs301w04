@@ -1,7 +1,11 @@
 package cmpt301.assign1;
 
+import java.io.ByteArrayOutputStream;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -62,7 +66,14 @@ public class NewEntryView extends Activity
 				Bundle bundle = new Bundle();
 
 				bundle.putString(dbAdapter.DATE, date.getText().toString());
-				bundle.putString(dbAdapter.STATION, station.getText().toString());
+				bundle.putString(dbAdapter.GROUP, station.getText().toString());
+				
+				Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);     
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); 
+				byte[] photo = baos.toByteArray();
+				
+				bundle.putByteArray(dbAdapter.PHOTO, photo);
 				
 				// Send data back in a bundle
 				Intent mIntent = new Intent();

@@ -69,7 +69,7 @@ public class CameraDatabaseTest extends Activity
 	}
 	
 	/*
-	 * Recreates the listView and updates the list
+	 * Recreates the gridView and updates the list
 	 */
 	private void fillData()
 	{
@@ -78,28 +78,19 @@ public class CameraDatabaseTest extends Activity
         startManagingCursor(entriesCursor);
         
         // Create an array to specify the fields we want to display in the list (only DATE)
-        String[] from = new String[] { dbAdapter.STATION, dbAdapter.DATE};
-        int[] to = new int[] { R.id.text1, R.id.text2 };
+        String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.GROUP, dbAdapter.DATE};
+        int[] to = new int[] { R.id.image1, R.id.text1, R.id.text2 };
         
         // Create an array adapter and set it to display
         SimpleCursorAdapter entries =
         		new SimpleCursorAdapter(this, R.layout.entry_row, entriesCursor, from, to);                         
 		
+        entries.setViewBinder(new PhotoViewBinder());
+        
         Log.w("NumRows", entries.getCount() + "");
         
         gridView.setAdapter(entries);
         
-        
-//        entries.setViewBinder(new SimpleCursorAdapter.ViewBinder() {
-//            public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
-//                if(columnIndex == 1) {
-//                        CheckBox cb = (CheckBox) view;
-//                        cb.setChecked(cursor.getInt(1) > 0);
-//                        return true;
-//                }
-//                return false;
-//            }
-//        });
         
     }
 	
@@ -117,9 +108,10 @@ public class CameraDatabaseTest extends Activity
         	Bundle send = intent.getExtras();
         	
         	String date = send.getString(dbAdapter.DATE);
-        	String station = send.getString(dbAdapter.STATION);
+        	String station = send.getString(dbAdapter.GROUP);
+        	byte[] photo = send.getByteArray(dbAdapter.PHOTO);
         	
-        	dbHelper.createEntry(date, station);
+        	dbHelper.createEntry(date, station, photo);
         	fillData();
         }
     }

@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:inputType="date"
         android:hint="@string/date" >
-
         <requestFocus />
     </EditText>
 

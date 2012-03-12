@@ -45,7 +45,8 @@ public class dbAdapter
 {
 	public static final String ID = "_id";
 	public static final String DATE = "date";
-    public static final String STATION = "station";
+    public static final String GROUP = "group";
+    public static final String PHOTO = "photo";
 
     private static final String TAG = "dbAdapter";
     
@@ -57,7 +58,7 @@ public class dbAdapter
      */
     private static final String DATABASE_CREATE =
         "create table entries (_id integer primary key autoincrement, "
-        + "date text not null, station text not null);";
+        + "date TEXT NOT NULL, group TEXT NOT NULL, photo BLOB NOT NULL);";
 
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE = "entries";
@@ -127,15 +128,16 @@ public class dbAdapter
      * a -1 to indicate failure.
      * 
      * @param date the date (in yyyy-mm-dd format)
-     * @param station the station (textual, e.g., Esso)
+     * @param group the group the photo is in
      * @return rowId or -1 if failed
      */
-    public long createEntry(String date, String station)
+    public long createEntry(String date, String group, byte[] photo)
     {
         ContentValues initialValues = new ContentValues();
         
         initialValues.put(DATE, date);
-        initialValues.put(STATION, station);
+        initialValues.put(GROUP, group);
+        initialValues.put(PHOTO, photo);
         
         return mDb.insert(DATABASE_TABLE, null, initialValues);
     }
@@ -152,14 +154,14 @@ public class dbAdapter
     }
 
     /**
-     * Return a Cursor over the list of all entires in the database
+     * Return a Cursor over the list of all entries in the database
      * 
      * @return Cursor over all entries
      */
     public Cursor fetchAllEntries()
     {
         return mDb.query(DATABASE_TABLE, new String[] {ID, DATE,
-        		STATION}, null, null, null, null, null);
+        		GROUP, PHOTO}, null, null, null, null, null);
     }
 
     /**
@@ -173,8 +175,8 @@ public class dbAdapter
     {
         Cursor mCursor =
 
-            mDb.query(true, DATABASE_TABLE, new String[] {ID, DATE, STATION
-            		}, ID + "=" + rowId, null, null, null, null, null);
+            mDb.query(true, DATABASE_TABLE, new String[] {ID, DATE, GROUP,
+            		PHOTO}, ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
