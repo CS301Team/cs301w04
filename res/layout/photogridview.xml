@@ -17,13 +17,7 @@
         android:layout_height="2dp"
         android:layout_width="fill_parent"
         android:background="#FFFFFF" />
-
-    <View   
-        android:id="@+id/secondDivider"
-        android:layout_height="2dp"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF" />
-
+    
     <GridView
         android:id="@+id/gridView1"
         android:layout_width="fill_parent"
@@ -33,7 +27,7 @@
     </GridView>
     
     <View   
-        android:id="@+id/thirdDivider"
+        android:id="@+id/secondDivider"
         android:layout_height="2dp"
         android:layout_width="fill_parent"
         android:background="#FFFFFF" />
