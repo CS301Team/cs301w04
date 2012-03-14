@@ -1,27 +1,37 @@
 package cmpt301.assign1;
 
+import java.io.ByteArrayOutputStream;
+import java.text.DateFormat;
+import java.util.Date;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 
 public class CameraDatabaseTest extends Activity
 {
-	private static final int PICK_CONTACT = 0;
+	private static final int CAMERA_PHOTO_REQUEST = 100;
 	
-	private Button newButton;
+	private Button newPhoto;
 	private Button delButton;
+	private TextView currentFolder;
 	private GridView gridView;
 	
 	private long entryID = -1;
 	private dbAdapter dbHelper;
     
     private Cursor entriesCursor;
+    
+    public String folderName = "wheee";
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -30,23 +40,26 @@ public class CameraDatabaseTest extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		
-		newButton = (Button) findViewById(R.id.new_entry);
+		newPhoto = (Button) findViewById(R.id.new_photo);
 		delButton = (Button) findViewById(R.id.delete);
         gridView = (GridView) findViewById(R.id.grid_view);
-		
+        currentFolder = (TextView) findViewById(R.id.current_folder);
+        
 		dbHelper = new dbAdapter(this);
         dbHelper.open();
         fillData();
+        
+        currentFolder.setText(folderName);
 		
-		// When newButton is clicked, call newLogEntry
-		newButton.setOnClickListener(new View.OnClickListener() {
+		// When newButton is clicked, call takeAPhoto
+		newPhoto.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) 
 			{
-				newLogEntry();
+				takeAPhoto();
 			}
 		});
 		
-		// When delButton is clicked delete the last selected entry
+		// When delButton is clicked delete the last selected photo
 		delButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) 
 			{
@@ -59,13 +72,43 @@ public class CameraDatabaseTest extends Activity
 		});
 	}
 	
+	
 	/*
-	 * Launches a new activity of NewEntryView
+	 * Launches a new camera activity
 	 */
-	private void newLogEntry()
-	{
-		Intent intent = new Intent(this, NewEntryView.class);
-		startActivityForResult(intent, PICK_CONTACT);		
+    protected void takeAPhoto()
+    {
+    	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+    	startActivityForResult(intent, CAMERA_PHOTO_REQUEST);
+    }
+    
+    
+	/*
+	 * If NewEntryView exited correctly, then put returned data into the database
+	 * (non-Javadoc)
+	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent)
+	{	
+		if(requestCode == CAMERA_PHOTO_REQUEST)
+		{		
+			if (resultCode == RESULT_OK)
+			{
+				super.onActivityResult(requestCode, resultCode, intent);
+				
+				String date = DateFormat.getDateInstance().format(new Date());
+				String folder = folderName;
+				
+				Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+				ByteArrayOutputStream baos = new ByteArrayOutputStream();
+				bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); 
+				byte[] photo = baos.toByteArray();
+				
+				dbHelper.createEntry(date, folder, photo);
+				fillData();
+			}
+		}
 	}
 	
 	/*
@@ -78,8 +121,8 @@ public class CameraDatabaseTest extends Activity
         startManagingCursor(entriesCursor);
         
         // Create an array to specify the fields we want to display in the list (only DATE)
-        String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.FOLDER, dbAdapter.DATE};
-        int[] to = new int[] { R.id.image1, R.id.text1, R.id.text2 };
+        String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.DATE};
+        int[] to = new int[] { R.id.image1, R.id.text1 };
         
         // Create an array adapter and set it to display
         SimpleCursorAdapter entries =
@@ -92,28 +135,6 @@ public class CameraDatabaseTest extends Activity
         gridView.setAdapter(entries);
         
         
-    }
-	
-	/*
-	 * If NewEntryView exited correctly, then put returned data into the database
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
-	 */
-	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent)
-	{
-        if (resultCode == RESULT_OK)
-        {
-        	super.onActivityResult(requestCode, resultCode, intent);
-        	Bundle send = intent.getExtras();
-        	
-        	String date = send.getString(dbAdapter.DATE);
-        	String station = send.getString(dbAdapter.FOLDER);
-        	byte[] photo = send.getByteArray(dbAdapter.PHOTO);
-        	
-        	dbHelper.createEntry(date, station, photo);
-        	fillData();
-        }
     }
 	
 	/*
