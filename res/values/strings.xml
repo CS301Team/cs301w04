@@ -9,5 +9,7 @@
     <string name="ComparePhotoView">ComparePhotoView</string>
     <string name="DisplayPhotoView">DisplayPhotoView</string>
     <string name="PhotoLayoutView">PhotoLayoutView</string>
+    <string name="photo_desc">Photo Description</string>
+    <string name="folder_blank">No Name</string>
 
 </resources>

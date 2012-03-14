@@ -12,18 +12,17 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 //this is the initial view which shows groups of photos
@@ -32,7 +31,7 @@ public class MoleFinderActivity extends Activity {
 	
 	private Button addFolderButton;
 	private Button deleteFolderButton;
-	@SuppressWarnings("unused")
+	//@SuppressWarnings("unused")
 	private String folderName;
 	@SuppressWarnings("unused")
 	private EditText input;
@@ -81,6 +80,22 @@ public class MoleFinderActivity extends Activity {
 //        });
 //
 //
+		// When item is clicked in the GridView, it's id is recorded
+		list.setOnItemLongClickListener(new OnItemLongClickListener()
+		{
+			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
+			{
+				String currentFolder = parent.getItemAtPosition(position).toString();
+				
+				Intent intent = new Intent(v.getContext(), PhotoLayoutView.class);
+				intent.putExtra("FolderName", currentFolder);
+				startActivity(intent);
+				
+				return true;
+			}
+		});
+        
+        
         addFolderButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
 //        		if () {

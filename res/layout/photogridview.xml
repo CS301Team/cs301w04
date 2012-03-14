@@ -3,14 +3,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical" >
-
+    
     <TextView
+        android:id="@+id/current_folder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@+id/photogroupname"
-        android:textSize="20dp" 
+        android:text="@string/folder_blank"
         android:textStyle="bold"
-        android:textColor="#66CCFF" />
+        android:textColor="#ff9900"
+        android:editable="true"
+		/>
 
     <View   
         android:id="@+id/firstDivider"
