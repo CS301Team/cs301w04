@@ -6,24 +6,25 @@
     android:orientation="vertical" >
 
     <TextView
-    	android:id="@+id/welcome"
+        android:id="@+id/current_folder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello"
+        android:text="@string/folder_blank"
         android:textStyle="bold"
         android:textColor="#ff9900"
+        android:editable="true"
 		/>
-    	
+    
 	<LinearLayout
     	xmlns:android="http://schemas.android.com/apk/res/android"
     	android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:orientation="horizontal" >
 	    <Button
-    	    android:id="@+id/new_entry"
+    	    android:id="@+id/new_photo"
         	android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
-        	android:text="@string/new_entry"
+        	android:text="@string/new_photo"
         	android:layout_weight="0.5"
         	/>    
     	<Button
@@ -34,19 +35,13 @@
         	android:layout_weight="0.5"
         	/>
 	</LinearLayout>
-	
-	<TextView
-		android:id="@id/android:empty"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-        android:text="@string/no_notes"
-		/>
 
 	<GridView
 	    android:id="@+id/grid_view"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:numColumns="3" >
-	</GridView>
+	    android:numColumns="3"
+    	android:gravity="center_horizontal"
+	    />
 	
 </LinearLayout>

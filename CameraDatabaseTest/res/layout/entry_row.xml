@@ -7,6 +7,7 @@
 
    	<ImageView
         android:id="@+id/image1"
+        android:contentDescription="@string/photo_desc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         />
@@ -16,11 +17,6 @@
     	android:layout_height="wrap_content"
     	android:textStyle="bold"
     	android:textColor="#0099ff"
-    	/>
-    <TextView
-	   	android:id="@+id/text2"
-    	android:layout_width="wrap_content"
-    	android:layout_height="wrap_content"
     	/>
     
 </LinearLayout>

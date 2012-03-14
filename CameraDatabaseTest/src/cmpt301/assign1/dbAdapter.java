@@ -56,8 +56,8 @@ public class dbAdapter
     /**
      * Database creation sql statement
      */
-    private static final String DATABASE_CREATE =
-        "create table entries (_id integer primary key autoincrement, "
+    private static final String DATABASE_CREATE = 
+    	"create table entries (_id integer primary key autoincrement, "
         + "date TEXT NOT NULL, folder TEXT NOT NULL, photo BLOB NOT NULL);";
 
     private static final String DATABASE_NAME = "data";
