@@ -54,17 +54,6 @@ public class MoleFinderActivity extends Activity {
         	}
         });
 
-        addFolderButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View v) {
-//        		if () {
-//        			// brings up the dialog box to confirm deletion
-        			addDialog.show();
-//        		} else {
-//        			// if no item has been selected from the list
-//        		}
-        	}
-        });
-        
         // Setting Positive "Yes" Button
         deleteDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog,int which) {
@@ -80,6 +69,19 @@ public class MoleFinderActivity extends Activity {
         	}
         });
 
+        
+        addFolderButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+//        		if () {
+//        			// brings up the dialog box to confirm deletion
+        			addDialog.show();
+//        		} else {
+//        			// if no item has been selected from the list
+//        		}
+        	}
+        });
+        
+ 
         deleteFolderButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
 //        		if () {
