@@ -1,25 +1,43 @@
 package bia.foo;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 //this is the initial view which shows groups of photos
 public class MoleFinderActivity extends Activity {
+	private static final String FILENAME = "file.sav";
+	
 	private Button addFolderButton;
 	private Button deleteFolderButton;
-	private Editable folderName;
+	@SuppressWarnings("unused")
+	private String folderName;
+	@SuppressWarnings("unused")
 	private EditText input;
-	
+	private ListView list;
+
 	static final int DIALOG_NEW_FOLDER_ID = 0;
 	static final int DIALOG_DELETE_FOLDER_ID = 1;
 	
@@ -32,7 +50,7 @@ public class MoleFinderActivity extends Activity {
     //    input = new EditText(MoleFinderActivity.this);
         addFolderButton = (Button) findViewById(R.id.add_group);
         deleteFolderButton = (Button) findViewById(R.id.delete_group);
-        
+        list = (ListView) findViewById(R.id.photo_grouping_list);
 //        //creation of the dialog box confirming item deletion
 //        final AlertDialog.Builder addDialog = new AlertDialog.Builder(MoleFinderActivity.this);
 //        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(MoleFinderActivity.this);
@@ -85,8 +103,10 @@ public class MoleFinderActivity extends Activity {
 //        		}
         	}
         });
-    
-
+        
+        String[] foldersList = loadFromFile();
+    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(MoleFinderActivity.this, android.R.layout.simple_list_item_1, foldersList);
+    	list.setAdapter(adapter);
         
     }    
     
@@ -94,7 +114,8 @@ public class MoleFinderActivity extends Activity {
     protected Dialog onCreateDialog(int id) {
     	switch(id) {
     	case DIALOG_NEW_FOLDER_ID:
-    		input = new EditText(MoleFinderActivity.this);
+    		final EditText input = new EditText(MoleFinderActivity.this);
+
     		Builder addDialog = new AlertDialog.Builder(MoleFinderActivity.this);
     		addDialog.setView(input);
     		addDialog.setTitle("Adding a new folder...")
@@ -104,8 +125,16 @@ public class MoleFinderActivity extends Activity {
     		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog,int which) {
     				//actions to complete when clicking yes
-    				folderName = input.getText();
-    				dialog.cancel();
+    				
+    				folderName = input.getText().toString();
+    				saveInFile(folderName);
+    				
+    				String[] foldersList = loadFromFile();
+    		    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(MoleFinderActivity.this, android.R.layout.simple_list_item_1, foldersList);
+    		    	list.setAdapter(adapter);
+    		    	
+    				dialog.dismiss();
+    				input.setText("");
     				
     				//just used to test the folder name
     				Context context = getApplicationContext();
@@ -119,7 +148,7 @@ public class MoleFinderActivity extends Activity {
     		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog, int which) {
     				//actions to complete when clicking cancel
-    				dialog.cancel();
+    				dialog.dismiss();
     			}
     		});
     		return addDialog.create();
@@ -135,7 +164,7 @@ public class MoleFinderActivity extends Activity {
     			public void onClick(DialogInterface dialog,int which) {
     				//actions to complete when clicking yes
 
-    				dialog.cancel();
+    				dialog.dismiss();
     			}
     		})
 
@@ -143,12 +172,45 @@ public class MoleFinderActivity extends Activity {
             	.setNegativeButton("No", new DialogInterface.OnClickListener() {
             	public void onClick(DialogInterface dialog, int which) {
             		//actions to complete when clicking cancel
-            		dialog.cancel();
+            		dialog.dismiss();
             	}
             });
         	return deleteDialog.create();
         	//deleteDialog.show();
         }
         return null;
+    }
+    
+    private void saveInFile(String text) {
+    	try{
+    		FileOutputStream fos = openFileOutput(FILENAME, Context.MODE_APPEND);
+    		fos.write(new String(text + "\n").getBytes());
+    		fos.close();
+    	} catch(FileNotFoundException e) {
+    		e.printStackTrace();
+    	} catch(IOException e) {
+    		e.printStackTrace();
+    	}
+    }
+
+    private String[] loadFromFile() {
+    	ArrayList<String> folders = new ArrayList<String>();
+    	try {
+    		FileInputStream fis = openFileInput(FILENAME);
+    		BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+    		String line = br.readLine();
+    		while(line != null) {
+    			folders.add(line);
+    			line = br.readLine();
+    		}
+    		
+    		fis.close();
+    	} catch(FileNotFoundException e) {
+    		e.printStackTrace();
+    	} catch(IOException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	return folders.toArray(new String[folders.size()]);
     }
 }
