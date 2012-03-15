@@ -24,8 +24,14 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-/* 
+/** 
+ * PhotoLayoutView
  * This view allows the user to view photos in a selected folder.
+ * The folder name is given to this activity from MoleFinderActivity.
+ * This activity calls DisplayPhotoView, when a photo is clicked.
+ * This activity passes a bitmap, folder name and time stamp of
+ * the clicked photo to DisplayPhotoView.
+ * 
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
@@ -126,8 +132,16 @@ public class PhotoLayoutView extends Activity
 				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
 				Bitmap bitmap = drawable.getBitmap();
 				
+				//Fetch the date of the selected photo
+				Cursor cursor = dbHelper.fetchPhoto(id);
+				String date = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+				
 				Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
 				intent.putExtra("BitmapImage", bitmap);
+				
+				intent.putExtra("FolderName", folderName);
+				intent.putExtra("TimeStamp", date);
+				
 				startActivity(intent);
 				
 				return true;

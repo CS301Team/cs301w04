@@ -3,7 +3,8 @@ package bia.foo;
 import android.app.Activity;
 import android.os.Bundle;
 
-/* 
+/** 
+ * ComparePhotoView
  * This is the view for comparing two photos with each other.
  * this is not implemented yet
  * 

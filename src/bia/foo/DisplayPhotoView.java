@@ -4,9 +4,15 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.widget.ImageView;
+import android.widget.TextView;
 
-/* 
+/** 
+ * DisplayPhotoView
  * This view is for displaying the photo that is selected.
+ * This activity is started from PhotoLayoutView.
+ * This activity returns no data.
+ * This activity is given the bitmap, folder name and
+ * time stamp by the activity that calls it.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
@@ -37,6 +43,8 @@ import android.widget.ImageView;
 
 public class DisplayPhotoView extends Activity {
 	private ImageView imagePreview;
+	private TextView photoGroupName;
+	private TextView photoTimeStamp;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +52,18 @@ public class DisplayPhotoView extends Activity {
         setContentView(R.layout.photopreview); 
         
         imagePreview = (ImageView) findViewById(R.id.image2);
+        photoGroupName = (TextView) findViewById(R.id.photogroupname);
+        photoTimeStamp = (TextView) findViewById(R.id.phototimestamp);
         
         Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("BitmapImage");
         imagePreview.setImageBitmap(bitmap);
+        
+        //Set the folder name at top of screen to correct folder
+        String folder = (String) getIntent().getStringExtra("FolderName");
+        photoGroupName.setText(folder);
+        
+        //Set the time stamp at bottom of screen to correct time stamp
+        String time = (String) getIntent().getStringExtra("TimeStamp");
+        photoTimeStamp.setText(time);
     }
 }

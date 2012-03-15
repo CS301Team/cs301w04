@@ -19,8 +19,12 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-/* 
- * this is the initial view which shows groups of photos.
+/** 
+ * MoleFinderActivity
+ * This is the initial view which shows folders of photos.
+ * This activity starts PhotoLayoutView when a folder is clicked.
+ * This activity passes the folder name to PhotoLayoutView.
+ * 
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
@@ -93,9 +97,6 @@ public class MoleFinderActivity extends Activity {
 		{
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
 			{
-				//String currentFolder = parent.getItemAtPosition(position).getString(1);
-				
-				//Don't know if this is the correct way of doing it?
 				Cursor folderCursor = ((SimpleCursorAdapter)parent.getAdapter()).getCursor();
 				startManagingCursor(folderCursor);
 				folderCursor.moveToPosition(position);

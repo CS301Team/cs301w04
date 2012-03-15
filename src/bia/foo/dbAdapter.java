@@ -8,9 +8,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/* 
+/** 
+ * DatabaseAdapter
  * A simple SQLite database helper class. Gives the abilities needed
  * by the main application to access photos and available folders.
+ * 
  * 
  * Much of the code of this class is from the Notepad Tutorial on
  * the Android Developer website.
