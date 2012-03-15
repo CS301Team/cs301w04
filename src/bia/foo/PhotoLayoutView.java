@@ -5,6 +5,10 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -35,6 +39,8 @@ public class PhotoLayoutView extends Activity
     private Cursor entriesCursor;
     
     public String folderName;
+    
+    static final int DIALOG_DELETE_PHOTO_ID = 0;
 	
 	/** Called when the activity is first created. */
 	@Override
@@ -68,12 +74,7 @@ public class PhotoLayoutView extends Activity
 		delButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) 
 			{
-				if(entryID != -1)
-				{
-					dbHelper.deletePhotoEntry(entryID);
-					fillData();
-					//entryID = -1;
-				}
+				showDialog(DIALOG_DELETE_PHOTO_ID);
     		}
 		});
 		
@@ -166,130 +167,39 @@ public class PhotoLayoutView extends Activity
         
         gridView.setAdapter(entries);
     }
-	
-//	/*
-//	 * Re-calculates the statistics using a cursor
-//	 * (includes error checking if any data exists)
-//	 * 
-//	 */
-//	private void calculateStats()
-//	{
-//		double totalFuelCost = 0;
-//		double totalDist = 0;
-//		double totalLitres = 0;
-//		double fuelRate = 0;
-//		
-//		
-//		// Set the stats to blank for no data case
-//		totalCost.setText(R.string.total_cost_blank);
-//		totalDistance.setText(R.string.basic_blank);
-//		fuelConsume.setText(R.string.basic_blank);
-//		
-//		// Calculate the total fuel cost statistic
-//		calcCursor = dbHelper.fetchColumn(dbAdapter.FUEL_COST);
-//		// if there is any data pointed to by the cursor
-//		if(calcCursor.moveToFirst())
-//		{
-//			totalFuelCost = totalFuelCost + calcCursor.getDouble(calcCursor.getColumnIndex(dbAdapter.FUEL_COST));
-//			while(calcCursor.moveToNext())
-//			{
-//				totalFuelCost = totalFuelCost + calcCursor.getDouble(calcCursor.getColumnIndex(dbAdapter.FUEL_COST));
-//			}
-//			totalCost.setText(df2.format(totalFuelCost));
-//		
-//			// Calculate the total trip distance statistic
-//			calcCursor = dbHelper.fetchColumn(dbAdapter.TRIP_DISTANCE);
-//			totalDist = totalDist + calcCursor.getDouble(calcCursor.getColumnIndex(dbAdapter.TRIP_DISTANCE));
-//			while(calcCursor.moveToNext())
-//			{
-//				totalDist = totalDist + calcCursor.getDouble(calcCursor.getColumnIndex(dbAdapter.TRIP_DISTANCE));
-//			}
-//			totalDistance.setText(df1.format(totalDist));
-//			
-//			// Calculate the total litres
-//			calcCursor = dbHelper.fetchColumn(dbAdapter.FUEL_AMOUNT);
-//			totalLitres = totalLitres + calcCursor.getDouble(calcCursor.getColumnIndex(dbAdapter.FUEL_AMOUNT));
-//			while(calcCursor.moveToNext())
-//			{
-//				totalLitres = totalLitres + calcCursor.getDouble(calcCursor.getColumnIndex(dbAdapter.FUEL_AMOUNT));
-//			}
-//			
-//			// Calculate the total fuel amount statistic
-//			if(totalDist != 0)
-//			{
-//				totalDist = totalDist/100;
-//				fuelRate = totalLitres/totalDist;
-//				fuelConsume.setText(df1.format(fuelRate));
-//			}
-//		}
-//	}
+
+	@Override
+	protected Dialog onCreateDialog(int id) {
+		switch(id) {
+		case DIALOG_DELETE_PHOTO_ID:
+			Builder deleteDialog = new AlertDialog.Builder(PhotoLayoutView.this);
+			deleteDialog.setTitle("Confirm Delete...")
+			.setMessage("Are you sure you want to delete this photo?")
+			// do the work to define the deleteDialog
+			// Setting Positive "Yes" Button
+			.setPositiveButton("Delete Photo", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int which) {
+					//actions to complete when clicking yes
+
+					if(entryID != -1)
+					{
+						dbHelper.deletePhotoEntry(entryID);
+						fillData();
+					}
+
+					dialog.dismiss();
+				}
+			})
+
+			// Setting Negative "NO" Button
+			.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int which) {
+					//actions to complete when clicking cancel
+					dialog.dismiss();
+				}
+			});
+			return deleteDialog.create();
+		}
+		return null;
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//package bia.foo;
-//
-//import android.app.Activity;
-//import android.app.AlertDialog;
-//import android.content.DialogInterface;
-//import android.os.Bundle;
-//import android.view.View;
-//import android.widget.Button;
-//
-////this view is a grid of photos inside each group
-//public class PhotoLayoutView extends Activity {
-//	private Button deletePhotoButton;
-//	
-//	@Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.photogridview);
-//        
-//        deletePhotoButton = (Button) findViewById(R.id.delete_photo);
-//        
-//      //creation of the dialog box confirming item deletion
-//        final AlertDialog.Builder deleteDialog = new AlertDialog.Builder(PhotoLayoutView.this);
-//        // Setting Dialog Title
-//        deleteDialog.setTitle("Confirm Delete...");
-//        // Setting Dialog Message
-//        deleteDialog.setMessage("Are you sure you want to delete this photo?");
-//        
-//     // Setting Positive "Yes" Button
-//        deleteDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//        	public void onClick(DialogInterface dialog,int which) {
-//        		//actions to complete when clicking yes
-//        	}
-//        });
-//
-//        // Setting Negative "NO" Button
-//        deleteDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-//        	public void onClick(DialogInterface dialog, int which) {
-//        		//actions to complete when clicking cancel
-//        		dialog.cancel();
-//        	}
-//        });
-//
-//        deletePhotoButton.setOnClickListener(new View.OnClickListener() {
-//        	public void onClick(View v) {
-////        		if () {
-////        			// brings up the dialog box to confirm deletion
-//        			deleteDialog.show();
-////        		} else {
-////        			// if no item has been selected from the list
-////        		}
-//        	}
-//        });
-//    }
-//}
