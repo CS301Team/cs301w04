@@ -8,6 +8,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
@@ -89,7 +91,14 @@ public class PhotoLayoutView extends Activity
 		{
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
 			{
-				entryID = id;
+				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
+				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+				Bitmap bitmap = drawable.getBitmap();
+				
+				Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
+				intent.putExtra("BitmapImage", bitmap);
+				startActivity(intent);
+				
 				return true;
 			}
 		});
