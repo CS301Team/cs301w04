@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/compareView1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.25"
+        android:contentDescription="@string/photo_c_desc1"
+        android:src="@drawable/ic_launcher" />
+	
+	<View
+        android:id="@+id/firstDivider"
+        android:layout_width="fill_parent"
+        android:layout_height="2dp"
+        android:background="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:gravity="center_horizontal"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/compareView2"
+        android:layout_width="fill_parent"
+        android:layout_height="0dip"
+        android:layout_weight="0.23"
+        android:contentDescription="@string/photo_c_desc2"
+        android:src="@drawable/ic_launcher" />
+
+</LinearLayout>
