@@ -24,6 +24,36 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+/* 
+ * This view allows the user to view photos in a selected folder
+ * 
+ * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
+ * 
+ * Friday, March 16, 2012
+ * 
+ */
+
+/**
+ * 
+ * Skin Condition Log
+ * Copyright (C) 2012 Andrea Budac, Kurtis Morin, Christian Jukna
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 public class PhotoLayoutView extends Activity
 {
 	private static final int CAMERA_PHOTO_REQUEST = 100;
@@ -56,11 +86,11 @@ public class PhotoLayoutView extends Activity
         
 		dbHelper = new dbAdapter(this);
         dbHelper.open();
-        fillData();
         
         folderName = getIntent().getStringExtra("FolderName");
         currentFolder.setText(folderName);
         
+        fillData();
 		
 		// When newButton is clicked, call takeAPhoto
 		newPhoto.setOnClickListener(new View.OnClickListener() {
@@ -150,7 +180,7 @@ public class PhotoLayoutView extends Activity
 	private void fillData()
 	{
         // Get all of the notes from the database and create the item list
-        entriesCursor = dbHelper.fetchAllPhotos();
+        entriesCursor = dbHelper.fetchPhotosInFolder(folderName);
         startManagingCursor(entriesCursor);
         
         // Create an array to specify the fields we want to display in the list (only DATE)
@@ -183,7 +213,7 @@ public class PhotoLayoutView extends Activity
 
 					if(entryID != -1)
 					{
-						dbHelper.deletePhotoEntry(entryID);
+						dbHelper.deletePhoto(entryID);
 						fillData();
 					}
 

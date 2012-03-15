@@ -10,7 +10,7 @@ import android.util.Log;
 
 /* 
  * A simple SQLite database helper class. Gives the abilities needed
- * by the main application to access data.
+ * by the main application to access photos and available folders.
  * 
  * Much of the code of this class is from the Notepad Tutorial on
  * the Android Developer website.
@@ -18,14 +18,17 @@ import android.util.Log;
  * http://developer.android.com/resources/tutorials/notepad/index.html
  * 
  * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
  * 
- * Monday, February 6, 2012
+ * Friday, March 16, 2012
  * 
  */
 
 /**
- * Assignment 1: Fuel Consumption Tracking
- * Copyright (C) 2012 Andrea Budac
+ * 
+ * Skin Condition Log
+ * Copyright (C) 2012 Andrea Budac, Kurtis Morin, Christian Jukna
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -173,7 +176,7 @@ public class dbAdapter
      * @param rowId id of entry to delete
      * @return true if deleted, false otherwise
      */
-    public boolean deletePhotoEntry(long rowId)
+    public boolean deletePhoto(long rowId)
     {
         return mDb.delete(DATABASE_TABLE_PHOTOS, ID + "=" + rowId, null) > 0;
     }
@@ -220,7 +223,7 @@ public class dbAdapter
      * @return Cursor positioned to matching entry, if found
      * @throws SQLException if entry could not be found/retrieved
      */
-    public Cursor fetchPhotoEntry(long rowId) throws SQLException
+    public Cursor fetchPhoto(long rowId) throws SQLException
     {
         Cursor mCursor =
 
@@ -241,9 +244,7 @@ public class dbAdapter
      */
     public Cursor fetchFolder(long rowId) throws SQLException
     {
-        Cursor mCursor =
-
-            mDb.query(true, DATABASE_TABLE_FOLDERS, new String[] {ID, 
+        Cursor mCursor = mDb.query(true, DATABASE_TABLE_FOLDERS, new String[] {ID, 
             		FOLDER}, ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
@@ -267,6 +268,21 @@ public class dbAdapter
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
+        return mCursor;
+    }
+    
+    
+    /*
+     * Returns a Cursor that points to data with the requested folder name
+     * 
+     * @param folder retrieve photos with given folder name 
+     * @return Cursor that transverses photos with given folder name
+     */
+    public Cursor fetchPhotosInFolder(String folder)
+    {
+    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, PHOTO},
+    			FOLDER + "='" + folder + "'", null, null, null, null, null);
+        
         return mCursor;
     }
 }
