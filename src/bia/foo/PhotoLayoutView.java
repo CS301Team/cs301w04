@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.SimpleCursorAdapter;
@@ -69,18 +70,29 @@ public class PhotoLayoutView extends Activity
 				{
 					dbHelper.deletePhotoEntry(entryID);
 					fillData();
+					//entryID = -1;
 				}
     		}
 		});
 		
-//		// When item is clicked in the GridView, it's id is recorded
-//		gridView.setOnItemClickListener(new OnItemClickListener()
-//		{
-//			public void onItemClick(AdapterView<?> l, View v, int position, long id)
-//			{
-//				entryID = id;
-//			}
-//		});
+		// When item is clicked in the GridView, it's id is recorded
+		gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
+		{
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+			{
+				entryID = id;
+			}
+		});
+		
+		// When item is long clicked in the GridView it displays a larger image.
+		gridView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener()
+		{
+			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
+			{
+				entryID = id;
+				return true;
+			}
+		});
 	}
 	
 	
