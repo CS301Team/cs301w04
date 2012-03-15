@@ -10,7 +10,8 @@
         android:text="@string/grouping_title"
         android:textSize="20dp" 
         android:textStyle="bold"
-        android:textColor="#66CCFF" />
+		android:textColor="#33AAFF"
+        android:gravity="center_horizontal" />
 
     <View   
         android:id="@+id/firstDivider"

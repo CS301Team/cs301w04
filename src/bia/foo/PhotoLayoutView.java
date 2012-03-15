@@ -25,7 +25,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
 /* 
- * This view allows the user to view photos in a selected folder
+ * This view allows the user to view photos in a selected folder.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna

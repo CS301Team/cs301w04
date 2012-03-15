@@ -7,14 +7,34 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 
 /* 
- * This class allows a photo to be displayed in gridView
+ * This class allows a photo to be displayed in gridView.
  * 
  * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
  * 
- * Monday, February 6, 2012
+ * Friday, March 16, 2012
  * 
  */
 
+/**
+ * 
+ * Skin Condition Log
+ * Copyright (C) 2012 Andrea Budac, Kurtis Morin, Christian Jukna
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 public class PhotoViewBinder implements SimpleCursorAdapter.ViewBinder
 {
