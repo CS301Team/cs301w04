@@ -10,7 +10,9 @@
         android:layout_height="wrap_content"
         android:text="@string/folder_blank"
         android:textStyle="bold"
-        android:textColor="#ff9900"
+        android:textColor="#66CCFF"
+        android:gravity="center_horizontal"
+        android:textSize="20dp"
         android:editable="true"
 		/>
 

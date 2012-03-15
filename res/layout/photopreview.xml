@@ -10,6 +10,7 @@
         android:text="@+id/photogroupname"
         android:textColor="#66CCFF"
         android:textSize="20dp"
+        android:gravity="center_horizontal"
         android:textStyle="bold" />
 
     <View
@@ -38,6 +39,7 @@
         android:text="@+id/phototimestamp"
         android:textColor="#66CCFF"
         android:textSize="20dp"
+        android:gravity="center_horizontal"
         android:textStyle="bold" />
 
 </LinearLayout>

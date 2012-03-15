@@ -12,17 +12,22 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 //this is the initial view which shows groups of photos
@@ -39,6 +44,11 @@ public class MoleFinderActivity extends Activity {
 
 	static final int DIALOG_NEW_FOLDER_ID = 0;
 	static final int DIALOG_DELETE_FOLDER_ID = 1;
+	
+	private long entryID = -1;
+	private dbAdapter dbHelper;
+    
+    private Cursor entriesCursor;
 	
     /** Called when the activity is first created. */
     @Override
@@ -80,7 +90,19 @@ public class MoleFinderActivity extends Activity {
 //        });
 //
 //
-		// When item is clicked in the GridView, it's id is recorded
+        dbHelper = new dbAdapter(this);
+        dbHelper.open();
+        fillData();
+		
+        list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
+		{
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
+			{
+				entryID = id;
+			}
+		});
+        
+        //When item is clicked in the GridView, it's id is recorded
 		list.setOnItemLongClickListener(new OnItemLongClickListener()
 		{
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
@@ -119,11 +141,29 @@ public class MoleFinderActivity extends Activity {
         	}
         });
         
-        String[] foldersList = loadFromFile();
-    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(MoleFinderActivity.this, android.R.layout.simple_list_item_1, foldersList);
-    	list.setAdapter(adapter);
+        //String[] foldersList = loadFromFile();
+    	//ArrayAdapter<String> adapter = new ArrayAdapter<String>(MoleFinderActivity.this, android.R.layout.simple_list_item_1, foldersList);
+    	//list.setAdapter(adapter);
         
     }    
+    
+    private void fillData()
+	{
+        // Get all of the notes from the database and create the item list
+        entriesCursor = dbHelper.fetchAllFolders();
+        startManagingCursor(entriesCursor);
+        
+        // Create an array to specify the fields we want to display in the list
+        String[] from = new String[] { dbAdapter.FOLDER };
+        int[] to = new int[] { R.id.folder_name };
+        
+        // Create an array adapter and set it to display
+        SimpleCursorAdapter adapter =
+        		new SimpleCursorAdapter(this, R.layout.folder_entry, entriesCursor, from, to);
+        Log.w("NumRows", adapter.getCount() + "");
+        
+        list.setAdapter(adapter);
+    }
     
     @Override
     protected Dialog onCreateDialog(int id) {
@@ -142,12 +182,15 @@ public class MoleFinderActivity extends Activity {
     				//actions to complete when clicking yes
     				
     				folderName = input.getText().toString();
-    				saveInFile(folderName);
+    				//saveInFile(folderName);
     				
-    				String[] foldersList = loadFromFile();
-    		    	ArrayAdapter<String> adapter = new ArrayAdapter<String>(MoleFinderActivity.this, android.R.layout.simple_list_item_1, foldersList);
-    		    	list.setAdapter(adapter);
+    				//String[] foldersList = loadFromFile();
+    		    	//ArrayAdapter<String> adapter = new ArrayAdapter<String>(MoleFinderActivity.this, android.R.layout.simple_list_item_1, foldersList);
+    		    	//list.setAdapter(adapter);
     		    	
+    				dbHelper.createFolder(folderName);
+    				fillData();
+    				
     				dialog.dismiss();
     				input.setText("");
     				
@@ -178,7 +221,15 @@ public class MoleFinderActivity extends Activity {
     		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog,int which) {
     				//actions to complete when clicking yes
-
+    				if(entryID != -1)
+    				{
+    					//only deletes from the folders table, we need
+    					//to implement deletion of the values from the
+    					//entries table as well
+    					dbHelper.deleteFolder(entryID);
+    					fillData();
+    					//entryID = -1;
+    				}
     				dialog.dismiss();
     			}
     		})
