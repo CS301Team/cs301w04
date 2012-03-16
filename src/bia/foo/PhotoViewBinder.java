@@ -6,23 +6,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 
-/** 
- * PhotoViewBinder
- * This class is an adapter used to display photos in gridView.
- * It is used by PhotoLayoutView to display photos.
- * To use setViewBinder of a SimpleCursorAdapter.
- * 
- * @author Andrea Budac: abudac
- * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
- * 
- * Friday, March 16, 2012
- * 
- */
-
 /**
  * 
  * Skin Condition Log
+
  * Copyright (C) 2012 Andrea Budac, Kurtis Morin, Christian Jukna
  *
  * This program is free software: you can redistribute it and/or modify
@@ -39,18 +26,28 @@ import android.widget.SimpleCursorAdapter;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class PhotoViewBinder implements SimpleCursorAdapter.ViewBinder
-{
-	public boolean setViewValue(View view, Cursor cursor, int columnIndex)
-	{
-		if(view instanceof ImageView)
-		{
+/** 
+ * PhotoViewBinder
+ * This class is an adapter used to display photos in gridView.
+ * It is used by PhotoLayoutView to display photos.
+ * To use setViewBinder of a SimpleCursorAdapter.
+ * 
+ * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
+ * 
+ * Friday, March 16, 2012
+ * 
+ */
+
+public class PhotoViewBinder implements SimpleCursorAdapter.ViewBinder {
+	public boolean setViewValue(View view, Cursor cursor, int columnIndex) {
+		if(view instanceof ImageView) {
 			ImageView iv = (ImageView) view;
 			byte[] img = cursor.getBlob(columnIndex);
 			iv.setImageBitmap(BitmapFactory.decodeByteArray(img, 0, img.length));
 			return true;
 		}	
-
 		return false;
 	}
 }

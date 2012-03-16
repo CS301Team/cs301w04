@@ -6,22 +6,6 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/** 
- * DisplayPhotoView
- * This view is for displaying the photo that is selected.
- * This activity is started from PhotoLayoutView.
- * This activity returns no data.
- * This activity is given the bitmap, folder name and
- * time stamp by the activity that calls it.
- * 
- * @author Andrea Budac: abudac
- * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
- * 
- * Friday, March 16, 2012
- * 
- */
-
 /**
  * 
  * Skin Condition Log
@@ -41,6 +25,22 @@ import android.widget.TextView;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/** 
+ * DisplayPhotoView
+ * This view is for displaying the photo that is selected.
+ * This activity is started from PhotoLayoutView.
+ * This activity returns no data.
+ * This activity is given the bitmap, folder name and
+ * time stamp by the activity that calls it.
+ * 
+ * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
+ * 
+ * Friday, March 16, 2012
+ * 
+ */
+
 public class DisplayPhotoView extends Activity {
 	private ImageView imagePreview;
 	private TextView photoGroupName;
@@ -55,14 +55,16 @@ public class DisplayPhotoView extends Activity {
         photoGroupName = (TextView) findViewById(R.id.photogroupname);
         photoTimeStamp = (TextView) findViewById(R.id.phototimestamp);
         
+        //Sets the image view to the enlarged bitmap of the photo that
+        //was clicked.
         Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("BitmapImage");
         imagePreview.setImageBitmap(bitmap);
         
-        //Set the folder name at top of screen to correct folder
+        //Set the folder name at top of screen to correct folder.
         String folder = (String) getIntent().getStringExtra("FolderName");
         photoGroupName.setText(folder);
         
-        //Set the time stamp at bottom of screen to correct time stamp
+        //Set the time stamp at bottom of screen to correct time stamp.
         String time = (String) getIntent().getStringExtra("TimeStamp");
         photoTimeStamp.setText(time);
     }

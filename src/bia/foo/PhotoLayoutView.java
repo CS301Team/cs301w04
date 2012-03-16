@@ -24,23 +24,6 @@ import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
-/** 
- * PhotoLayoutView
- * This view allows the user to view photos in a selected folder.
- * The folder name is given to this activity from MoleFinderActivity.
- * This activity calls DisplayPhotoView, when a photo is clicked.
- * This activity passes a bitmap, folder name and time stamp of
- * the clicked photo to DisplayPhotoView.
- * 
- * 
- * @author Andrea Budac: abudac
- * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
- * 
- * Friday, March 16, 2012
- * 
- */
-
 /**
  * 
  * Skin Condition Log
@@ -59,6 +42,24 @@ import android.widget.TextView;
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+/** 
+ * PhotoLayoutView
+ * This view allows the user to view photos in a selected folder.
+ * The folder name is given to this activity from MoleFinderActivity.
+ * This activity calls DisplayPhotoView, when a photo is clicked.
+ * This activity passes a bitmap, folder name and time stamp of
+ * the clicked photo to DisplayPhotoView.
+ * 
+ * 
+ * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
+ * 
+ * Friday, March 16, 2012
+ * 
+ */
+
 
 public class PhotoLayoutView extends Activity
 {

@@ -8,25 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-/** 
- * DatabaseAdapter
- * A simple SQLite database helper class. Gives the abilities needed
- * by the main application to access photos and available folders.
- * 
- * 
- * Much of the code of this class is from the Notepad Tutorial on
- * the Android Developer website.
- * Found at:
- * http://developer.android.com/resources/tutorials/notepad/index.html
- * 
- * @author Andrea Budac: abudac
- * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
- * 
- * Friday, March 16, 2012
- * 
- */
-
 /**
  * 
  * Skin Condition Log
@@ -46,6 +27,25 @@ import android.util.Log;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/** 
+ * DatabaseAdapter
+ * A simple SQLite database helper class. Gives the abilities needed
+ * by the main application to access photos and available folders.
+ * 
+ * 
+ * Much of the code of this class is from the Notepad Tutorial on
+ * the Android Developer website.
+ * Found at:
+ * http://developer.android.com/resources/tutorials/notepad/index.html
+ * 
+ * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
+ * 
+ * Friday, March 16, 2012
+ * 
+ */
+
 public class dbAdapter
 {
 	public static final String ID = "_id";
@@ -59,7 +59,7 @@ public class dbAdapter
     private SQLiteDatabase mDb;
 
     /**
-     * Database creation sql statement
+     * Database creation SQL statement.
      */
     private static final String DATABASE_CREATE_PHOTOS = 
     	"create table photos (_id integer primary key autoincrement, "
@@ -76,24 +76,20 @@ public class dbAdapter
 
     private final Context mCtx;
 
-    private static class DatabaseHelper extends SQLiteOpenHelper
-    {
+    private static class DatabaseHelper extends SQLiteOpenHelper {
 
-        DatabaseHelper(Context context)
-        {
+        DatabaseHelper(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);
         }
 
         @Override
-        public void onCreate(SQLiteDatabase db)
-        {
+        public void onCreate(SQLiteDatabase db) {
             db.execSQL(DATABASE_CREATE_PHOTOS);
             db.execSQL(DATABASE_CREATE_FOLDERS);
         }
 
         @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
-        {
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS photos");
@@ -108,8 +104,7 @@ public class dbAdapter
      * 
      * @param ctx the Context within which to work
      */
-    public dbAdapter(Context ctx)
-    {
+    public dbAdapter(Context ctx) {
         this.mCtx = ctx;
     }
 
@@ -122,8 +117,7 @@ public class dbAdapter
      *         initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
-    public dbAdapter open() throws SQLException
-    {
+    public dbAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
         return this;
@@ -133,7 +127,7 @@ public class dbAdapter
         mDbHelper.close();
     }
 
-    /*
+    /**
      * Create a new entry using the information provided. If the entry is
      * successfully created return the new rowId for that entry, otherwise return
      * a -1 to indicate failure.
@@ -143,8 +137,7 @@ public class dbAdapter
      * @param photo the photo in byte array format
      * @return rowId or -1 if failed
      */
-    public long createPhotoEntry(String date, String folder, byte[] photo)
-    {
+    public long createPhotoEntry(String date, String folder, byte[] photo) {
         ContentValues initialValues = new ContentValues();
        
         initialValues.put(DATE, date);
@@ -154,7 +147,7 @@ public class dbAdapter
         return mDb.insert(DATABASE_TABLE_PHOTOS, null, initialValues);
     }
     
-    /*
+    /**
      * Create a new entry using the information provided. If the entry is
      * successfully created return the new rowId for that entry, otherwise return
      * a -1 to indicate failure.
@@ -162,8 +155,7 @@ public class dbAdapter
      * @param folder the folder
      * @return rowId or -1 if failed
      */
-    public long createFolder(String folder)
-    {
+    public long createFolder(String folder) {
         ContentValues initialValues = new ContentValues();
        
         initialValues.put(FOLDER, folder);
@@ -178,8 +170,7 @@ public class dbAdapter
      * @param rowId id of entry to delete
      * @return true if deleted, false otherwise
      */
-    public boolean deletePhoto(long rowId)
-    {
+    public boolean deletePhoto(long rowId) {
         return mDb.delete(DATABASE_TABLE_PHOTOS, ID + "=" + rowId, null) > 0;
     }
     
@@ -189,8 +180,7 @@ public class dbAdapter
      * @param rowId id of entry to delete
      * @return true if deleted, false otherwise
      */
-    public boolean deleteFolder(long rowId)
-    {
+    public boolean deleteFolder(long rowId) {
         return mDb.delete(DATABASE_TABLE_FOLDERS, ID + "=" + rowId, null) > 0;
     }
     
@@ -200,8 +190,7 @@ public class dbAdapter
      * 
      * @return Cursor over all photos
      */
-    public Cursor fetchAllPhotos()
-    {
+    public Cursor fetchAllPhotos() {
         return mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE,
         		FOLDER, PHOTO}, null, null, null, null, null);
     }
@@ -211,8 +200,7 @@ public class dbAdapter
      * 
      * @return Cursor over all folders
      */
-    public Cursor fetchAllFolders()
-    {
+    public Cursor fetchAllFolders() {
         return mDb.query(DATABASE_TABLE_FOLDERS, new String[] {ID, 
         		FOLDER}, null, null, null, null, null);
     }
@@ -225,10 +213,8 @@ public class dbAdapter
      * @return Cursor positioned to matching entry, if found
      * @throws SQLException if entry could not be found/retrieved
      */
-    public Cursor fetchPhoto(long rowId) throws SQLException
-    {
+    public Cursor fetchPhoto(long rowId) throws SQLException {
         Cursor mCursor =
-
             mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER,
             		PHOTO}, ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
@@ -244,8 +230,7 @@ public class dbAdapter
      * @return Cursor positioned to matching entry, if found
      * @throws SQLException if entry could not be found/retrieved
      */
-    public Cursor fetchFolder(long rowId) throws SQLException
-    {
+    public Cursor fetchFolder(long rowId) throws SQLException {
         Cursor mCursor = mDb.query(true, DATABASE_TABLE_FOLDERS, new String[] {ID, 
             		FOLDER}, ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
@@ -255,18 +240,18 @@ public class dbAdapter
     }
     
     
-    /*
+    /**
      * Returns a Cursor that points to data in the requested column
      * 
      * @param column name of column to retrieve
-     * @return Cursor that transverses data in given column
+     * @return Cursor that traverses data in given column
      */
-    public Cursor fetchPhotoColumn(String column)
-    {
+    public Cursor fetchPhotoColumn(String column) {
     	String [] selection = new String[1];
     	selection[0] = column;
     	
-    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, selection, null, null, null, null, null);
+    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, selection,
+    			null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -274,14 +259,13 @@ public class dbAdapter
     }
     
     
-    /*
+    /**
      * Returns a Cursor that points to data with the requested folder name
      * 
      * @param folder retrieve photos with given folder name 
-     * @return Cursor that transverses photos with given folder name
+     * @return Cursor that traverses photos with given folder name
      */
-    public Cursor fetchPhotosInFolder(String folder)
-    {
+    public Cursor fetchPhotosInFolder(String folder) {
     	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, PHOTO},
     			FOLDER + "='" + folder + "'", null, null, null, null, null);
         

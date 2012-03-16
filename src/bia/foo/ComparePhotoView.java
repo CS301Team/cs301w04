@@ -3,19 +3,6 @@ package bia.foo;
 import android.app.Activity;
 import android.os.Bundle;
 
-/** 
- * ComparePhotoView
- * This is the view for comparing two photos with each other.
- * this is not implemented yet
- * 
- * @author Andrea Budac: abudac
- * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
- * 
- * Friday, March 16, 2012
- * 
- */
-
 /**
  * 
  * Skin Condition Log
@@ -33,6 +20,19 @@ import android.os.Bundle;
  * 
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/** 
+ * ComparePhotoView
+ * This is the view for comparing two photos with each other.
+ * this is not implemented yet
+ * 
+ * @author Andrea Budac: abudac
+ * @author Christian Jukna: jukna
+ * @author Kurtis Morin: kmorin1
+ * 
+ * Friday, March 16, 2012
+ * 
  */
 
 public class ComparePhotoView extends Activity{
