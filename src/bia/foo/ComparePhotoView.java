@@ -33,6 +33,7 @@ import android.os.Bundle;
  * 
  * Friday, March 16, 2012
  * 
+ * @deprecated
  */
 
 public class ComparePhotoView extends Activity{

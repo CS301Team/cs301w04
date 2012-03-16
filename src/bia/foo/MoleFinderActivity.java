@@ -115,6 +115,7 @@ public class MoleFinderActivity extends Activity {
         
         /** OnClickListener for the add folder button. When its pressed
          * a dialog is shown which asks for input of a folder name 
+         * @see onCreateDialog
          * */
         addFolderButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
@@ -125,6 +126,7 @@ public class MoleFinderActivity extends Activity {
         /**OnClickListener for the delete folder button. When its pressed
          * a different dialog is shown which requests for confirmation of
          * deletion for the specified list item.
+         * @see onCreateDialog
          */
         deleteFolderButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
@@ -204,8 +206,7 @@ public class MoleFinderActivity extends Activity {
     		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog,int which) {
     				//actions to complete when clicking yes
-    				if(entryID != -1)
-    				{
+    				if(entryID != -1) {
     					//only deletes from the folders table, we need
     					//to implement deletion of the values from the
     					//entries table as well later

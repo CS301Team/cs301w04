@@ -60,7 +60,6 @@ import android.widget.TextView;
  * 
  */
 
-
 public class PhotoLayoutView extends Activity
 {
 	private static final int CAMERA_PHOTO_REQUEST = 100;
@@ -79,10 +78,9 @@ public class PhotoLayoutView extends Activity
     
     static final int DIALOG_DELETE_PHOTO_ID = 0;
 	
-	/** Called when the activity is first created. */
+	/** onCreate called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState)
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.photogridview);
 		
@@ -99,36 +97,47 @@ public class PhotoLayoutView extends Activity
         
         fillData();
 		
-		// When newButton is clicked, call takeAPhoto
+		/** 
+		 * When newPhoto button is clicked, call the method
+		 * takeAPhoto
+		 * @see takeAPhoto
+		 */
 		newPhoto.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) 
-			{
+			public void onClick(View v) {
 				takeAPhoto();
 			}
 		});
 		
-		// When delButton is clicked delete the last selected photo
+		/** 
+		 * When delButton is clicked a dialog
+		 * appears asking for confirmation. If yes is selected
+		 * then the last selected photo is deleted. If no is selected
+		 * then it closes the dialog.
+		 * @see onCreateDialog
+		 */
 		delButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) 
-			{
+			public void onClick(View v) {
 				showDialog(DIALOG_DELETE_PHOTO_ID);
     		}
 		});
 		
-		// When item is clicked in the GridView, it's id is recorded
-		gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener()
-		{
-			public void onItemClick(AdapterView<?> parent, View v, int position, long id)
-			{
+		/** 
+		 * When item is clicked in the GridView, it's id is recorded.
+		 */
+		gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				entryID = id;
 			}
 		});
 		
-		// When item is long clicked in the GridView it displays a larger image.
-		gridView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener()
-		{
-			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id)
-			{
+		/**
+		 *  When item is long clicked in the GridView it gets the bitmap of the image
+		 *  along with the foldername the item belongs to and the timestamp of the item.
+		 *  An activity to DisplayPhotoView is then called.
+		 *  @return true
+		 */
+		gridView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
 				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
 				Bitmap bitmap = drawable.getBitmap();
@@ -151,28 +160,23 @@ public class PhotoLayoutView extends Activity
 	}
 	
 	
-	/*
-	 * Launches a new camera activity
+	/**
+	 * takeAPhoto launches a new camera activity.
 	 */
-    protected void takeAPhoto()
-    {
+    protected void takeAPhoto() {
     	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     	startActivityForResult(intent, CAMERA_PHOTO_REQUEST);
     }
     
     
-	/*
-	 * If NewEntryView exited correctly, then put returned data into the database
-	 * (non-Javadoc)
-	 * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+	/**
+	 * Call to onActivityResult, if takeAPhoto() exited correctly, 
+	 * then put returned data into the database
 	 */
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent intent)
-	{	
-		if(requestCode == CAMERA_PHOTO_REQUEST)
-		{		
-			if (resultCode == RESULT_OK)
-			{
+	protected void onActivityResult(int requestCode, int resultCode, Intent intent) {	
+		if (requestCode == CAMERA_PHOTO_REQUEST) {		
+			if (resultCode == RESULT_OK) {
 				super.onActivityResult(requestCode, resultCode, intent);
 				
 				String date = DateFormat.getDateInstance().format(new Date());
@@ -189,11 +193,10 @@ public class PhotoLayoutView extends Activity
 		}
 	}
 	
-	/*
-	 * Recreates the gridView and updates the list
+	/**
+	 * fillData() recreates the gridView and updates the list.
 	 */
-	private void fillData()
-	{
+	private void fillData() {
         // Get all of the notes from the database and create the item list
         entriesCursor = dbHelper.fetchPhotosInFolder(folderName);
         startManagingCursor(entriesCursor);
@@ -213,6 +216,13 @@ public class PhotoLayoutView extends Activity
         gridView.setAdapter(entries);
     }
 
+	/** OnCreateDialog method to create the dialogs when called.
+     * Uses a switch case mechanism to decide which dialog to display.
+     * @param int id (Used for the switch/case)
+     * When the ID is delete photo a confirmation dialog appears asking the
+     * user to make their final decision. They can confirm the delete or cancel.
+     * The function returns the created dialog.
+     * @return dialog.create() */
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch(id) {
@@ -226,8 +236,7 @@ public class PhotoLayoutView extends Activity
 				public void onClick(DialogInterface dialog,int which) {
 					//actions to complete when clicking yes
 
-					if(entryID != -1)
-					{
+					if(entryID != -1) {
 						dbHelper.deletePhoto(entryID);
 						fillData();
 					}
