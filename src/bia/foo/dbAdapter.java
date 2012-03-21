@@ -52,8 +52,9 @@ public class dbAdapter
 	public static final String DATE = "date";
     public static final String FOLDER = "folder";
     public static final String PHOTO = "photo";
+    public static final String TAG = "tag";
 
-    private static final String TAG = "dbAdapter";
+    private static final String NAME = "dbAdapter";
     
     private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
@@ -63,15 +64,21 @@ public class dbAdapter
      */
     private static final String DATABASE_CREATE_PHOTOS = 
     	"create table photos (_id integer primary key autoincrement, "
-        + "date TEXT NOT NULL, folder TEXT NOT NULL, photo BLOB NOT NULL);";
+        + "date TEXT NOT NULL, folder TEXT NOT NULL, tag TEXT NOT NULL," +
+        		"photo BLOB NOT NULL);";
     
     private static final String DATABASE_CREATE_FOLDERS =
     	"CREATE TABLE folders (_id integer primary key autoincrement, "
         + "folder TEXT NOT NULL);";
+    
+    private static final String DATABASE_CREATE_TAGS =
+    	"CREATE TABLE tags (_id integer primary key autoincrement, "
+        + "tags TEXT NOT NULL);";
 
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE_PHOTOS = "photos";
     private static final String DATABASE_TABLE_FOLDERS = "folders";
+    private static final String DATABASE_TABLE_TAGS = "tags";
     private static final int DATABASE_VERSION = 2;
 
     private final Context mCtx;
@@ -86,14 +93,16 @@ public class dbAdapter
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(DATABASE_CREATE_PHOTOS);
             db.execSQL(DATABASE_CREATE_FOLDERS);
+            db.execSQL(DATABASE_CREATE_TAGS);
         }
 
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
+            Log.w(NAME, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS photos");
             db.execSQL("DROP TABLE IF EXISTS folders");
+            db.execSQL("DROP TABLE IF EXISTS tags");
             onCreate(db);
         }
     }
@@ -134,14 +143,16 @@ public class dbAdapter
      * 
      * @param date the date (in yyyy-mm-dd format)
      * @param folder the folder the photo is in
+     * @param tag the tag the photo is under
      * @param photo the photo in byte array format
      * @return rowId or -1 if failed
      */
-    public long createPhotoEntry(String date, String folder, byte[] photo) {
+    public long createPhotoEntry(String date, String folder, String tag, byte[] photo) {
         ContentValues initialValues = new ContentValues();
        
         initialValues.put(DATE, date);
         initialValues.put(FOLDER, folder);
+        initialValues.put(TAG, tag);
         initialValues.put(PHOTO, photo);
         
         return mDb.insert(DATABASE_TABLE_PHOTOS, null, initialValues);
@@ -161,6 +172,22 @@ public class dbAdapter
         initialValues.put(FOLDER, folder);
         
         return mDb.insert(DATABASE_TABLE_FOLDERS, null, initialValues);
+    }
+    
+    /**
+     * Create a new entry using the information provided. If the entry is
+     * successfully created return the new rowId for that entry, otherwise return
+     * a -1 to indicate failure.
+     * 
+     * @param tag the tag
+     * @return rowId or -1 if failed
+     */
+    public long createTag(String tag) {
+        ContentValues initialValues = new ContentValues();
+       
+        initialValues.put(TAG, tag);
+        
+        return mDb.insert(DATABASE_TABLE_TAGS, null, initialValues);
     }
     
 
@@ -184,6 +211,16 @@ public class dbAdapter
         return mDb.delete(DATABASE_TABLE_FOLDERS, ID + "=" + rowId, null) > 0;
     }
     
+    /**
+     * Delete the entry with the given rowId
+     * 
+     * @param rowId id of entry to delete
+     * @return true if deleted, false otherwise
+     */
+    public boolean deleteTag(long rowId) {
+        return mDb.delete(DATABASE_TABLE_TAGS, ID + "=" + rowId, null) > 0;
+    }
+    
 
     /**
      * Return a Cursor over the list of all photos in the photo table
@@ -192,7 +229,7 @@ public class dbAdapter
      */
     public Cursor fetchAllPhotos() {
         return mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE,
-        		FOLDER, PHOTO}, null, null, null, null, null);
+        		FOLDER, TAG, PHOTO}, null, null, null, null, null);
     }
     
     /**
@@ -205,6 +242,16 @@ public class dbAdapter
         		FOLDER}, null, null, null, null, null);
     }
     
+    /**
+     * Return a Cursor over the list of all tags in the table
+     * 
+     * @return Cursor over all tags
+     */
+    public Cursor fetchAllTags() {
+        return mDb.query(DATABASE_TABLE_TAGS, new String[] {ID, 
+        		TAG}, null, null, null, null, null);
+    }
+    
     
     /**
      * Return a Cursor positioned at the entry that matches the given rowId
@@ -215,8 +262,8 @@ public class dbAdapter
      */
     public Cursor fetchPhoto(long rowId) throws SQLException {
         Cursor mCursor =
-            mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER,
-            		PHOTO}, ID + "=" + rowId, null, null, null, null, null);
+            mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, 
+            		TAG, PHOTO}, ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -266,8 +313,21 @@ public class dbAdapter
      * @return Cursor that traverses photos with given folder name
      */
     public Cursor fetchPhotosInFolder(String folder) {
-    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, PHOTO},
+    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, TAG, PHOTO},
     			FOLDER + "='" + folder + "'", null, null, null, null, null);
+        
+        return mCursor;
+    }
+    
+    /**
+     * Returns a Cursor that points to data with the requested tag
+     * 
+     * @param tag retrieve photos with given tag 
+     * @return Cursor that traverses photos with given tag
+     */
+    public Cursor fetchPhotosUnderTag(String tag) {
+    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, TAG, PHOTO},
+    			TAG + "='" + tag + "'", null, null, null, null, null);
         
         return mCursor;
     }
