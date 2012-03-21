@@ -66,8 +66,14 @@ public class PhotoLayoutView extends Activity
 	
 	private Button newPhoto;
 	private Button delButton;
+	private Button compPhoto;
 	private TextView currentFolder;
 	private GridView gridView;
+	//
+	public Bitmap currBitmap;
+	//private Intent intent;
+	
+	private int compare_counter;
 	
 	private long entryID = -1;
 	private dbAdapter dbHelper;
@@ -86,8 +92,11 @@ public class PhotoLayoutView extends Activity
 		
 		newPhoto = (Button) findViewById(R.id.new_photo);
 		delButton = (Button) findViewById(R.id.delete_photo);
+		compPhoto = (Button) findViewById(R.id.compare_photo);
         gridView = (GridView) findViewById(R.id.gridView1);
         currentFolder = (TextView) findViewById(R.id.current_folder);
+        final Intent intent = new Intent(PhotoLayoutView.this, ComparePhotoView.class);
+        compare_counter = 0;
         
 		dbHelper = new dbAdapter(this);
         dbHelper.open();
@@ -121,12 +130,43 @@ public class PhotoLayoutView extends Activity
     		}
 		});
 		
+		compPhoto.setOnClickListener( new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if(compare_counter == 0){
+//					ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
+//					BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+//					Bitmap bitmap = drawable.getBitmap();
+					
+					intent.putExtra("BitmapImage1", currBitmap);
+					
+					intent.putExtra("FolderName1", folderName);
+					compare_counter++;
+				}
+				else{
+					intent.putExtra("BitmapImage2", currBitmap);
+					
+					intent.putExtra("FolderName2", folderName);
+					compare_counter=0;
+					startActivity(intent);
+				}
+				
+			}
+		});
+		
 		/** 
 		 * When item is clicked in the GridView, it's id is recorded.
 		 */
 		gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				entryID = id;
+				//Bitmap currBitmap;
+				//for the comparing
+				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
+				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+				currBitmap = drawable.getBitmap();
+				//currBitmap = bitmap;
 			}
 		});
 		

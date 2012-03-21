@@ -13,5 +13,6 @@
     <string name="folder_blank">No Name</string>
     <string name="photo_c_desc1">Photo 1 Compare Description</string>
     <string name="photo_c_desc2">Photo 2 Compare Description</string>
+    <string name="compare_photo">Compare</string>
 
 </resources>

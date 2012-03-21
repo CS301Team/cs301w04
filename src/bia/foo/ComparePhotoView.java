@@ -1,7 +1,10 @@
 package bia.foo;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * 
@@ -33,13 +36,39 @@ import android.os.Bundle;
  * 
  * Friday, March 16, 2012
  * 
- * @deprecated
+ *
  */
 
 public class ComparePhotoView extends Activity{
+	private ImageView imagePreview1;
+	private TextView photoGroupName1;
+	private ImageView imagePreview2;
+	private TextView photoGroupName2;
+	
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comparephotos);
+        
+        imagePreview1 = (ImageView) findViewById(R.id.compareView1);
+        photoGroupName1 = (TextView) findViewById(R.id.textView1);
+        
+        imagePreview2 = (ImageView) findViewById(R.id.compareView2);
+        photoGroupName2 = (TextView) findViewById(R.id.textView2);
+        
+        Bitmap bitmap1 = (Bitmap) getIntent().getParcelableExtra("BitmapImage1");
+        imagePreview1.setImageBitmap(bitmap1);
+        
+        //Set the folder name at top of screen to correct folder.
+        String folder1 = (String) getIntent().getStringExtra("FolderName1");
+        photoGroupName1.setText(folder1);
+        
+        Bitmap bitmap2 = (Bitmap) getIntent().getParcelableExtra("BitmapImage2");
+        imagePreview2.setImageBitmap(bitmap2);
+        
+        //Set the folder name at top of screen to correct folder.
+        String folder2 = (String) getIntent().getStringExtra("FolderName2");
+        photoGroupName2.setText(folder2);
     }
 }
