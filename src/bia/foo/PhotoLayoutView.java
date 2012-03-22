@@ -221,14 +221,15 @@ public class PhotoLayoutView extends Activity
 				
 				String date = DateFormat.getDateInstance().format(new Date());
 				String folder = folderName;
-				String tag = "hello"; //NEED CHANGE HERE
+				String tag = ""; //NEED CHANGE HERE
+				String annotate= "";
 				
 				Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); 
 				byte[] photo = baos.toByteArray();
 				
-				dbHelper.createPhotoEntry(date, folder, tag, photo);
+				dbHelper.createPhotoEntry(date, folder, tag, annotate, photo);
 				fillData();
 			}
 		}

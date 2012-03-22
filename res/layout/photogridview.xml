@@ -26,7 +26,8 @@
         android:id="@+id/gridView1"
         android:layout_width="fill_parent"
         android:layout_height="408dp"
-        android:numColumns="3" >
+        android:numColumns="3" 
+        android:listSelector="#33AAFF" >
 
     </GridView>
     

@@ -52,6 +52,7 @@ public class dbAdapter
 	public static final String DATE = "date";
     public static final String FOLDER = "folder";
     public static final String PHOTO = "photo";
+    public static final String ANNOTATE = "annotate";
     public static final String TAG = "tag";
 
     private static final String NAME = "dbAdapter";
@@ -65,7 +66,7 @@ public class dbAdapter
     private static final String DATABASE_CREATE_PHOTOS = 
     	"create table photos (_id integer primary key autoincrement, "
         + "date TEXT NOT NULL, folder TEXT NOT NULL, tag TEXT NOT NULL," +
-        		"photo BLOB NOT NULL);";
+        		"annotate TEXT NOT NULL, photo BLOB NOT NULL);";
     
     private static final String DATABASE_CREATE_FOLDERS =
     	"CREATE TABLE folders (_id integer primary key autoincrement, "
@@ -147,13 +148,14 @@ public class dbAdapter
      * @param photo the photo in byte array format
      * @return rowId or -1 if failed
      */
-    public long createPhotoEntry(String date, String folder, String tag, byte[] photo) {
+    public long createPhotoEntry(String date, String folder, String tag, String annotate, byte[] photo) {
         ContentValues initialValues = new ContentValues();
        
         initialValues.put(DATE, date);
         initialValues.put(FOLDER, folder);
-        initialValues.put(TAG, tag);
         initialValues.put(PHOTO, photo);
+        initialValues.put(TAG, tag);
+        initialValues.put(ANNOTATE, annotate);
         
         return mDb.insert(DATABASE_TABLE_PHOTOS, null, initialValues);
     }
@@ -229,7 +231,7 @@ public class dbAdapter
      */
     public Cursor fetchAllPhotos() {
         return mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE,
-        		FOLDER, TAG, PHOTO}, null, null, null, null, null);
+        		FOLDER, TAG, ANNOTATE, PHOTO}, null, null, null, null, null);
     }
     
     /**
@@ -263,7 +265,7 @@ public class dbAdapter
     public Cursor fetchPhoto(long rowId) throws SQLException {
         Cursor mCursor =
             mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, 
-            		TAG, PHOTO}, ID + "=" + rowId, null, null, null, null, null);
+            		TAG, ANNOTATE, PHOTO}, ID + "=" + rowId, null, null, null, null, null);
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -313,7 +315,7 @@ public class dbAdapter
      * @return Cursor that traverses photos with given folder name
      */
     public Cursor fetchPhotosInFolder(String folder) {
-    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, TAG, PHOTO},
+    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, TAG, ANNOTATE, PHOTO},
     			FOLDER + "='" + folder + "'", null, null, null, null, null);
         
         return mCursor;
@@ -326,9 +328,19 @@ public class dbAdapter
      * @return Cursor that traverses photos with given tag
      */
     public Cursor fetchPhotosUnderTag(String tag) {
-    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, TAG, PHOTO},
+    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, TAG, ANNOTATE, PHOTO},
     			TAG + "='" + tag + "'", null, null, null, null, null);
         
         return mCursor;
     }
+    
+    /**
+     * @param annotate set annotation on photo with given id
+     * @param rowId the id of the photo entry
+     */
+    public void addAnnotationToPhoto(String annotate, long rowId)
+    {
+    	mDb.execSQL("UPDATE photos SET annotate = '"+annotate+"' WHERE _id = "+rowId+";");	
+    }
+    
 }
