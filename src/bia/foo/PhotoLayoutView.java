@@ -99,12 +99,12 @@ public class PhotoLayoutView extends Activity
         compare_counter = 0;
         
 		dbHelper = new dbAdapter(this);
-        dbHelper.open();
+        //dbHelper.open();
         
         folderName = getIntent().getStringExtra("FolderName");
         currentFolder.setText(folderName);
         
-        fillData();
+        //fillData();
 		
 		/** 
 		 * When newPhoto button is clicked, call the method
@@ -192,6 +192,7 @@ public class PhotoLayoutView extends Activity
 				intent.putExtra("FolderName", folderName);
 				intent.putExtra("TimeStamp", date);
 				
+				cursor.close();				
 				startActivity(intent);
 				
 				return true;
@@ -199,6 +200,29 @@ public class PhotoLayoutView extends Activity
 		});
 	}
 	
+	/**
+	 * Recreate the database on start to prevent errors
+	 * 
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		dbHelper.open();
+        fillData();
+	}
+	
+	/**
+	 * Close the database on stop to prevent errors
+	 * 
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		dbHelper.close();
+		entriesCursor.close();
+	}
 	
 	/**
 	 * takeAPhoto launches a new camera activity.

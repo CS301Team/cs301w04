@@ -65,9 +65,9 @@ public class MoleFinderActivity extends Activity {
 	
 	private long entryID = -1;
 	private dbAdapter dbHelper;
-    
-    private Cursor entriesCursor;
 	
+	private Cursor entriesCursor;
+    
     /** OnCreate method for the MoleFinderActivity.
      * It initializes values for views and sets on 
      * click listeners for all buttons in the view. 
@@ -82,8 +82,8 @@ public class MoleFinderActivity extends Activity {
         list = (ListView) findViewById(R.id.photo_grouping_list);
 
         dbHelper = new dbAdapter(this);
-        dbHelper.open();
-        fillData();
+        //dbHelper.open();
+        //fillData();
         
 		/** OnItemClickListener for the listview. When clicked it gets
 		 * the entryID for the item clicked which is used later in deletion. 
@@ -107,6 +107,7 @@ public class MoleFinderActivity extends Activity {
 				
 				Intent intent = new Intent(v.getContext(), PhotoLayoutView.class);
 				intent.putExtra("FolderName", currentFolder);
+				folderCursor.close();
 				startActivity(intent);
 				
 				return true;
@@ -133,7 +134,32 @@ public class MoleFinderActivity extends Activity {
         			showDialog(DIALOG_DELETE_FOLDER_ID);
         	}
         });
-    }    
+    }
+    
+	/**
+	 * Recreate the database on start to prevent errors
+	 * 
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		dbHelper.open();
+        fillData();
+	}
+	
+	/**
+	 * Close the database on stop to prevent errors
+	 * 
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		dbHelper.close();
+		entriesCursor.close();
+	}
+    
     /** Function call to retrieve all the folder names from the database.
      * Utilizes the simple cursor adapter to bind it to the listview */
     private void fillData() {
