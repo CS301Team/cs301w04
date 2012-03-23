@@ -42,6 +42,16 @@ public class PhotoHolder {
 		}
 	}
 	
+	//checks if the photo holder is partially set for a single photo view
+	public boolean isNotSet(PhotoHolder holder){
+		if(Photo1 == null && photoDate1 == null && Photo2 == null && photoDate2 == null){
+			return true;
+		}
+		else{
+			return false;
+		}
+	}
+	
 	//clears the set photos
 	public void clearPhotoHolder(PhotoHolder holder){
 		Photo1 = null;
@@ -73,6 +83,31 @@ public class PhotoHolder {
 		}
 		else{
 			return null;
+		}
+	}
+	
+	public void setPhoto(Bitmap Bmap, int photoid){
+		if(photoid == 1){
+			Photo1 = Bmap;
+		}
+		else if (photoid == 2){
+			Photo2 = Bmap;
+		}
+		else{
+			//error
+		}
+	}
+	
+	//gets string from photo holder either bitmap 1 or 2
+	public void setDate(String date, int dateid){
+		if(dateid == 1){
+			photoDate1 = date;
+		}
+		else if (dateid == 2){
+			photoDate2 = date;
+		}
+		else{
+			//error
 		}
 	}
 	

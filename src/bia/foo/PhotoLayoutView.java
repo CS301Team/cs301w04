@@ -1,5 +1,7 @@
 package bia.foo;
 
+import bia.foo.PhotoHolder;
+
 import java.io.ByteArrayOutputStream;
 import java.text.DateFormat;
 import java.util.Date;
@@ -73,14 +75,15 @@ public class PhotoLayoutView extends Activity
 	public Bitmap currBitmap;
 	//private Intent intent;
 	
-	private int compare_counter;
-	
 	private long entryID = -1;
 	private dbAdapter dbHelper;
     
     private Cursor entriesCursor;
     
     public String folderName;
+    private String Cdate;
+    
+    private PhotoHolder pHolder;
     
     static final int DIALOG_DELETE_PHOTO_ID = 0;
 	
@@ -96,7 +99,8 @@ public class PhotoLayoutView extends Activity
         gridView = (GridView) findViewById(R.id.gridView1);
         currentFolder = (TextView) findViewById(R.id.current_folder);
         final Intent intent = new Intent(PhotoLayoutView.this, ComparePhotoView.class);
-        compare_counter = 0;
+        
+        pHolder = new PhotoHolder();
         
 		dbHelper = new dbAdapter(this);
         //dbHelper.open();
@@ -134,24 +138,15 @@ public class PhotoLayoutView extends Activity
 			
 			@Override
 			public void onClick(View v) {
-				if(compare_counter == 0){
-//					ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
-//					BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-//					Bitmap bitmap = drawable.getBitmap();
-					
-					intent.putExtra("BitmapImage1", currBitmap);
-					
-					intent.putExtra("FolderName1", folderName);
-					compare_counter++;
+				if (pHolder.isNotSet(pHolder)){
+					pHolder.setPhoto(currBitmap, 1);
+					pHolder.setDate(Cdate, 1);
 				}
-				else{
-					intent.putExtra("BitmapImage2", currBitmap);
-					
-					intent.putExtra("FolderName2", folderName);
-					compare_counter=0;
-					startActivity(intent);
-				}
-				
+				else if (pHolder.isPartiallySet(pHolder)){
+					pHolder.setPhoto(currBitmap, 2);
+					pHolder.setDate(Cdate, 2);
+					extractHolder(intent,pHolder);
+				}			
 			}
 		});
 		
@@ -166,7 +161,10 @@ public class PhotoLayoutView extends Activity
 				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
 				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
 				currBitmap = drawable.getBitmap();
-				//currBitmap = bitmap;
+				
+				Cursor cursor = dbHelper.fetchPhoto(id);
+				Cdate = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+				cursor.close();
 			}
 		});
 		
@@ -234,6 +232,20 @@ public class PhotoLayoutView extends Activity
     protected void takeAPhoto() {
     	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
     	startActivityForResult(intent, CAMERA_PHOTO_REQUEST);
+    }
+    
+    protected void extractHolder(Intent i, PhotoHolder p){
+    	if (p.isFullySet(p)){
+    		i.putExtra("BitmapImage1", p.getPhoto(1));
+    		i.putExtra("Date1", p.getDate(1));
+    		i.putExtra("BitmapImage2", p.getPhoto(2));
+    		i.putExtra("Date2", p.getDate(2));
+    		p.clearPhotoHolder(p);
+    		startActivity(i);
+    	}
+    	else{
+    		//error
+    	}
     }
     
     

@@ -61,14 +61,14 @@ public class ComparePhotoView extends Activity{
         imagePreview1.setImageBitmap(bitmap1);
         
         //Set the folder name at top of screen to correct folder.
-        String folder1 = (String) getIntent().getStringExtra("FolderName1");
+        String folder1 = (String) getIntent().getStringExtra("Date1");
         photoGroupName1.setText(folder1);
         
         Bitmap bitmap2 = (Bitmap) getIntent().getParcelableExtra("BitmapImage2");
         imagePreview2.setImageBitmap(bitmap2);
         
         //Set the folder name at top of screen to correct folder.
-        String folder2 = (String) getIntent().getStringExtra("FolderName2");
+        String folder2 = (String) getIntent().getStringExtra("Date2");
         photoGroupName2.setText(folder2);
     }
 }
