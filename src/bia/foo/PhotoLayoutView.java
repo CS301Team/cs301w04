@@ -185,12 +185,15 @@ public class PhotoLayoutView extends Activity
 				//Fetch the date of the selected photo
 				Cursor cursor = dbHelper.fetchPhoto(id);
 				String date = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+				String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
+				String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
 				
 				Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
 				intent.putExtra("BitmapImage", bitmap);
-				
 				intent.putExtra("FolderName", folderName);
 				intent.putExtra("TimeStamp", date);
+				intent.putExtra("Tag", tag);
+				intent.putExtra("Annotate", annotate);
 				
 				cursor.close();				
 				startActivity(intent);
@@ -211,7 +214,7 @@ public class PhotoLayoutView extends Activity
 		dbHelper.open();
         fillData();
 	}
-	
+
 	/**
 	 * Close the database on stop to prevent errors
 	 * 
@@ -223,6 +226,7 @@ public class PhotoLayoutView extends Activity
 		dbHelper.close();
 		entriesCursor.close();
 	}
+	
 	
 	/**
 	 * takeAPhoto launches a new camera activity.
@@ -245,7 +249,7 @@ public class PhotoLayoutView extends Activity
 				
 				String date = DateFormat.getDateInstance().format(new Date());
 				String folder = folderName;
-				String tag = ""; //NEED CHANGE HERE
+				String tag = "";
 				String annotate= "";
 				
 				Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
@@ -253,8 +257,10 @@ public class PhotoLayoutView extends Activity
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); 
 				byte[] photo = baos.toByteArray();
 				
+				dbHelper.open();
 				dbHelper.createPhotoEntry(date, folder, tag, annotate, photo);
 				fillData();
+				dbHelper.close();
 			}
 		}
 	}

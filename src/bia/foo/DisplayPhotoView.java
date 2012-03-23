@@ -45,6 +45,8 @@ public class DisplayPhotoView extends Activity {
 	private ImageView imagePreview;
 	private TextView photoGroupName;
 	private TextView photoTimeStamp;
+	private TextView photoTag;
+	private TextView photoAnnotate;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,6 +56,8 @@ public class DisplayPhotoView extends Activity {
         imagePreview = (ImageView) findViewById(R.id.image2);
         photoGroupName = (TextView) findViewById(R.id.photogroupname);
         photoTimeStamp = (TextView) findViewById(R.id.phototimestamp);
+        photoTag = (TextView) findViewById(R.id.phototag);
+        photoAnnotate = (TextView) findViewById(R.id.photoannotate);
         
         //Sets the image view to the enlarged bitmap of the photo that
         //was clicked.
@@ -67,5 +71,13 @@ public class DisplayPhotoView extends Activity {
         //Set the time stamp at bottom of screen to correct time stamp.
         String time = (String) getIntent().getStringExtra("TimeStamp");
         photoTimeStamp.setText(time);
+        
+        //Set the time stamp at bottom of screen to correct time stamp.
+        String tag = (String) getIntent().getStringExtra("Tag");
+        photoTag.setText(tag);
+        
+        //Set the time stamp at bottom of screen to correct time stamp.
+        String annotate = (String) getIntent().getStringExtra("Annotate");
+        photoAnnotate.setText(annotate);
     }
 }
