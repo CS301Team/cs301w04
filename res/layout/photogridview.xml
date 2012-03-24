@@ -2,39 +2,44 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-    
+    android:orientation="vertical" >
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp" >
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="55dp"
+        android:src="@drawable/lifeline"
+        android:contentDescription="@string/lifeline" />
+
     <TextView
         android:id="@+id/current_folder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/folder_blank"
-        android:textStyle="bold"
-        android:textColor="#33AAFF"
-        android:gravity="center_horizontal"
-        android:textSize="20dp"
         android:editable="true"
-		/>
+        android:gravity="center_horizontal"
+        android:text="@string/folder_blank"
+        android:textColor="#33AAFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
-    <View   
-        android:id="@+id/firstDivider"
-        android:layout_height="2dp"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF" />
-    
+    </FrameLayout>
+
     <GridView
         android:id="@+id/gridView1"
         android:layout_width="fill_parent"
-        android:layout_height="408dp"
+        android:layout_height="363dp"
+        android:background="@drawable/caduceus"
         android:numColumns="3" >
 
     </GridView>
     
-    <View   
-        android:id="@+id/secondDivider"
-        android:layout_height="2dp"
+    <ImageView   
+        android:layout_height="25dp"
         android:layout_width="fill_parent"
-        android:background="#FFFFFF" />
+        android:src="@drawable/divider"
+        android:contentDescription="@string/lifeline" />
     
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
