@@ -54,7 +54,6 @@ import android.widget.SimpleCursorAdapter;
 public class MoleFinderActivity extends Activity {
 	
 	private Button addFolderButton;
-	private Button deleteFolderButton;
 	private String folderName;
 	@SuppressWarnings("unused")
 	private EditText input;
@@ -78,28 +77,16 @@ public class MoleFinderActivity extends Activity {
         setContentView(R.layout.main);
         
         addFolderButton = (Button) findViewById(R.id.add_group);
-        deleteFolderButton = (Button) findViewById(R.id.delete_group);
         list = (ListView) findViewById(R.id.photo_grouping_list);
 
         dbHelper = new dbAdapter(this);
-        //dbHelper.open();
-        //fillData();
         
-		/** OnItemClickListener for the listview. When clicked it gets
-		 * the entryID for the item clicked which is used later in deletion. 
+		/** OnItemClickListener for the listview. When an item is clicked in the
+         * list it moves to the PhotoLayoutView and passes the folder name
+         * that was clicked. 
 		 * */
         list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				entryID = id;
-			}
-		});
-        
-        /** OnItemLongClickListener for the listview. When an item is clicked in the
-         * list it moves to the PhotoLayoutView and passes the folder name
-         * that was clicked. 
-         * @return true*/
-		list.setOnItemLongClickListener(new OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				Cursor folderCursor = ((SimpleCursorAdapter)parent.getAdapter()).getCursor();
 				startManagingCursor(folderCursor);
 				folderCursor.moveToPosition(position);
@@ -109,6 +96,17 @@ public class MoleFinderActivity extends Activity {
 				intent.putExtra("FolderName", currentFolder);
 				folderCursor.close();
 				startActivity(intent);
+			}
+		});
+        
+        /** OnItemLongClickListener for the listview. When clicked it gets
+		 * the entryID for the item clicked which is used later in deletion. 
+         * @return true*/
+		list.setOnItemLongClickListener(new OnItemLongClickListener() {
+			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+				entryID = id;
+				
+				showDialog(DIALOG_DELETE_FOLDER_ID);
 				
 				return true;
 			}
@@ -121,17 +119,6 @@ public class MoleFinderActivity extends Activity {
         addFolderButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
         			showDialog(DIALOG_NEW_FOLDER_ID);
-        	}
-        });
-        
-        /**OnClickListener for the delete folder button. When its pressed
-         * a different dialog is shown which requests for confirmation of
-         * deletion for the specified list item.
-         * @see onCreateDialog
-         */
-        deleteFolderButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View v) {
-        			showDialog(DIALOG_DELETE_FOLDER_ID);
         	}
         });
     }
