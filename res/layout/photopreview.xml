@@ -13,11 +13,11 @@
         android:gravity="center_horizontal"
         android:textStyle="bold" />
 
-    <View
-        android:id="@+id/firstDivider"
+    <ImageView   
+        android:layout_height="25dp"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="#FFFFFF" />
+        android:src="@drawable/divider"
+        android:contentDescription="@string/lifeline" />
 
     <ImageView
         android:id="@+id/image2"
@@ -27,12 +27,12 @@
         android:layout_weight="0.50"
          />
 
-    <View
-        android:id="@+id/secondDivider"
+    <ImageView   
+        android:layout_height="25dp"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="#FFFFFF" />
-
+        android:src="@drawable/divider"
+        android:contentDescription="@string/lifeline" />
+    
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

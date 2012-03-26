@@ -20,12 +20,12 @@
         android:contentDescription="@string/photo_c_desc1"
         android:src="@drawable/ic_launcher" />
 	
-	<View
-        android:id="@+id/firstDivider"
+	<ImageView   
+        android:layout_height="25dp"
         android:layout_width="fill_parent"
-        android:layout_height="2dp"
-        android:background="#FFFFFF" />
-
+        android:src="@drawable/divider"
+        android:contentDescription="@string/lifeline" />
+	
     <TextView
         android:id="@+id/textView2"
         android:layout_width="fill_parent"

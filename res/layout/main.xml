@@ -4,42 +4,53 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/grouping_title"
-        android:textSize="20dp" 
-        android:textStyle="bold"
-		android:textColor="#33AAFF"
-        android:gravity="center_horizontal" />
+        android:layout_height="50dp" >
 
-    <View   
-        android:id="@+id/firstDivider"
-        android:layout_height="2dp"
+    <ImageView
         android:layout_width="fill_parent"
-        android:background="#FFFFFF" />
+        android:layout_height="55dp"
+        android:src="@drawable/lifeline"
+        android:contentDescription="@string/lifeline" />
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
     
+    <TextView
+        android:id="@+id/current_folder"
+        android:layout_width="240dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:text="@string/grouping_title"
+        android:gravity="center_horizontal"
+        android:textColor="@color/LightBlue"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    </RelativeLayout>
+    
+    </FrameLayout>
+
     <ListView
         android:id="@+id/photo_grouping_list"
+        style="@style/ListView"
         android:layout_width="fill_parent"
-        android:layout_height="408dp"
-        android:stackFromBottom="true" >
+        android:layout_height="356dp"
+        android:stackFromBottom="true"
+        android:background="@drawable/caduceus" >
 
     </ListView>
-
-    <View   
-        android:id="@+id/secondDivider"
-        android:layout_height="2dp"
-        android:layout_width="fill_parent"
-        android:background="#FFFFFF" />
     
-    <View   
-        android:id="@+id/thirdDivider"
-        android:layout_height="2dp"
+    <ImageView
         android:layout_width="fill_parent"
-        android:background="#FFFFFF" />
+        android:layout_height="25dp"
+        android:contentDescription="@string/lifeline"
+        android:src="@drawable/divider" />
     
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
@@ -49,14 +60,18 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-		android:text="@string/add_group" />
+		android:text="@string/add_group"
+		android:background="@drawable/mybutton_background"
+		style="@style/ButtonText" />
 
     <Button
         android:id="@+id/delete_group"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
-        android:text="@string/delete_group" />
+        android:text="@string/delete_group"
+        android:background="@drawable/mybutton_background"
+		style="@style/ButtonText" />
     </LinearLayout>
     
 </LinearLayout>

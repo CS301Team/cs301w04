@@ -12,11 +12,15 @@
         android:layout_height="55dp"
         android:src="@drawable/lifeline"
         android:contentDescription="@string/lifeline" />
-
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
     <TextView
         android:id="@+id/current_folder"
-        android:layout_width="fill_parent"
+        android:layout_width="240dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
         android:editable="true"
         android:gravity="center_horizontal"
         android:text="@string/folder_blank"
@@ -24,14 +28,16 @@
         android:textSize="20dp"
         android:textStyle="bold" />
 
+    </RelativeLayout>
+    
     </FrameLayout>
-
     <GridView
         android:id="@+id/gridView1"
         android:layout_width="fill_parent"
-        android:layout_height="363dp"
+        android:layout_height="355dp"
         android:background="@drawable/caduceus"
-        android:numColumns="3" >
+        android:numColumns="3"
+        style="@style/ListView" >
 
     </GridView>
     
@@ -51,21 +57,28 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
-		android:text="@string/new_photo" />
-
+		android:text="@string/new_photo"
+		android:background="@drawable/mybutton_background"
+		style="@style/ButtonText" />
+    
     <Button
         android:id="@+id/delete_photo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
-        android:text="@string/delete_photo" />
+        android:text="@string/delete_photo"
+        android:background="@drawable/mybutton_background"
+        style="@style/ButtonText" />
+    
     <Button
         android:id="@+id/compare_photo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
-        android:text="@string/compare_photo" />
-    
+        android:text="@string/compare_photo"
+        android:background="@drawable/mybutton_background"
+        style="@style/ButtonText" />
+  
     </LinearLayout>
     
 </LinearLayout>

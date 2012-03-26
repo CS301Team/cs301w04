@@ -15,5 +15,28 @@
     <string name="photo_c_desc2">Photo 2 Compare Description</string>
     <string name="compare_photo">Compare</string>
     <string name="lifeline">Lifeline Image</string>
-
+     <style name="ButtonText">
+    <item name="android:layout_width">fill_parent</item>
+    <item name="android:layout_height">wrap_content</item>
+    <item name="android:textColor">@color/White</item>
+    <item name="android:gravity">center</item>
+    <item name="android:layout_margin">3dp</item>
+    <item name="android:textSize">12dp</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:shadowColor">@color/Transparent</item>
+    <item name="android:shadowDx">1</item>
+    <item name="android:shadowDy">1</item>
+    <item name="android:shadowRadius">2</item>
+</style>
+<style name="ListView">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">fill_parent</item>
+        <item name="android:background">@color/Transparent</item>
+        <item name="android:cacheColorHint">@color/Transparent</item>
+        <item name="android:listSelector">@drawable/list_selector</item>
+    </style>
+<color name="White">#FFFFFF</color>
+<color name="Transparent">#000000</color>
+<color name="LightBlue">#33AAFF</color>
+<string name="arrow">arrow</string>
 </resources>

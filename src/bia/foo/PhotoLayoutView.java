@@ -62,6 +62,10 @@ import android.widget.TextView;
  * 
  */
 
+//http://www.dibbus.com/2011/02/gradient-buttons-for-android/
+//http://www.typeoneerror.com/articles/post/android-changing-listview-background-colors
+//http://openiconlibrary.sourceforge.net/
+
 public class PhotoLayoutView extends Activity
 {
 	private static final int CAMERA_PHOTO_REQUEST = 100;
