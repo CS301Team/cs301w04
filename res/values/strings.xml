@@ -37,4 +37,6 @@
 <color name="Transparent">#000000</color>
 <color name="LightBlue">#33AAFF</color>
 <string name="arrow">arrow</string>
+<string name="new_annotation">Add Annotation</string>
+<string name="new_tag">Add Tag</string>
 </resources>

@@ -3,6 +3,8 @@ package bia.foo;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -47,6 +49,8 @@ public class DisplayPhotoView extends Activity {
 	private TextView photoTimeStamp;
 	private TextView photoTag;
 	private TextView photoAnnotate;
+	private Button addAnnotate;
+	private Button addTag;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +62,8 @@ public class DisplayPhotoView extends Activity {
         photoTimeStamp = (TextView) findViewById(R.id.phototimestamp);
         photoTag = (TextView) findViewById(R.id.phototag);
         photoAnnotate = (TextView) findViewById(R.id.photoannotate);
+        addAnnotate = (Button) findViewById(R.id.new_annotation);
+        addTag = (Button) findViewById(R.id.new_tag);
         
         //Sets the image view to the enlarged bitmap of the photo that
         //was clicked.
@@ -79,5 +85,24 @@ public class DisplayPhotoView extends Activity {
         //Set the time stamp at bottom of screen to correct time stamp.
         String annotate = (String) getIntent().getStringExtra("Annotate");
         photoAnnotate.setText(annotate);
+        
+        
+        // Allow user to add annotation to currently displayed photo
+		addAnnotate.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v) 
+			{
+				
+			}
+		});
+        
+		// Allow user to add tag to currently displayed photo
+		addTag.setOnClickListener(new View.OnClickListener()
+		{
+			public void onClick(View v) 
+			{
+				
+			}
+		});
     }
 }
