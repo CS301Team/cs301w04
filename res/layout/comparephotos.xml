@@ -8,6 +8,7 @@
         android:id="@+id/textView1"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/LightBlue"
         android:textSize="20dp"
         android:gravity="center_horizontal"
         android:textStyle="bold" />
@@ -30,6 +31,7 @@
         android:id="@+id/textView2"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:textColor="@color/LightBlue"
         android:textSize="20dp"
         android:gravity="center_horizontal"
         android:textStyle="bold" />
