@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.AlertDialog.Builder;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 
@@ -64,7 +68,7 @@ public class DisplayPhotoView extends Activity {
 	
 	private String Annotation;
 	private String Tag;
-	private String rowId;
+	private long rowId;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,7 +85,14 @@ public class DisplayPhotoView extends Activity {
         
         dbHelper = new dbAdapter(this);
         
-        rowId = (String) getIntent().getStringExtra("rowId");
+        rowId = getIntent().getLongExtra("rowId", 0);
+        
+        Context context = getApplicationContext();
+        CharSequence text = String.valueOf(rowId);
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
         
         //Sets the image view to the enlarged bitmap of the photo that
         //was clicked.
@@ -125,11 +136,26 @@ public class DisplayPhotoView extends Activity {
     }
 	
 	@Override
+	protected void onStart() {
+		super.onStart();
+		
+		dbHelper.open();
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		dbHelper.close();
+	}
+	
+	@Override
     protected Dialog onCreateDialog(int id) {
-		final EditText input = new EditText(DisplayPhotoView.this);
+		//final EditText input = new EditText(DisplayPhotoView.this);
     	switch(id) {
     	case DIALOG_NEW_ANNOTATE_ID:
     		Builder addAnnotateDialog = new AlertDialog.Builder(DisplayPhotoView.this);
+    		final EditText input = new EditText(DisplayPhotoView.this);
     		// do the work to define the addDialog
     		addAnnotateDialog.setView(input);
     		addAnnotateDialog.setTitle("Adding a new folder...")
@@ -157,33 +183,33 @@ public class DisplayPhotoView extends Activity {
     			}
     		});
     		return addAnnotateDialog.create();
-    	case DIALOG_NEW_TAG_ID:
-    		Builder addTagDialog = new AlertDialog.Builder(this);
-    		// do the work to define the addDialog
-    		addTagDialog.setView(input);
-    		addTagDialog.setTitle("Adding a new folder...")
-    		.setMessage("Please specify the folder name to add.")
-    		// Setting Positive "Add folder" Button
-    		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog,int which) {
-    				//actions to complete when clicking Add folder
-    				Tag = input.getText().toString();
-    		
-    				//dbHelper.createFolder(folderName);
-    				
-    				dialog.dismiss();
-    				input.setText("");
-    			}
-    		})
-
-    		// Setting Negative "NO" Button
-    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int which) {
-    				//actions to complete when clicking cancel
-    				dialog.dismiss();
-    			}
-    		});
-    		return addTagDialog.create();
+//    	case DIALOG_NEW_TAG_ID:
+//    		Builder addTagDialog = new AlertDialog.Builder(this);
+//    		// do the work to define the addDialog
+//    		addTagDialog.setView(input);
+//    		addTagDialog.setTitle("Adding a new folder...")
+//    		.setMessage("Please specify the folder name to add.")
+//    		// Setting Positive "Add folder" Button
+//    		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
+//    			public void onClick(DialogInterface dialog,int which) {
+//    				//actions to complete when clicking Add folder
+//    				Tag = input.getText().toString();
+//    		
+//    				//dbHelper.createFolder(folderName);
+//    				
+//    				dialog.dismiss();
+//    				input.setText("");
+//    			}
+//    		})
+//
+//    		// Setting Negative "NO" Button
+//    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//    			public void onClick(DialogInterface dialog, int which) {
+//    				//actions to complete when clicking cancel
+//    				dialog.dismiss();
+//    			}
+//    		});
+//    		return addTagDialog.create();
         }
         return null;
     }
