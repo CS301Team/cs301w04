@@ -338,7 +338,7 @@ public class dbAdapter
      * @param annotate set annotation on photo with given id
      * @param rowId the id of the photo entry
      */
-    public void addAnnotationToPhoto(String annotate, long rowId)
+    public void addAnnotationToPhoto(String annotate, String rowId)
     {
     	mDb.execSQL("UPDATE photos SET annotate = '"+annotate+"' WHERE _id = "+rowId+";");	
     }

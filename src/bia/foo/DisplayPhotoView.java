@@ -1,10 +1,15 @@
 package bia.foo;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -52,6 +57,15 @@ public class DisplayPhotoView extends Activity {
 	private Button addAnnotate;
 	private Button addTag;
 	
+	private dbAdapter dbHelper;
+	
+	static final int DIALOG_NEW_ANNOTATE_ID = 0;
+	static final int DIALOG_NEW_TAG_ID = 1;
+	
+	private String Annotation;
+	private String Tag;
+	private String rowId;
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +78,10 @@ public class DisplayPhotoView extends Activity {
         photoAnnotate = (TextView) findViewById(R.id.photoannotate);
         addAnnotate = (Button) findViewById(R.id.new_annotation);
         addTag = (Button) findViewById(R.id.new_tag);
+        
+        dbHelper = new dbAdapter(this);
+        
+        rowId = (String) getIntent().getStringExtra("rowId");
         
         //Sets the image view to the enlarged bitmap of the photo that
         //was clicked.
@@ -92,7 +110,7 @@ public class DisplayPhotoView extends Activity {
 		{
 			public void onClick(View v) 
 			{
-				
+				showDialog(DIALOG_NEW_ANNOTATE_ID);
 			}
 		});
         
@@ -104,5 +122,69 @@ public class DisplayPhotoView extends Activity {
 				
 			}
 		});
+    }
+	
+	@Override
+    protected Dialog onCreateDialog(int id) {
+		final EditText input = new EditText(DisplayPhotoView.this);
+    	switch(id) {
+    	case DIALOG_NEW_ANNOTATE_ID:
+    		Builder addAnnotateDialog = new AlertDialog.Builder(DisplayPhotoView.this);
+    		// do the work to define the addDialog
+    		addAnnotateDialog.setView(input);
+    		addAnnotateDialog.setTitle("Adding a new folder...")
+    		.setMessage("Please specify the folder name to add.")
+    		// Setting Positive "Add folder" Button
+    		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog,int which) {
+    				//actions to complete when clicking Add folder
+    				Annotation = input.getText().toString();
+    		
+    				dbHelper.addAnnotationToPhoto(Annotation, rowId);
+    				
+    				photoAnnotate.setText(Annotation);
+    				
+    				dialog.dismiss();
+    				input.setText("");
+    			}
+    		})
+
+    		// Setting Negative "NO" Button
+    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int which) {
+    				//actions to complete when clicking cancel
+    				dialog.dismiss();
+    			}
+    		});
+    		return addAnnotateDialog.create();
+    	case DIALOG_NEW_TAG_ID:
+    		Builder addTagDialog = new AlertDialog.Builder(this);
+    		// do the work to define the addDialog
+    		addTagDialog.setView(input);
+    		addTagDialog.setTitle("Adding a new folder...")
+    		.setMessage("Please specify the folder name to add.")
+    		// Setting Positive "Add folder" Button
+    		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog,int which) {
+    				//actions to complete when clicking Add folder
+    				Tag = input.getText().toString();
+    		
+    				//dbHelper.createFolder(folderName);
+    				
+    				dialog.dismiss();
+    				input.setText("");
+    			}
+    		})
+
+    		// Setting Negative "NO" Button
+    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int which) {
+    				//actions to complete when clicking cancel
+    				dialog.dismiss();
+    			}
+    		});
+    		return addTagDialog.create();
+        }
+        return null;
     }
 }

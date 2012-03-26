@@ -158,6 +158,7 @@ public class PhotoLayoutView extends Activity
 				String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
 				
 				Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
+				intent.putExtra("rowId", id);
 				intent.putExtra("BitmapImage", bitmap);
 				intent.putExtra("FolderName", folderName);
 				intent.putExtra("TimeStamp", date);
