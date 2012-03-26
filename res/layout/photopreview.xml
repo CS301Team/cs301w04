@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/phototag"
         android:textColor="@color/LightBlue"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:gravity="center_horizontal"
         android:textStyle="bold" />
     
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/phototimestamp"
         android:textColor="@color/LightBlue"
-        android:textSize="20dp"
+        android:textSize="15dp"
         android:gravity="center_horizontal"
         android:textStyle="bold" />
     
@@ -55,5 +55,39 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/photoannotate" />
+    
+    <ImageView   
+        android:layout_height="25dp"
+        android:layout_width="fill_parent"
+        android:src="@drawable/divider"
+        android:contentDescription="@string/lifeline" />
+    
+    <LinearLayout
+    	xmlns:android="http://schemas.android.com/apk/res/android"
+    	android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal" >
+    	
+	    <Button
+    	    android:id="@+id/new_annotation"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:text="@string/new_annotation"
+        	android:layout_weight="0.5"
+        	android:background="@drawable/mybutton_background"
+        	style="@style/ButtonText"
+        	/>
+	        
+    	<Button
+	        android:id="@+id/new_tag"
+        	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+        	android:text="@string/new_tag"
+        	android:layout_weight="0.5"
+        	android:background="@drawable/mybutton_background"
+       		style="@style/ButtonText"
+        	/>
+    	
+	</LinearLayout>   
 
 </LinearLayout>
