@@ -56,25 +56,16 @@
         android:id="@+id/new_photo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:layout_weight="0.5"
 		android:text="@string/new_photo"
 		android:background="@drawable/mybutton_background"
 		style="@style/ButtonText" />
     
     <Button
-        android:id="@+id/delete_photo"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.3"
-        android:text="@string/delete_photo"
-        android:background="@drawable/mybutton_background"
-        style="@style/ButtonText" />
-    
-    <Button
         android:id="@+id/compare_photo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.3"
+        android:layout_weight="0.5"
         android:text="@string/compare_photo"
         android:background="@drawable/mybutton_background"
         style="@style/ButtonText" />

@@ -71,7 +71,6 @@ public class PhotoLayoutView extends Activity
 	private static final int CAMERA_PHOTO_REQUEST = 100;
 	
 	private Button newPhoto;
-	private Button delButton;
 	private Button compPhoto;
 	private TextView currentFolder;
 	private GridView gridView;
@@ -84,7 +83,7 @@ public class PhotoLayoutView extends Activity
     
     private Cursor entriesCursor;
     
-    public String folderName;
+    private String folderName;
     private String Cdate;
     
     private PhotoHolder pHolder;
@@ -98,7 +97,6 @@ public class PhotoLayoutView extends Activity
 		setContentView(R.layout.photogridview);
 		
 		newPhoto = (Button) findViewById(R.id.new_photo);
-		delButton = (Button) findViewById(R.id.delete_photo);
 		compPhoto = (Button) findViewById(R.id.compare_photo);
         gridView = (GridView) findViewById(R.id.gridView1);
         currentFolder = (TextView) findViewById(R.id.current_folder);
@@ -125,18 +123,6 @@ public class PhotoLayoutView extends Activity
 			}
 		});
 		
-		/** 
-		 * When delButton is clicked a dialog
-		 * appears asking for confirmation. If yes is selected
-		 * then the last selected photo is deleted. If no is selected
-		 * then it closes the dialog.
-		 * @see onCreateDialog
-		 */
-		delButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				showDialog(DIALOG_DELETE_PHOTO_ID);
-    		}
-		});
 		
 		compPhoto.setOnClickListener( new View.OnClickListener() {
 			
@@ -155,7 +141,9 @@ public class PhotoLayoutView extends Activity
 		});
 		
 		/** 
-		 * When item is clicked in the GridView, it's id is recorded.
+		 *  When item is clicked in the GridView it gets the bitmap of the image
+		 *  along with the foldername the item belongs to and the timestamp of the item.
+		 *  An activity to DisplayPhotoView is then called.
 		 */
 		gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -178,48 +166,15 @@ public class PhotoLayoutView extends Activity
 				
 				cursor.close();				
 				startActivity(intent);
-				
-//				entryID = id;
-//				//Bitmap currBitmap;
-//				//for the comparing
-//				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
-//				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-//				currBitmap = drawable.getBitmap();
-//				
-//				Cursor cursor = dbHelper.fetchPhoto(id);
-//				Cdate = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
-//				cursor.close();
 			}
 		});
 		
 		/**
-		 *  When item is long clicked in the GridView it gets the bitmap of the image
-		 *  along with the foldername the item belongs to and the timestamp of the item.
-		 *  An activity to DisplayPhotoView is then called.
+		 * When item is clicked in the GridView, it's id is recorded.
 		 *  @return true
 		 */
 		gridView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
-			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-//				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
-//				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-//				Bitmap bitmap = drawable.getBitmap();
-//				
-//				//Fetch the date of the selected photo
-//				Cursor cursor = dbHelper.fetchPhoto(id);
-//				String date = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
-//				String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
-//				String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
-//				
-//				Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
-//				intent.putExtra("BitmapImage", bitmap);
-//				intent.putExtra("FolderName", folderName);
-//				intent.putExtra("TimeStamp", date);
-//				intent.putExtra("Tag", tag);
-//				intent.putExtra("Annotate", annotate);
-//				
-//				cursor.close();				
-//				startActivity(intent);
-				
+			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {	
 				entryID = id;
 				//Bitmap currBitmap;
 				//for the comparing
