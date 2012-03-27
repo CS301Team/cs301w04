@@ -3,6 +3,8 @@ package bia.foo;
 import bia.foo.PhotoHolder;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 
@@ -14,8 +16,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -85,6 +90,7 @@ public class PhotoLayoutView extends Activity
     
     private String folderName;
     private String Cdate;
+    private String _path;
     
     private PhotoHolder pHolder;
     
@@ -101,6 +107,11 @@ public class PhotoLayoutView extends Activity
         gridView = (GridView) findViewById(R.id.gridView1);
         currentFolder = (TextView) findViewById(R.id.current_folder);
         final Intent intent = new Intent(PhotoLayoutView.this, ComparePhotoView.class);
+        
+        ///
+        ///
+        _path = Environment.getExternalStorageDirectory() + "/images/temp_photo_holder.jpg";
+        ///
         
         pHolder = new PhotoHolder();
         
@@ -222,9 +233,24 @@ public class PhotoLayoutView extends Activity
 	/**
 	 * takeAPhoto launches a new camera activity.
 	 */
-    protected void takeAPhoto() {
-    	Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-    	startActivityForResult(intent, CAMERA_PHOTO_REQUEST);
+    protected void takeAPhoto() {  	
+    	File file = new File( _path );
+    	 try {
+             if( file.exists() == false) {
+                 file.getParentFile().mkdirs();
+                 file.createNewFile();
+             }
+
+         } catch (IOException e) {
+             System.out.println("Could not create file.");
+         }
+
+        Uri outputFileUri = Uri.fromFile( file );
+
+        Intent intentC = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE );
+        intentC.putExtra( MediaStore.EXTRA_OUTPUT, outputFileUri );
+
+        startActivityForResult( intentC, CAMERA_PHOTO_REQUEST );
     }
     
     protected void extractHolder(Intent i, PhotoHolder p){
@@ -257,7 +283,11 @@ public class PhotoLayoutView extends Activity
 				String tag = "";
 				String annotate= "";
 				
-				Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+				
+				 BitmapFactory.Options options = new BitmapFactory.Options();
+				 options.inSampleSize = 4;
+				//Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+				Bitmap bitmap = BitmapFactory.decodeFile( _path, options );
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); 
 				byte[] photo = baos.toByteArray();
