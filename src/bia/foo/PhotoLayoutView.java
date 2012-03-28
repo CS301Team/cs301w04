@@ -138,9 +138,14 @@ public class PhotoLayoutView extends Activity
 		compPhoto.setOnClickListener( new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				comparePhotoIsSet = true;
-				comparePhotoToast();
-					
+				if(comparePhotoIsSet == false){
+					comparePhotoIsSet = true;
+					comparePhotoToast();
+				}
+				else if (comparePhotoIsSet == true){
+					comparePhotoIsSet = false;
+					pHolder.clearPhotoHolder(pHolder);
+				}
 			}
 		});
 		
