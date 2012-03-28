@@ -145,6 +145,7 @@ public class PhotoLayoutView extends Activity
 				else if (comparePhotoIsSet == true){
 					comparePhotoIsSet = false;
 					pHolder.clearPhotoHolder(pHolder);
+					cancelCompareToast();
 				}
 			}
 		});
@@ -334,7 +335,24 @@ public class PhotoLayoutView extends Activity
 		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
 		image.setImageResource(R.drawable.info_notice);
 		TextView text = (TextView) layout.findViewById(R.id.toast_text);
-		text.setText("Please select two photos to compare.");
+		text.setText("Please select two photos to compare.     Press Compare again to cancel.");
+		
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
+	
+	private void cancelCompareToast() {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_layout,
+				(ViewGroup) findViewById(R.id.toast_layout_root));
+		
+		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
+		image.setImageResource(R.drawable.info_notice);
+		TextView text = (TextView) layout.findViewById(R.id.toast_text);
+		text.setText("Photo Comparision Cancelled.");
 		
 		Toast toast = new Toast(getApplicationContext());
 		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
