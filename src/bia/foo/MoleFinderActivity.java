@@ -186,6 +186,7 @@ public class MoleFinderActivity extends Activity {
     		// do the work to define the addDialog
     		addDialog.setView(input);
     		addDialog.setTitle("Adding a new folder...")
+    		.setIcon(R.drawable.dialog_add)
     		.setMessage("Please specify the folder name to add.")
     		// Setting Positive "Add folder" Button
     		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
@@ -214,6 +215,7 @@ public class MoleFinderActivity extends Activity {
 
     		// do the work to define the deleteDialog
     		deleteDialog.setTitle("Confirm Delete...")
+    		.setIcon(R.drawable.dialog_cancel)
     		.setMessage("Are you sure you want to delete this group?")
     		// Setting Positive "Yes" Button
     		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

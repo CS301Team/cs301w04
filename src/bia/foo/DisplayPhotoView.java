@@ -158,10 +158,11 @@ public class DisplayPhotoView extends Activity {
     		final EditText input = new EditText(DisplayPhotoView.this);
     		// do the work to define the addDialog
     		addAnnotateDialog.setView(input);
-    		addAnnotateDialog.setTitle("Adding a new folder...")
-    		.setMessage("Please specify the folder name to add.")
+    		addAnnotateDialog.setTitle("Adding a new annotation...")
+    		.setIcon(R.drawable.dialog_add)
+    		.setMessage("Please specify the annotation to add.")
     		// Setting Positive "Add folder" Button
-    		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
+    		.setPositiveButton("Add Annotation", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog,int which) {
     				//actions to complete when clicking Add folder
     				Annotation = input.getText().toString();

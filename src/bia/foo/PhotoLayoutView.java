@@ -23,13 +23,17 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 
@@ -79,20 +83,18 @@ public class PhotoLayoutView extends Activity
 	private Button compPhoto;
 	private TextView currentFolder;
 	private GridView gridView;
-	//
-	public Bitmap currBitmap;
-	//private Intent intent;
-	
+
 	private long entryID = -1;
 	private dbAdapter dbHelper;
     
     private Cursor entriesCursor;
     
     private String folderName;
-    private String Cdate;
     private String _path;
     
     private PhotoHolder pHolder;
+    
+    boolean comparePhotoIsSet = false;
     
     static final int DIALOG_DELETE_PHOTO_ID = 0;
 	
@@ -116,19 +118,17 @@ public class PhotoLayoutView extends Activity
         pHolder = new PhotoHolder();
         
 		dbHelper = new dbAdapter(this);
-        //dbHelper.open();
         
         folderName = getIntent().getStringExtra("FolderName");
         currentFolder.setText(folderName);
         
-        //fillData();
-		
 		/** 
 		 * When newPhoto button is clicked, call the method
 		 * takeAPhoto
 		 * @see takeAPhoto
 		 */
 		newPhoto.setOnClickListener(new View.OnClickListener() {
+			@Override
 			public void onClick(View v) {
 				takeAPhoto();
 			}
@@ -136,18 +136,11 @@ public class PhotoLayoutView extends Activity
 		
 		
 		compPhoto.setOnClickListener( new View.OnClickListener() {
-			
 			@Override
 			public void onClick(View v) {
-				if (pHolder.isNotSet(pHolder)){
-					pHolder.setPhoto(currBitmap, 1);
-					pHolder.setDate(Cdate, 1);
-				}
-				else if (pHolder.isPartiallySet(pHolder)){
-					pHolder.setPhoto(currBitmap, 2);
-					pHolder.setDate(Cdate, 2);
-					extractHolder(intent,pHolder);
-				}			
+				comparePhotoIsSet = true;
+				comparePhotoToast();
+					
 			}
 		});
 		
@@ -162,22 +155,34 @@ public class PhotoLayoutView extends Activity
 				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
 				Bitmap bitmap = drawable.getBitmap();
 				
-				//Fetch the date of the selected photo
 				Cursor cursor = dbHelper.fetchPhoto(id);
 				String date = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
 				String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
 				String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
-				
-				Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
-				intent.putExtra("rowId", id);
-				intent.putExtra("BitmapImage", bitmap);
-				intent.putExtra("FolderName", folderName);
-				intent.putExtra("TimeStamp", date);
-				intent.putExtra("Tag", tag);
-				intent.putExtra("Annotate", annotate);
-				
-				cursor.close();				
-				startActivity(intent);
+				cursor.close();
+
+				if (comparePhotoIsSet == true) {
+					if (pHolder.isNotSet(pHolder)){
+						pHolder.setPhoto(bitmap, 1);
+						pHolder.setDate(date, 1);
+					}
+					else if (pHolder.isPartiallySet(pHolder)){
+						pHolder.setPhoto(bitmap, 2);
+						pHolder.setDate(date, 2);
+						extractHolder(intent,pHolder);
+					}	
+				} else {
+
+					Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
+					intent.putExtra("rowId", id);
+					intent.putExtra("BitmapImage", bitmap);
+					intent.putExtra("FolderName", folderName);
+					intent.putExtra("TimeStamp", date);
+					intent.putExtra("Tag", tag);
+					intent.putExtra("Annotate", annotate);
+
+					startActivity(intent);
+				}
 			}
 		});
 		
@@ -188,15 +193,6 @@ public class PhotoLayoutView extends Activity
 		gridView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {	
 				entryID = id;
-				//Bitmap currBitmap;
-				//for the comparing
-				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
-				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-				currBitmap = drawable.getBitmap();
-				
-				Cursor cursor = dbHelper.fetchPhoto(id);
-				Cdate = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
-				cursor.close();
 				
 				showDialog(DIALOG_DELETE_PHOTO_ID);
 				
@@ -260,6 +256,7 @@ public class PhotoLayoutView extends Activity
     		i.putExtra("BitmapImage2", p.getPhoto(2));
     		i.putExtra("Date2", p.getDate(2));
     		p.clearPhotoHolder(p);
+    		comparePhotoIsSet = false;
     		startActivity(i);
     	}
     	else{
@@ -323,6 +320,24 @@ public class PhotoLayoutView extends Activity
         gridView.setAdapter(entries);
     }
 
+	
+	private void comparePhotoToast() {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_layout,
+				(ViewGroup) findViewById(R.id.toast_layout_root));
+		
+		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
+		image.setImageResource(R.drawable.info_notice);
+		TextView text = (TextView) layout.findViewById(R.id.toast_text);
+		text.setText("Please select two photos to compare.");
+		
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
+	
 	/** OnCreateDialog method to create the dialogs when called.
      * Uses a switch case mechanism to decide which dialog to display.
      * @param int id (Used for the switch/case)
@@ -336,6 +351,7 @@ public class PhotoLayoutView extends Activity
 		case DIALOG_DELETE_PHOTO_ID:
 			Builder deleteDialog = new AlertDialog.Builder(PhotoLayoutView.this);
 			deleteDialog.setTitle("Confirm Delete...")
+			.setIcon(R.drawable.dialog_cancel)
 			.setMessage("Are you sure you want to delete this photo?")
 			// do the work to define the deleteDialog
 			// Setting Positive "Yes" Button
