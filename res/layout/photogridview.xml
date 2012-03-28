@@ -37,7 +37,8 @@
         android:layout_height="355dp"
         android:background="@drawable/caduceus"
         android:numColumns="3"
-        style="@style/ListView" >
+        style="@style/ListView"
+        android:verticalSpacing="15sp" >
 
     </GridView>
     
