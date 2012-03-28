@@ -286,8 +286,8 @@ public class PhotoLayoutView extends Activity
 				String annotate= "";
 				
 				
-				 BitmapFactory.Options options = new BitmapFactory.Options();
-				 options.inSampleSize = 4;
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inSampleSize = 2;
 				//Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
 				Bitmap bitmap = BitmapFactory.decodeFile( _path, options );
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
