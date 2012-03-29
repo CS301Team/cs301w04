@@ -9,13 +9,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 
@@ -193,12 +199,29 @@ public class MoleFinderActivity extends Activity {
     			public void onClick(DialogInterface dialog,int which) {
     				//actions to complete when clicking Add folder
     				folderName = input.getText().toString();
-    		
-    				dbHelper.createFolder(folderName);
-    				fillData();
     				
-    				dialog.dismiss();
-    				input.setText("");
+    				if(folderName.equals("")){
+    					//do something
+    					input.setText("");
+    					emptyFolderNameToast();
+    				}
+    				else if (folderName.contains("\n")){
+    					//do something
+    					input.setText("");
+    					newlineFolderNameToast();
+    				}
+    				else if (folderName.length() > 50){
+    					//do something
+    					input.setText("");
+    					tooLongFolderNameToast();
+    				}
+    				else{
+    					dbHelper.createFolder(folderName);
+    					fillData();
+    				
+    					dialog.dismiss();
+    					input.setText("");
+    				}
     			}
     		})
 
@@ -243,4 +266,54 @@ public class MoleFinderActivity extends Activity {
         }
         return null;
     }
+    
+    private void emptyFolderNameToast() {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_layout,
+				(ViewGroup) findViewById(R.id.toast_layout_root));
+		
+		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
+		image.setImageResource(R.drawable.info_notice);
+		TextView text = (TextView) layout.findViewById(R.id.toast_text);
+		text.setText("Please insert text for folder name");
+		
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
+    
+    private void newlineFolderNameToast() {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_layout,
+				(ViewGroup) findViewById(R.id.toast_layout_root));
+		
+		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
+		image.setImageResource(R.drawable.info_notice);
+		TextView text = (TextView) layout.findViewById(R.id.toast_text);
+		text.setText("Please make folder name one line.");
+		
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
+    private void tooLongFolderNameToast() {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_layout,
+				(ViewGroup) findViewById(R.id.toast_layout_root));
+		
+		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
+		image.setImageResource(R.drawable.info_notice);
+		TextView text = (TextView) layout.findViewById(R.id.toast_text);
+		text.setText("Please make the folder name shorter.");
+		
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
 }
