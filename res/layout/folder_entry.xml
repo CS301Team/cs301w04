@@ -12,6 +12,7 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:textColor="@color/White"
+        android:layout_toLeftOf="@+id/arrow_image"
         android:textSize="20.5sp"
         android:textStyle="bold" />
 
