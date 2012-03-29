@@ -16,13 +16,16 @@
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
+
     <TextView
         android:id="@+id/current_folder"
-        android:layout_width="240dp"
+        android:layout_width="235dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:editable="true"
+        android:ellipsize="marquee"
         android:gravity="center_horizontal"
+        android:singleLine="true"
         android:text="@string/folder_blank"
         android:textColor="@color/LightBlue"
         android:textSize="20dp"
