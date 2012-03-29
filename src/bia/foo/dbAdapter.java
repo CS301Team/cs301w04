@@ -71,15 +71,10 @@ public class dbAdapter
     private static final String DATABASE_CREATE_FOLDERS =
     	"CREATE TABLE folders (_id integer primary key autoincrement, "
         + "folder TEXT NOT NULL);";
-    
-    private static final String DATABASE_CREATE_TAGS =
-    	"CREATE TABLE tags (_id integer primary key autoincrement, "
-        + "tags TEXT NOT NULL);";
 
     private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE_PHOTOS = "photos";
     private static final String DATABASE_TABLE_FOLDERS = "folders";
-    private static final String DATABASE_TABLE_TAGS = "tags";
     private static final int DATABASE_VERSION = 2;
 
     private final Context mCtx;
@@ -94,7 +89,6 @@ public class dbAdapter
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(DATABASE_CREATE_PHOTOS);
             db.execSQL(DATABASE_CREATE_FOLDERS);
-            db.execSQL(DATABASE_CREATE_TAGS);
         }
 
         @Override
@@ -103,7 +97,6 @@ public class dbAdapter
                     + newVersion + ", which will destroy all old data");
             db.execSQL("DROP TABLE IF EXISTS photos");
             db.execSQL("DROP TABLE IF EXISTS folders");
-            db.execSQL("DROP TABLE IF EXISTS tags");
             onCreate(db);
         }
     }
@@ -175,23 +168,7 @@ public class dbAdapter
         
         return mDb.insert(DATABASE_TABLE_FOLDERS, null, initialValues);
     }
-    
-    /**
-     * Create a new entry using the information provided. If the entry is
-     * successfully created return the new rowId for that entry, otherwise return
-     * a -1 to indicate failure.
-     * 
-     * @param tag the tag
-     * @return rowId or -1 if failed
-     */
-    public long createTag(String tag) {
-        ContentValues initialValues = new ContentValues();
        
-        initialValues.put(TAG, tag);
-        
-        return mDb.insert(DATABASE_TABLE_TAGS, null, initialValues);
-    }
-    
 
     /**
      * Delete the entry with the given rowId
@@ -214,27 +191,6 @@ public class dbAdapter
     }
     
     /**
-     * Delete the entry with the given rowId
-     * 
-     * @param rowId id of entry to delete
-     * @return true if deleted, false otherwise
-     */
-    public boolean deleteTag(long rowId) {
-        return mDb.delete(DATABASE_TABLE_TAGS, ID + "=" + rowId, null) > 0;
-    }
-    
-
-    /**
-     * Return a Cursor over the list of all photos in the photo table
-     * 
-     * @return Cursor over all photos
-     */
-    public Cursor fetchAllPhotos() {
-        return mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE,
-        		FOLDER, TAG, ANNOTATE, PHOTO}, null, null, null, null, null);
-    }
-    
-    /**
      * Return a Cursor over the list of all folders in the table
      * 
      * @return Cursor over all folders
@@ -254,6 +210,19 @@ public class dbAdapter
         		TAG}, null, null, TAG, null, null, null);
     }
     
+    /**
+     * Returns a cursor that points to data with the requested tag
+     * 
+     * @param tag retrieve photos with given tag
+     * @return Cursor that traverses photos with given tag
+     */
+    public Cursor fetchPhotosUnderTag(String tag) {
+    	Cursor mCursor =
+            mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, 
+            		TAG, ANNOTATE, PHOTO}, TAG + "=" + tag, null, null, null, null, null);
+    	
+        return mCursor;
+    }
     
     /**
      * Return a Cursor positioned at the entry that matches the given rowId
@@ -273,42 +242,6 @@ public class dbAdapter
     }
     
     /**
-     * Return a Cursor positioned at the entry that matches the given rowId
-     * 
-     * @param rowId id of entry to retrieve
-     * @return Cursor positioned to matching entry, if found
-     * @throws SQLException if entry could not be found/retrieved
-     */
-    public Cursor fetchFolder(long rowId) throws SQLException {
-        Cursor mCursor = mDb.query(true, DATABASE_TABLE_FOLDERS, new String[] {ID, 
-            		FOLDER}, ID + "=" + rowId, null, null, null, null, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-    }
-    
-    
-    /**
-     * Returns a Cursor that points to data in the requested column
-     * 
-     * @param column name of column to retrieve
-     * @return Cursor that traverses data in given column
-     */
-    public Cursor fetchPhotoColumn(String column) {
-    	String [] selection = new String[1];
-    	selection[0] = column;
-    	
-    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, selection,
-    			null, null, null, null, null);
-        if (mCursor != null) {
-            mCursor.moveToFirst();
-        }
-        return mCursor;
-    }
-    
-    
-    /**
      * Returns a Cursor that points to data with the requested folder name
      * 
      * @param folder retrieve photos with given folder name 
@@ -321,18 +254,6 @@ public class dbAdapter
         return mCursor;
     }
     
-    /**
-     * Returns a Cursor that points to data with the requested tag
-     * 
-     * @param tag retrieve photos with given tag 
-     * @return Cursor that traverses photos with given tag
-     */
-    public Cursor fetchPhotosUnderTag(String tag) {
-    	Cursor mCursor = mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, TAG, ANNOTATE, PHOTO},
-    			TAG + "='" + tag + "'", null, null, null, null, null);
-        
-        return mCursor;
-    }
     
     /**
      * @param annotate set annotation on photo with given id
