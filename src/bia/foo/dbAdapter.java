@@ -249,9 +249,9 @@ public class dbAdapter
      * 
      * @return Cursor over all tags
      */
-    public Cursor fetchAllTags() {
-        return mDb.query(DATABASE_TABLE_TAGS, new String[] {ID, 
-        		TAG}, null, null, null, null, null);
+    public Cursor fetchUniqueTags() throws SQLException {
+    	return mDb.query(DATABASE_TABLE_PHOTOS, new String[] {ID, 
+        		TAG}, null, null, TAG, null, null, null);
     }
     
     
@@ -342,6 +342,14 @@ public class dbAdapter
     {
     	ContentValues args = new ContentValues();
     	args.put(ANNOTATE, annotate);
+    	
+    	mDb.update(DATABASE_TABLE_PHOTOS, args, ID +"="+rowId, null); 	
+    }
+    
+    public void addTagToPhoto(String tag, long rowId)
+    {
+    	ContentValues args = new ContentValues();
+    	args.put(TAG, tag);
     	
     	mDb.update(DATABASE_TABLE_PHOTOS, args, ID +"="+rowId, null); 	
     }

@@ -31,17 +31,19 @@
     </RelativeLayout>
     
     </FrameLayout>
-    <GridView
+      <GridView
         android:id="@+id/gridView1"
         android:layout_width="fill_parent"
         android:layout_height="355dp"
         android:background="@drawable/caduceus"
-        android:numColumns="3"
-        style="@style/ListView"
-        android:verticalSpacing="15sp" >
+        android:numColumns="auto_fit"
+        android:columnWidth="80dp"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        style="@style/ListView" >
 
     </GridView>
-    
+
     <ImageView   
         android:layout_height="25dp"
         android:layout_width="fill_parent"
@@ -57,7 +59,7 @@
         android:id="@+id/new_photo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="0.3"
 		android:text="@string/new_photo"
 		android:background="@drawable/mybutton_background"
 		style="@style/ButtonText" />
@@ -66,8 +68,17 @@
         android:id="@+id/compare_photo"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.5"
+        android:layout_weight="0.3"
         android:text="@string/compare_photo"
+        android:background="@drawable/mybutton_background"
+        style="@style/ButtonText" />
+    
+    <Button
+        android:id="@+id/sort_tag"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.3"
+        android:text="@string/sort_tag"
         android:background="@drawable/mybutton_background"
         style="@style/ButtonText" />
   

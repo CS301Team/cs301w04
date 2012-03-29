@@ -11,7 +11,7 @@
     <string name="folder_blank">No Name</string>
     <string name="photo_c_desc1">Photo 1 Compare Description</string>
     <string name="photo_c_desc2">Photo 2 Compare Description</string>
-    <string name="compare_photo">Compare Photo</string>
+    <string name="compare_photo">Compare</string>
     <string name="lifeline">Lifeline Image</string>
      <style name="ButtonText">
     <item name="android:layout_width">fill_parent</item>
@@ -37,6 +37,7 @@
 <color name="Transparent">#000000</color>
 <color name="LightBlue">#33AAFF</color>
 <string name="arrow">arrow</string>
-<string name="new_annotation">Add Annotation</string>
-<string name="new_tag">Add Tag</string>
+<string name="new_annotation">Modify Annotation</string>
+<string name="new_tag">Modify Tag</string>
+<string name="sort_tag">Sort by Tag</string>
 </resources>

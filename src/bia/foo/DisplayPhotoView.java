@@ -66,8 +66,8 @@ public class DisplayPhotoView extends Activity {
 	static final int DIALOG_NEW_ANNOTATE_ID = 0;
 	static final int DIALOG_NEW_TAG_ID = 1;
 	
-	private String Annotation;
-	private String Tag;
+	//private String annotation;
+	//private String tag;
 	private long rowId;
 	
 	@Override
@@ -130,7 +130,7 @@ public class DisplayPhotoView extends Activity {
 		{
 			public void onClick(View v) 
 			{
-				
+				showDialog(DIALOG_NEW_TAG_ID);
 			}
 		});
     }
@@ -151,11 +151,10 @@ public class DisplayPhotoView extends Activity {
 	
 	@Override
     protected Dialog onCreateDialog(int id) {
-		//final EditText input = new EditText(DisplayPhotoView.this);
+		final EditText input = new EditText(DisplayPhotoView.this);
     	switch(id) {
     	case DIALOG_NEW_ANNOTATE_ID:
     		Builder addAnnotateDialog = new AlertDialog.Builder(DisplayPhotoView.this);
-    		final EditText input = new EditText(DisplayPhotoView.this);
     		// do the work to define the addDialog
     		addAnnotateDialog.setView(input);
     		addAnnotateDialog.setTitle("Adding a new annotation...")
@@ -165,11 +164,11 @@ public class DisplayPhotoView extends Activity {
     		.setPositiveButton("Add Annotation", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog,int which) {
     				//actions to complete when clicking Add folder
-    				Annotation = input.getText().toString();
+    				String annotation = input.getText().toString();
     		
-    				dbHelper.addAnnotationToPhoto(Annotation, rowId);
+    				dbHelper.addAnnotationToPhoto(annotation, rowId);
     				
-    				photoAnnotate.setText(Annotation);
+    				photoAnnotate.setText(annotation);
     				
     				dialog.dismiss();
     				input.setText("");
@@ -184,33 +183,36 @@ public class DisplayPhotoView extends Activity {
     			}
     		});
     		return addAnnotateDialog.create();
-//    	case DIALOG_NEW_TAG_ID:
-//    		Builder addTagDialog = new AlertDialog.Builder(this);
-//    		// do the work to define the addDialog
-//    		addTagDialog.setView(input);
-//    		addTagDialog.setTitle("Adding a new folder...")
-//    		.setMessage("Please specify the folder name to add.")
-//    		// Setting Positive "Add folder" Button
-//    		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
-//    			public void onClick(DialogInterface dialog,int which) {
-//    				//actions to complete when clicking Add folder
-//    				Tag = input.getText().toString();
-//    		
-//    				//dbHelper.createFolder(folderName);
-//    				
-//    				dialog.dismiss();
-//    				input.setText("");
-//    			}
-//    		})
-//
-//    		// Setting Negative "NO" Button
-//    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-//    			public void onClick(DialogInterface dialog, int which) {
-//    				//actions to complete when clicking cancel
-//    				dialog.dismiss();
-//    			}
-//    		});
-//    		return addTagDialog.create();
+    	case DIALOG_NEW_TAG_ID:
+    		Builder addTagDialog = new AlertDialog.Builder(this);
+    		// do the work to define the addDialog
+    		addTagDialog.setView(input);
+    		addTagDialog.setTitle("Adding a new tag...")
+    		.setIcon(R.drawable.dialog_add)
+    		.setMessage("Please specify the tag to add.")
+    		// Setting Positive "Add tag" Button
+    		.setPositiveButton("Add tag", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog,int which) {
+    				//actions to complete when clicking Add folder
+    				String tag = input.getText().toString();
+    		
+    				dbHelper.addTagToPhoto(tag, rowId);
+    				
+    				photoTag.setText(tag);
+    				
+    				dialog.dismiss();
+    				input.setText("");
+    			}
+    		})
+
+    		// Setting Negative "NO" Button
+    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+    			public void onClick(DialogInterface dialog, int which) {
+    				//actions to complete when clicking cancel
+    				dialog.dismiss();
+    			}
+    		});
+    		return addTagDialog.create();
         }
         return null;
     }

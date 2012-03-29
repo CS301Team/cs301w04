@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import android.app.Activity;
@@ -28,10 +29,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +85,7 @@ public class PhotoLayoutView extends Activity
 	
 	private Button newPhoto;
 	private Button compPhoto;
+	private Button sortByTag;
 	private TextView currentFolder;
 	private GridView gridView;
 
@@ -97,6 +102,7 @@ public class PhotoLayoutView extends Activity
     boolean comparePhotoIsSet = false;
     
     static final int DIALOG_DELETE_PHOTO_ID = 0;
+    static final int DIALOG_SORT_TAG_ID = 1;
 	
 	/** onCreate called when the activity is first created. */
 	@Override
@@ -106,6 +112,7 @@ public class PhotoLayoutView extends Activity
 		
 		newPhoto = (Button) findViewById(R.id.new_photo);
 		compPhoto = (Button) findViewById(R.id.compare_photo);
+		sortByTag = (Button) findViewById(R.id.sort_tag);
         gridView = (GridView) findViewById(R.id.gridView1);
         currentFolder = (TextView) findViewById(R.id.current_folder);
         final Intent intent = new Intent(PhotoLayoutView.this, ComparePhotoView.class);
@@ -147,6 +154,13 @@ public class PhotoLayoutView extends Activity
 					pHolder.clearPhotoHolder(pHolder);
 					cancelCompareToast();
 				}
+			}
+		});
+		
+		sortByTag.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				showDialog(DIALOG_SORT_TAG_ID);
 			}
 		});
 		
@@ -288,7 +302,7 @@ public class PhotoLayoutView extends Activity
 				
 				
 				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inSampleSize = 2;
+				options.inSampleSize = 1;
 				//Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
 				Bitmap bitmap = BitmapFactory.decodeFile( _path, options );
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -335,7 +349,7 @@ public class PhotoLayoutView extends Activity
 		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
 		image.setImageResource(R.drawable.info_notice);
 		TextView text = (TextView) layout.findViewById(R.id.toast_text);
-		text.setText("Please select two photos to compare.     Press Compare again to cancel.");
+		text.setText("Please select two photos to compare.\nPress Compare again to cancel.");
 		
 		Toast toast = new Toast(getApplicationContext());
 		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
@@ -399,6 +413,86 @@ public class PhotoLayoutView extends Activity
 				}
 			});
 			return deleteDialog.create();
+		case DIALOG_SORT_TAG_ID:
+			Builder sortDialog = new AlertDialog.Builder(PhotoLayoutView.this);
+			
+			LayoutInflater inflater = LayoutInflater.from(PhotoLayoutView.this);
+			final View layout = inflater.inflate(R.layout.tag_spinner, null);
+			sortDialog.setView(layout);
+			Spinner spinner = (Spinner) layout.findViewById(R.id.spinner);
+			
+			sortDialog.setTitle("Tag selection...")
+			.setMessage("Select tag to view photos from that group.")
+			// do the work to define the sortDialog
+			// Setting Neutral Button
+			.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog,int which) {
+					//actions to complete when clicking neutral
+					dialog.dismiss();
+				}
+			});
+			
+			Cursor tagCursor = dbHelper.fetchUniqueTags();
+			startManagingCursor(tagCursor);
+			
+//			String[] from = new String[] {dbAdapter.TAG };
+//			int[] to = new int [] {android.R.id.text1 };
+//			
+//			SimpleCursorAdapter adapter = 
+//				new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, tagCursor, from, to);
+//			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//			spinner.setAdapter(adapter);
+			
+
+			final String def = "Default Folder";
+			
+			ArrayList <String> temp = new ArrayList<String>();
+			temp.add(def);
+			if (tagCursor != null) {
+				if (tagCursor.moveToFirst()) {
+					do {
+						temp.add(tagCursor.getString(tagCursor.getColumnIndex("tag")));
+					} while (tagCursor.moveToNext());
+				}
+			}
+			
+			ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, temp);
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(adapter);
+			
+			spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
+				@Override
+				public void onItemSelected (AdapterView<?> parent, View v, int position, long id) {
+					String selectedTag = ((TextView)v.findViewById(android.R.id.text1)).getText().toString();
+					if (!selectedTag.equals(def)) {
+						Cursor tagCursor = dbHelper.fetchPhotosUnderTag(selectedTag);
+						
+						startManagingCursor(tagCursor);
+				        
+				        // Create an array to specify the fields we want to display in the list (only DATE)
+				        String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.DATE};
+				        int[] to = new int[] { R.id.image1, R.id.text1 };
+				        
+				        // Create an array adapter and set it to display
+				        SimpleCursorAdapter entries =
+				        		new SimpleCursorAdapter(PhotoLayoutView.this, R.layout.entry_row, tagCursor, from, to);                         
+						
+				        entries.setViewBinder(new PhotoViewBinder());
+				        
+				        gridView.setAdapter(entries);	
+					} else {
+						fillData();
+					}
+				}
+				
+				@Override
+				public void onNothingSelected(AdapterView<?> parent) {
+					
+				}
+			});
+			
+			tagCursor.close();
+			return sortDialog.create();
 		}
 		return null;
 	}
