@@ -38,7 +38,7 @@
         android:background="@drawable/caduceus"
         android:numColumns="auto_fit"
         android:columnWidth="80dp"
-        android:verticalSpacing="10dp"
+        android:verticalSpacing="15dp"
         android:horizontalSpacing="10dp"
         style="@style/ListView" >
 

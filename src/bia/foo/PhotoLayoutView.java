@@ -440,23 +440,26 @@ public class PhotoLayoutView extends Activity
 //			
 //			SimpleCursorAdapter adapter = 
 //				new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, tagCursor, from, to);
-//			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//			spinner.setAdapter(adapter);
-			
+			//			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			//			spinner.setAdapter(adapter);
 
-			final String def = "Default Folder";
-			
-			ArrayList <String> temp = new ArrayList<String>();
-			temp.add(def);
+
+			final String def = "Default Folder Photos";
+
+			ArrayList <String> tagList = new ArrayList<String>();
+			tagList.add(def);
 			if (tagCursor != null) {
 				if (tagCursor.moveToFirst()) {
 					do {
-						temp.add(tagCursor.getString(tagCursor.getColumnIndex("tag")));
+						String tagName = tagCursor.getString(tagCursor.getColumnIndex("tag"));
+						if (!tagName.equals("")) {
+							tagList.add(tagName); 
+						}
 					} while (tagCursor.moveToNext());
 				}
 			}
 			
-			ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, temp);
+			ArrayAdapter<String> adapter =  new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, tagList);
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner.setAdapter(adapter);
 			
