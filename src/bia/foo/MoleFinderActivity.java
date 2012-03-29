@@ -201,23 +201,15 @@ public class MoleFinderActivity extends Activity {
     				folderName = input.getText().toString();
     				
     				if(folderName.equals("")){
-    					//do something
     					Toaster("Please insert text for folder name");
-    					input.setText("");
     				}
     				else if (folderName.contains("\n")){
-    					//do something
     					Toaster("Please make folder name one line.");
-    					input.setText("");
     				}
     				else if (folderName.contains("'")){
-    					//do something
     					Toaster("Please do not include single quotes.");
-    					input.setText("");
     				}
     				else if (folderName.length() > 50){
-    					//do something
-    					input.setText("");
     					Toaster("Please make the folder name shorter.");
     				}
     				else{
@@ -225,8 +217,9 @@ public class MoleFinderActivity extends Activity {
     					fillData();
     				
     					dialog.dismiss();
-    					input.setText("");
+    					//input.setText("");
     				}
+    				input.setText("");
     			}
     		})
 
@@ -234,6 +227,7 @@ public class MoleFinderActivity extends Activity {
     		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
     			public void onClick(DialogInterface dialog, int which) {
     				//actions to complete when clicking cancel
+    				input.setText("");
     				dialog.dismiss();
     			}
     		});
