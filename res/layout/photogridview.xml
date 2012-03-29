@@ -24,7 +24,7 @@
         android:editable="true"
         android:gravity="center_horizontal"
         android:text="@string/folder_blank"
-        android:textColor="#33AAFF"
+        android:textColor="@color/LightBlue"
         android:textSize="20dp"
         android:textStyle="bold" />
 
