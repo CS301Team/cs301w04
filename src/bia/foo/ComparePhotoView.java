@@ -1,7 +1,9 @@
 package bia.foo;
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +30,8 @@ import android.widget.TextView;
 /** 
  * ComparePhotoView
  * This is the view for comparing two photos with each other.
- * this is not implemented yet
+ * It is called by PhotoLayoutView. It takes in two row ids.
+ * It does not return anything.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
@@ -46,32 +49,25 @@ public class ComparePhotoView extends Activity{
 	private TextView photoGroupName2;
 	
 	private dbAdapter dbHelper;
+	private Cursor cursor;
+	private long rowIdOne;
+	private long rowIdTwo;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comparephotos);
-
+        
+        dbHelper = new dbAdapter(this);
+        
+        rowIdOne = getIntent().getLongExtra("RowIdOne", 0);
+        rowIdTwo = getIntent().getLongExtra("RowIdTwo", 0);
         
         imagePreview1 = (ImageView) findViewById(R.id.compareView1);
         photoGroupName1 = (TextView) findViewById(R.id.textView1);
         
         imagePreview2 = (ImageView) findViewById(R.id.compareView2);
         photoGroupName2 = (TextView) findViewById(R.id.textView2);
-        
-        Bitmap bitmap1 = (Bitmap) getIntent().getParcelableExtra("BitmapImage1");
-        imagePreview1.setImageBitmap(bitmap1);
-        
-        //Set the folder name at top of screen to correct folder.
-        String folder1 = (String) getIntent().getStringExtra("Date1");
-        photoGroupName1.setText(folder1);
-        
-        Bitmap bitmap2 = (Bitmap) getIntent().getParcelableExtra("BitmapImage2");
-        imagePreview2.setImageBitmap(bitmap2);
-        
-        //Set the folder name at top of screen to correct folder.
-        String folder2 = (String) getIntent().getStringExtra("Date2");
-        photoGroupName2.setText(folder2);
     }
 	
 	/**
@@ -81,9 +77,29 @@ public class ComparePhotoView extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-
 		dbHelper.open();
-        //fillData();
+		
+		// Call cursor for first photo
+		cursor = dbHelper.fetchPhoto(rowIdOne);
+		//Sets the image view to the enlarged bitmap of the photo that
+        //was clicked.
+		byte[] photoOne = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
+		Bitmap bitmapOne = BitmapFactory.decodeByteArray(photoOne, 0, photoOne.length);
+        imagePreview1.setImageBitmap(bitmapOne);
+        //Set the folder name at top of screen to correct folder.
+        String folderOne = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
+        photoGroupName1.setText(folderOne);
+        
+        // Update cursor for second photo
+        cursor = dbHelper.fetchPhoto(rowIdTwo);
+        //Sets the image view to the enlarged bitmap of the photo that
+        //was clicked.        
+		byte[] photoTwo = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
+		Bitmap bitmapTwo = BitmapFactory.decodeByteArray(photoTwo, 0, photoTwo.length);
+        imagePreview2.setImageBitmap(bitmapTwo);
+        //Set the folder name at middle of screen to correct folder.
+        String folderTwo = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
+        photoGroupName2.setText(folderTwo);		
 	}
 
 	/**
@@ -95,6 +111,6 @@ public class ComparePhotoView extends Activity{
 		super.onStop();
 		
 		dbHelper.close();
-		//cursor.close();
+		cursor.close();
 	}
 }

@@ -134,11 +134,11 @@ public class DisplayPhotoView extends Activity {
         String time = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
         photoTimeStamp.setText(time);
         
-        //Set the time stamp at bottom of screen to correct time stamp.
+        //Set the tag at bottom of screen to correct tag.
         String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
         photoTag.setText(tag);
         
-        //Set the time stamp at bottom of screen to correct time stamp.
+        //Set the annotation at bottom of screen to correct annotation.
         String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
         photoAnnotate.setText(annotate);
 	}
