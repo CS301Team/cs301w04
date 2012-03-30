@@ -2,11 +2,13 @@ package bia.foo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -46,7 +48,7 @@ import android.widget.Toast;
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
  * 
- * Friday, March 16, 2012
+ * Friday, March 30, 2012
  * 
  */
 
@@ -60,12 +62,11 @@ public class DisplayPhotoView extends Activity {
 	private Button addTag;
 	
 	private dbAdapter dbHelper;
+	private Cursor cursor;
 	
 	static final int DIALOG_NEW_ANNOTATE_ID = 0;
 	static final int DIALOG_NEW_TAG_ID = 1;
 	
-	//private String annotation;
-	//private String tag;
 	private long rowId;
 	
 	@Override
@@ -91,28 +92,7 @@ public class DisplayPhotoView extends Activity {
 
         Toast toast = Toast.makeText(context, text, duration);
         toast.show();
-        
-        //Sets the image view to the enlarged bitmap of the photo that
-        //was clicked.
-        Bitmap bitmap = (Bitmap) getIntent().getParcelableExtra("BitmapImage");
-        imagePreview.setImageBitmap(bitmap);
-        
-        //Set the folder name at top of screen to correct folder.
-        String folder = (String) getIntent().getStringExtra("FolderName");
-        photoGroupName.setText(folder);
-        
-        //Set the time stamp at bottom of screen to correct time stamp.
-        String time = (String) getIntent().getStringExtra("TimeStamp");
-        photoTimeStamp.setText(time);
-        
-        //Set the time stamp at bottom of screen to correct time stamp.
-        String tag = (String) getIntent().getStringExtra("Tag");
-        photoTag.setText(tag);
-        
-        //Set the time stamp at bottom of screen to correct time stamp.
-        String annotate = (String) getIntent().getStringExtra("Annotate");
-        photoAnnotate.setText(annotate);
-        
+
         
         // Allow user to add annotation to currently displayed photo
 		addAnnotate.setOnClickListener(new View.OnClickListener()
@@ -138,12 +118,35 @@ public class DisplayPhotoView extends Activity {
 		super.onStart();
 		
 		dbHelper.open();
+		cursor = dbHelper.fetchPhoto(rowId);
+		
+        //Sets the image view to the enlarged bitmap of the photo that
+        //was clicked.        
+		byte[] photo = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
+		Bitmap bitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
+        imagePreview.setImageBitmap(bitmap);
+        
+        //Set the folder name at top of screen to correct folder.
+        String folder = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
+        photoGroupName.setText(folder);
+        
+        //Set the time stamp at bottom of screen to correct time stamp.
+        String time = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+        photoTimeStamp.setText(time);
+        
+        //Set the tag at bottom of screen to correct tag.
+        String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
+        photoTag.setText(tag);
+        
+        //Set the annotation at bottom of screen to correct annotation.
+        String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
+        photoAnnotate.setText(annotate);
 	}
 	
 	@Override
 	protected void onStop() {
 		super.onStop();
-		
+		cursor.close();
 		dbHelper.close();
 	}
 	

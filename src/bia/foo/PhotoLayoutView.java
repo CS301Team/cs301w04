@@ -206,7 +206,8 @@ public class PhotoLayoutView extends Activity
 					}
 				}
 				
-				ArrayAdapter<String> adapter =  new ArrayAdapter<String>(PhotoLayoutView.this, android.R.layout.simple_spinner_item, tagList);
+				ArrayAdapter<String> adapter =  new ArrayAdapter<String>(PhotoLayoutView.this,
+						android.R.layout.simple_spinner_item, tagList);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				spinner.setAdapter(adapter);
 				
@@ -259,8 +260,6 @@ public class PhotoLayoutView extends Activity
 				
 				Cursor cursor = dbHelper.fetchPhoto(id);
 				String date = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
-				String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
-				String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
 				cursor.close();
 
 				if (comparePhotoIsSet == true) {
@@ -271,18 +270,12 @@ public class PhotoLayoutView extends Activity
 					else if (pHolder.isPartiallySet(pHolder)){
 						pHolder.setPhoto(bitmap, 2);
 						pHolder.setDate(date, 2);
-						extractHolder(intent,pHolder);
+						extractHolder(intent, pHolder);
 					}	
 				} else {
 
 					Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
 					intent.putExtra("rowId", id);
-					intent.putExtra("BitmapImage", bitmap);
-					intent.putExtra("FolderName", folderName);
-					intent.putExtra("TimeStamp", date);
-					intent.putExtra("Tag", tag);
-					intent.putExtra("Annotate", annotate);
-
 					startActivity(intent);
 				}
 			}
@@ -353,10 +346,13 @@ public class PhotoLayoutView extends Activity
     
     protected void extractHolder(Intent i, PhotoHolder p){
     	if (p.isFullySet(p)){
+    		
     		i.putExtra("BitmapImage1", p.getPhoto(1));
     		i.putExtra("Date1", p.getDate(1));
     		i.putExtra("BitmapImage2", p.getPhoto(2));
     		i.putExtra("Date2", p.getDate(2));
+    		
+    		
     		p.clearPhotoHolder(p);
     		comparePhotoIsSet = false;
     		startActivity(i);
@@ -381,7 +377,6 @@ public class PhotoLayoutView extends Activity
 				String folder = folderName;
 				String tag = "";
 				String annotate= "";
-				
 				
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 1;
