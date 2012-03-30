@@ -432,6 +432,10 @@ public class PhotoLayoutView extends Activity
 		tagCursor.close();
 		return sortDialog.create();
 	}
+	
+	/** Toaster creates toasts when called and supploed with a string
+     * @param String s (string to be toasted)
+     */
 	private void Toaster(String s) {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.toast_layout,
