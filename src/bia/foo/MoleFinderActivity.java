@@ -57,74 +57,74 @@ import android.widget.Toast;
  */
 
 public class MoleFinderActivity extends Activity {
-	
+
 	private Button addFolderButton;
 	private String folderName;
 	private ListView list;
 
 	private long entryID = -1;
 	private dbAdapter dbHelper;
-	
-	private Cursor entriesCursor;
-    
-    /** OnCreate method for the MoleFinderActivity.
-     * It initializes values for views and sets on 
-     * click listeners for all buttons in the view. 
-     * */
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
-        
-        addFolderButton = (Button) findViewById(R.id.add_group);
-        list = (ListView) findViewById(R.id.photo_grouping_list);
 
-        dbHelper = new dbAdapter(this);
-        
-        final Dialog deleteFolderDialog = deleteFolderDialog(); 
-        final Dialog addFolderDialog = addFolderDialog();
+	private Cursor entriesCursor;
+
+	/** OnCreate method for the MoleFinderActivity.
+	 * It initializes values for views and sets on 
+	 * click listeners for all buttons in the view. 
+	 * */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.main);
+
+		addFolderButton = (Button) findViewById(R.id.add_group);
+		list = (ListView) findViewById(R.id.photo_grouping_list);
+
+		dbHelper = new dbAdapter(this);
+
+		final Dialog deleteFolderDialog = deleteFolderDialog(); 
+		final Dialog addFolderDialog = addFolderDialog();
 		/** OnItemClickListener for the listview. When an item is clicked in the
-         * list it moves to the PhotoLayoutView and passes the folder name
-         * that was clicked. 
+		 * list it moves to the PhotoLayoutView and passes the folder name
+		 * that was clicked. 
 		 * */
-        list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
+		list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
 				Cursor folderCursor = ((SimpleCursorAdapter)parent.getAdapter()).getCursor();
 				startManagingCursor(folderCursor);
 				folderCursor.moveToPosition(position);
 				String currentFolder = folderCursor.getString(1);
-				
+
 				Intent intent = new Intent(v.getContext(), PhotoLayoutView.class);
 				intent.putExtra("FolderName", currentFolder);
 				folderCursor.close();
 				startActivity(intent);
 			}
 		});
-        
-        /** OnItemLongClickListener for the listview. When clicked it gets
+
+		/** OnItemLongClickListener for the listview. When clicked it gets
 		 * the entryID for the item clicked which is used later in deletion. 
-         * @return true*/
+		 * @return true*/
 		list.setOnItemLongClickListener(new OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				entryID = id;
-				
+
 				deleteFolderDialog.show();
-				
+
 				return true;
 			}
 		});
-        
-        /** OnClickListener for the add folder button. When its pressed
-         * a dialog is shown which asks for input of a folder name 
-         * @see onCreateDialog
-         * */
-        addFolderButton.setOnClickListener(new View.OnClickListener() {
-        	public void onClick(View v) {
-        		addFolderDialog.show();
-        	}
-        });
-    }
-    
+
+		/** OnClickListener for the add folder button. When its pressed
+		 * a dialog is shown which asks for input of a folder name 
+		 * @see onCreateDialog
+		 * */
+		addFolderButton.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				addFolderDialog.show();
+			}
+		});
+	}
+
 	/**
 	 * Recreate the database on start to prevent errors
 	 * 
@@ -132,11 +132,11 @@ public class MoleFinderActivity extends Activity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		dbHelper.open();
-        fillData();
+		fillData();
 	}
-	
+
 	/**
 	 * Close the database on stop to prevent errors
 	 * 
@@ -144,42 +144,42 @@ public class MoleFinderActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		
+
 		dbHelper.close();
 		entriesCursor.close();
 	}
-    
-    /** Function call to retrieve all the folder names from the database.
-     * Utilizes the simple cursor adapter to bind it to the listview */
-    private void fillData() {
-        // Get all of the notes from the database and create the item list
-        entriesCursor = dbHelper.fetchAllFolders();
-        startManagingCursor(entriesCursor);
-        
-        // Create an array to specify the fields we want to display in the list
-        String[] from = new String[] { dbAdapter.FOLDER };
-        int[] to = new int[] { R.id.folder_name };
-        
-        // Create an array adapter and set it to display
-        SimpleCursorAdapter adapter =
-        		new SimpleCursorAdapter(this, R.layout.folder_entry, entriesCursor, from, to);
-        
-        list.setAdapter(adapter);
-    }
-    
-    /** OnCreateDialog method to create the dialogs when called.
-     * Uses a switch case mechanism to decide which dialog to display.
-     * @param int id (Used for the switch/case)
-     * When the ID is new folder it builds the dialog with an edit text
-     * to receive input for the folder name. The user can then either select
-     * add folder to create this folder or cancel to return to the main activity.
-     * When the ID is delete folder a confirmation dialog appears asking the
-     * user to make their final decision. They can confirm the delete or cancel.
-     * Both cases return the created dialogs.
-     * @return dialog.create() */
-    
-    private Dialog addFolderDialog() {
-    	final EditText input = new EditText(MoleFinderActivity.this);
+
+	/** Function call to retrieve all the folder names from the database.
+	 * Utilizes the simple cursor adapter to bind it to the listview */
+	private void fillData() {
+		// Get all of the notes from the database and create the item list
+		entriesCursor = dbHelper.fetchAllFolders();
+		startManagingCursor(entriesCursor);
+
+		// Create an array to specify the fields we want to display in the list
+		String[] from = new String[] { dbAdapter.FOLDER };
+		int[] to = new int[] { R.id.folder_name };
+
+		// Create an array adapter and set it to display
+		SimpleCursorAdapter adapter =
+			new SimpleCursorAdapter(this, R.layout.folder_entry, entriesCursor, from, to);
+
+		list.setAdapter(adapter);
+	}
+
+	/** OnCreateDialog method to create the dialogs when called.
+	 * Uses a switch case mechanism to decide which dialog to display.
+	 * @param int id (Used for the switch/case)
+	 * When the ID is new folder it builds the dialog with an edit text
+	 * to receive input for the folder name. The user can then either select
+	 * add folder to create this folder or cancel to return to the main activity.
+	 * When the ID is delete folder a confirmation dialog appears asking the
+	 * user to make their final decision. They can confirm the delete or cancel.
+	 * Both cases return the created dialogs.
+	 * @return dialog.create() */
+
+	private Dialog addFolderDialog() {
+		final EditText input = new EditText(MoleFinderActivity.this);
 
 		Builder addDialog = new AlertDialog.Builder(MoleFinderActivity.this);
 		// do the work to define the addDialog
@@ -192,7 +192,7 @@ public class MoleFinderActivity extends Activity {
 			public void onClick(DialogInterface dialog,int which) {
 				//actions to complete when clicking Add folder
 				folderName = input.getText().toString();
-				
+
 				if(folderName.equals("")){
 					toaster("Please insert text for folder name.");
 				}
@@ -220,12 +220,12 @@ public class MoleFinderActivity extends Activity {
 				input.setText("");
 			}
 		});
-		
+
 		return addDialog.create();	
-    }
-    
-    private Dialog deleteFolderDialog() {
-    	Builder deleteDialog = new AlertDialog.Builder(this);
+	}
+
+	private Dialog deleteFolderDialog() {
+		Builder deleteDialog = new AlertDialog.Builder(this);
 
 		// do the work to define the deleteDialog
 		deleteDialog.setTitle("Confirm Delete...");
@@ -245,25 +245,25 @@ public class MoleFinderActivity extends Activity {
 			}
 		});
 
-        // Setting Negative "NO" Button
-        	deleteDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog, int which) {
-        		//actions to complete when clicking no
-        	}
-        });
-    	return deleteDialog.create(); 	
-    }
-    
-    private void toaster(String s) {
+		// Setting Negative "NO" Button
+		deleteDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				//actions to complete when clicking no
+			}
+		});
+		return deleteDialog.create(); 	
+	}
+
+	private void toaster(String s) {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.toast_layout,
 				(ViewGroup) findViewById(R.id.toast_layout_root));
-		
+
 		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
 		image.setImageResource(R.drawable.info_notice);
 		TextView text = (TextView) layout.findViewById(R.id.toast_text);
 		text.setText(s);
-		
+
 		Toast toast = new Toast(getApplicationContext());
 		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
 		toast.setDuration(Toast.LENGTH_SHORT);

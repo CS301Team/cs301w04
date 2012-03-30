@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
@@ -60,36 +58,36 @@ public class DisplayPhotoView extends Activity {
 	private TextView photoAnnotate;
 	private Button addAnnotate;
 	private Button addTag;
-	
+
 	private dbAdapter dbHelper;
 	private Cursor cursor;
-	
+
 	static final int DIALOG_NEW_ANNOTATE_ID = 0;
 	static final int DIALOG_NEW_TAG_ID = 1;
-	
+
 	private long rowId;
-	
+
 	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.photopreview); 
-        
-        imagePreview = (ImageView) findViewById(R.id.image2);
-        photoGroupName = (TextView) findViewById(R.id.photogroupname);
-        photoTimeStamp = (TextView) findViewById(R.id.phototimestamp);
-        photoTag = (TextView) findViewById(R.id.phototag);
-        photoAnnotate = (TextView) findViewById(R.id.photoannotate);
-        addAnnotate = (Button) findViewById(R.id.new_annotation);
-        addTag = (Button) findViewById(R.id.new_tag);
-        
-        dbHelper = new dbAdapter(this);
-        
-        rowId = getIntent().getLongExtra("rowId", 0);
-        
-        final Dialog addAnnotationDialog = addAnnotateDialog(); 
-        final Dialog addTagDialog = addTagDialog();
-        
-        // Allow user to add annotation to currently displayed photo
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.photopreview); 
+
+		imagePreview = (ImageView) findViewById(R.id.image2);
+		photoGroupName = (TextView) findViewById(R.id.photogroupname);
+		photoTimeStamp = (TextView) findViewById(R.id.phototimestamp);
+		photoTag = (TextView) findViewById(R.id.phototag);
+		photoAnnotate = (TextView) findViewById(R.id.photoannotate);
+		addAnnotate = (Button) findViewById(R.id.new_annotation);
+		addTag = (Button) findViewById(R.id.new_tag);
+
+		dbHelper = new dbAdapter(this);
+
+		rowId = getIntent().getLongExtra("rowId", 0);
+
+		final Dialog addAnnotationDialog = addAnnotateDialog(); 
+		final Dialog addTagDialog = addTagDialog();
+
+		// Allow user to add annotation to currently displayed photo
 		addAnnotate.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v) 
@@ -97,7 +95,7 @@ public class DisplayPhotoView extends Activity {
 				addAnnotationDialog.show();
 			}
 		});
-        
+
 		// Allow user to add tag to currently displayed photo
 		addTag.setOnClickListener(new View.OnClickListener()
 		{
@@ -106,70 +104,70 @@ public class DisplayPhotoView extends Activity {
 				addTagDialog.show();
 			}
 		});
-    }
-	
+	}
+
 	@Override
 	protected void onStart() {
 		super.onStart();
-		
+
 		dbHelper.open();
 		cursor = dbHelper.fetchPhoto(rowId);
-		
-        //Sets the image view to the enlarged bitmap of the photo that
-        //was clicked.        
+
+		//Sets the image view to the enlarged bitmap of the photo that
+		//was clicked.        
 		byte[] photo = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
 		Bitmap bitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
-        imagePreview.setImageBitmap(bitmap);
-        
-        //Set the folder name at top of screen to correct folder.
-        String folder = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
-        photoGroupName.setText(folder);
-        
-        //Set the time stamp at bottom of screen to correct time stamp.
-        String time = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
-        photoTimeStamp.setText(time);
-        
-        //Set the tag at bottom of screen to correct tag.
-        String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
-        photoTag.setText(tag);
-        
-        //Set the annotation at bottom of screen to correct annotation.
-        String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
-        photoAnnotate.setText(annotate);
+		imagePreview.setImageBitmap(bitmap);
+
+		//Set the folder name at top of screen to correct folder.
+		String folder = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
+		photoGroupName.setText(folder);
+
+		//Set the time stamp at bottom of screen to correct time stamp.
+		String time = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+		photoTimeStamp.setText(time);
+
+		//Set the tag at bottom of screen to correct tag.
+		String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
+		photoTag.setText(tag);
+
+		//Set the annotation at bottom of screen to correct annotation.
+		String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
+		photoAnnotate.setText(annotate);
 	}
-	
+
 	@Override
 	protected void onPause() {
 		super.onPause();
 		cursor.close();
 		dbHelper.close();
 	}
-	
+
 	private Dialog addAnnotateDialog() {
 		final EditText input = new EditText(DisplayPhotoView.this);
 		Builder addAnnotateDialog = new AlertDialog.Builder(DisplayPhotoView.this);
 		// do the work to define the addDialog
 		addAnnotateDialog.setView(input);
-		addAnnotateDialog.setTitle("Adding a new annotation...")
-		.setIcon(R.drawable.dialog_add)
-		.setMessage("Please specify the annotation to add.")
+		addAnnotateDialog.setTitle("Adding a new annotation...");
+		addAnnotateDialog.setIcon(R.drawable.dialog_add);
+		addAnnotateDialog.setMessage("Please specify the annotation to add.");
 		// Setting Positive "Add folder" Button
-		.setPositiveButton("Add Annotation", new DialogInterface.OnClickListener() {
+		addAnnotateDialog.setPositiveButton("Add Annotation", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog,int which) {
 				//actions to complete when clicking Add folder
 				String annotation = input.getText().toString();
-		
+
 				dbHelper.addAnnotationToPhoto(annotation, rowId);
-				
+
 				photoAnnotate.setText(annotation);
-				
+
 				dialog.dismiss();
 				input.setText("");
 			}
-		})
+		});
 
 		// Setting Negative "NO" Button
-		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		addAnnotateDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				//actions to complete when clicking cancel
 				dialog.dismiss();
@@ -177,32 +175,32 @@ public class DisplayPhotoView extends Activity {
 		});
 		return addAnnotateDialog.create();
 	}
-	
+
 	private Dialog addTagDialog() {
 		final EditText input = new EditText(DisplayPhotoView.this);
 		Builder addTagDialog = new AlertDialog.Builder(this);
 		// do the work to define the addDialog
 		addTagDialog.setView(input);
-		addTagDialog.setTitle("Adding a new tag...")
-		.setIcon(R.drawable.dialog_add)
-		.setMessage("Please specify the tag to add.")
+		addTagDialog.setTitle("Adding a new tag...");
+		addTagDialog.setIcon(R.drawable.dialog_add);
+		addTagDialog.setMessage("Please specify the tag to add.");
 		// Setting Positive "Add tag" Button
-		.setPositiveButton("Add tag", new DialogInterface.OnClickListener() {
+		addTagDialog.setPositiveButton("Add tag", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog,int which) {
 				//actions to complete when clicking Add folder
 				String tag = input.getText().toString();
-		
+
 				dbHelper.addTagToPhoto(tag, rowId);
-				
+
 				photoTag.setText(tag);
-				
+
 				dialog.dismiss();
 				input.setText("");
 			}
-		})
+		});
 
 		// Setting Negative "NO" Button
-		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+		addTagDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				//actions to complete when clicking cancel
 				dialog.dismiss();
