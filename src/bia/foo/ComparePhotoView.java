@@ -83,7 +83,7 @@ public class ComparePhotoView extends Activity{
 		super.onStart();
 
 		dbHelper.open();
-        fillData();
+        //fillData();
 	}
 
 	/**
@@ -95,6 +95,6 @@ public class ComparePhotoView extends Activity{
 		super.onStop();
 		
 		dbHelper.close();
-		cursor.close();
+		//cursor.close();
 	}
 }
