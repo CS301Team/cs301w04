@@ -1,10 +1,8 @@
 package bia.foo;
 
-import android.graphics.Bitmap;
-
 /** 
  * Photo and Date Model
- * This holds the photo and string data for the photo layout view
+ * This holds the rowid for the photo layout view
  * 
  * 
  * @author Andrea Budac: abudac
@@ -17,14 +15,12 @@ import android.graphics.Bitmap;
 
 public class PhotoHolder {
 
-	private Bitmap Photo1 = null;
-	private String photoDate1 = null;
-	private Bitmap Photo2 = null;
-	private String photoDate2 = null;
+	private long firstPhotoID = -1;
+	private long secondPhotoID = -1;
 
 	//checks if the photo holder is fully set for a photo comparision
 	public boolean isFullySet(PhotoHolder holder){
-		if(Photo1 != null && photoDate1 != null && Photo2 != null && photoDate2 != null){
+		if(firstPhotoID != -1 && secondPhotoID != -1){
 			return true;
 		}
 		else{
@@ -34,7 +30,7 @@ public class PhotoHolder {
 	
 	//checks if the photo holder is partially set for a single photo view
 	public boolean isPartiallySet(PhotoHolder holder){
-		if(Photo1 != null && photoDate1 != null && Photo2 == null && photoDate2 == null){
+		if(firstPhotoID != -1  && secondPhotoID == -1){
 			return true;
 		}
 		else{
@@ -44,7 +40,7 @@ public class PhotoHolder {
 	
 	//checks if the photo holder is partially set for a single photo view
 	public boolean isNotSet(PhotoHolder holder){
-		if(Photo1 == null && photoDate1 == null && Photo2 == null && photoDate2 == null){
+		if(firstPhotoID == -1 && secondPhotoID == -1){
 			return true;
 		}
 		else{
@@ -54,62 +50,34 @@ public class PhotoHolder {
 	
 	//clears the set photos
 	public void clearPhotoHolder(PhotoHolder holder){
-		Photo1 = null;
-		photoDate1 = null;
-		Photo2 = null;
-		photoDate2 = null;
+		firstPhotoID = -1;
+		secondPhotoID = -1;
+
 	}
 	
-	//gets bitmap from photo holder either bitmap 1 or 2
-	public Bitmap getPhoto(int photoid){
-		if(photoid == 1){
-			return Photo1;
+	//gets rowID from photo holder
+	public long getPhotoID(int photoID){
+		if(photoID == 1){
+			return firstPhotoID;
 		}
-		else if (photoid == 2){
-			return Photo2;
+		else if (photoID == 2){
+			return secondPhotoID;
 		}
 		else{
-			return null;
+			return -1;
 		}
 	}
 	
-	//gets string from photo holder either bitmap 1 or 2
-	public String getDate(int dateid){
-		if(dateid == 1){
-			return photoDate1;
-		}
-		else if (dateid == 2){
-			return photoDate2;
-		}
-		else{
-			return null;
-		}
-	}
 	
-	public void setPhoto(Bitmap Bmap, int photoid){
-		if(photoid == 1){
-			Photo1 = Bmap;
+	public void setPhoto(long rowID, int photoID){
+		if(photoID == 1){
+			firstPhotoID = rowID;
 		}
-		else if (photoid == 2){
-			Photo2 = Bmap;
+		else if (photoID == 2){
+			secondPhotoID = rowID;
 		}
 		else{
 			//error
 		}
-	}
-	
-	//gets string from photo holder either bitmap 1 or 2
-	public void setDate(String date, int dateid){
-		if(dateid == 1){
-			photoDate1 = date;
-		}
-		else if (dateid == 2){
-			photoDate2 = date;
-		}
-		else{
-			//error
-		}
-	}
-	
-	
+	}	
 }
