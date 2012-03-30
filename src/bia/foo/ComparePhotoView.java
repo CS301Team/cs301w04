@@ -45,11 +45,13 @@ public class ComparePhotoView extends Activity{
 	private ImageView imagePreview2;
 	private TextView photoGroupName2;
 	
+	private dbAdapter dbHelper;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comparephotos);
+
         
         imagePreview1 = (ImageView) findViewById(R.id.compareView1);
         photoGroupName1 = (TextView) findViewById(R.id.textView1);
@@ -71,4 +73,28 @@ public class ComparePhotoView extends Activity{
         String folder2 = (String) getIntent().getStringExtra("Date2");
         photoGroupName2.setText(folder2);
     }
+	
+	/**
+	 * Recreate the database on start to prevent errors
+	 * 
+	 */
+	@Override
+	protected void onStart() {
+		super.onStart();
+
+		dbHelper.open();
+        fillData();
+	}
+
+	/**
+	 * Close the database on stop to prevent errors
+	 * 
+	 */
+	@Override
+	protected void onStop() {
+		super.onStop();
+		
+		dbHelper.close();
+		cursor.close();
+	}
 }
