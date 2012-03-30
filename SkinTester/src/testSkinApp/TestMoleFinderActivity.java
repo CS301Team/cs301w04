@@ -35,23 +35,15 @@ public class TestMoleFinderActivity extends ActivityInstrumentationTestCase2 {
 		solo.clickOnButton("Add Folder");
 		solo.enterText(0, "Test Folder");
 		solo.clickOnButton(0);
-		solo.clickInList(0);
+		solo.clickInList(2, 0);
 		solo.assertCurrentActivity("Error: Photo Layout not Open", "PhotoLayoutView" );
 		solo.goBack();
-		solo.clickLongInList(0);
+		solo.clickLongInList(2,0);
 		solo.clickOnButton(0);
 		Assert.assertFalse(solo.searchText("Test Folder"));
-	}
-	
-	public void testAddDeleteFolder(){
-		solo.clickOnButton("Add Folder");
-		solo.enterText(0, "Test Folder");
-		solo.clickOnButton(0);
-		Assert.assertTrue(solo.searchText("Test Folder"));
-		solo.clickLongInList(0);
-		solo.clickOnButton(0);
-		Assert.assertFalse(solo.searchText("Test Folder"));
-
+		solo.clickInList(1);
+		solo.assertCurrentActivity("Error: Photo Layout not Open", "PhotoLayoutView");
+		
 	}
 	
 	@Override
