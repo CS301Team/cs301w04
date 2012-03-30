@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -164,7 +163,6 @@ public class MoleFinderActivity extends Activity {
         // Create an array adapter and set it to display
         SimpleCursorAdapter adapter =
         		new SimpleCursorAdapter(this, R.layout.folder_entry, entriesCursor, from, to);
-        Log.w("NumRows", adapter.getCount() + "");
         
         list.setAdapter(adapter);
     }
