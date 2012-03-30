@@ -1,4 +1,4 @@
-package bia.foo;
+package skinConditionsTracker.Model;
 
 /** 
  * Photo and Date Model

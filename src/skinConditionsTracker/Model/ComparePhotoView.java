@@ -1,4 +1,4 @@
-package bia.foo;
+package skinConditionsTracker.Model;
 
 import android.app.Activity;
 import android.database.Cursor;
@@ -73,8 +73,8 @@ public class ComparePhotoView extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
-		dbAdapter dbHelper;
-		dbHelper = new dbAdapter(this);
+		DatabaseAdapter dbHelper;
+		dbHelper = new DatabaseAdapter(this);
 		dbHelper.open();
 		
 		Cursor cursor;
@@ -82,12 +82,12 @@ public class ComparePhotoView extends Activity{
 		cursor = dbHelper.fetchPhoto(rowIdOne);
 		//Sets the image view to the enlarged bitmap of the photo that
         //was clicked.
-		byte[] photoOne = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
+		byte[] photoOne = cursor.getBlob(cursor.getColumnIndex(DatabaseAdapter.PHOTO));
 		Bitmap bitmapOne = BitmapFactory.decodeByteArray(photoOne, 0, photoOne.length);
 		bitmapOne.setDensity(10);
         imagePreview1.setImageBitmap(bitmapOne);
         //Set the folder name at top of screen to correct folder.
-        String dateOne = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+        String dateOne = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.DATE));
         photoGroupName1.setText(dateOne);
         
         cursor.close();
@@ -96,12 +96,12 @@ public class ComparePhotoView extends Activity{
         cursor = dbHelper.fetchPhoto(rowIdTwo);
         //Sets the image view to the enlarged bitmap of the photo that
         //was clicked.        
-		byte[] photoTwo = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
+		byte[] photoTwo = cursor.getBlob(cursor.getColumnIndex(DatabaseAdapter.PHOTO));
 		Bitmap bitmapTwo = BitmapFactory.decodeByteArray(photoTwo, 0, photoTwo.length);
 		bitmapTwo.setDensity(10);
         imagePreview2.setImageBitmap(bitmapTwo);
         //Set the folder name at middle of screen to correct folder.
-        String dateTwo = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+        String dateTwo = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.DATE));
         photoGroupName2.setText(dateTwo);
         
         cursor.close();

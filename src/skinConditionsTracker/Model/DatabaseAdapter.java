@@ -1,4 +1,4 @@
-package bia.foo;
+package skinConditionsTracker.Model;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -46,7 +46,7 @@ import android.util.Log;
  * 
  */
 
-public class dbAdapter
+public class DatabaseAdapter
 {
 	public static final String ID = "_id";
 	public static final String DATE = "date";
@@ -107,7 +107,7 @@ public class dbAdapter
      * 
      * @param ctx the Context within which to work
      */
-    public dbAdapter(Context ctx) {
+    public DatabaseAdapter(Context ctx) {
         this.mCtx = ctx;
     }
 
@@ -120,7 +120,7 @@ public class dbAdapter
      *         initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
-    public dbAdapter open() throws SQLException {
+    public DatabaseAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
         return this;

@@ -1,4 +1,4 @@
-package bia.foo;
+package skinConditionsTracker.Model;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -63,7 +63,7 @@ public class MoleFinderActivity extends Activity {
 	private ListView list;
 
 	private long entryID = -1;
-	private dbAdapter dbHelper;
+	private DatabaseAdapter dbHelper;
 
 	private Cursor entriesCursor;
 
@@ -79,7 +79,7 @@ public class MoleFinderActivity extends Activity {
 		addFolderButton = (Button) findViewById(R.id.add_group);
 		list = (ListView) findViewById(R.id.photo_grouping_list);
 
-		dbHelper = new dbAdapter(this);
+		dbHelper = new DatabaseAdapter(this);
 
 		final Dialog deleteFolderDialog = deleteFolderDialog(); 
 		final Dialog addFolderDialog = addFolderDialog();
@@ -157,7 +157,7 @@ public class MoleFinderActivity extends Activity {
 		startManagingCursor(entriesCursor);
 
 		// Create an array to specify the fields we want to display in the list
-		String[] from = new String[] { dbAdapter.FOLDER };
+		String[] from = new String[] { DatabaseAdapter.FOLDER };
 		int[] to = new int[] { R.id.folder_name };
 
 		// Create an array adapter and set it to display

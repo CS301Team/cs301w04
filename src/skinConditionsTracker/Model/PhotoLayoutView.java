@@ -1,4 +1,4 @@
-package bia.foo;
+package skinConditionsTracker.Model;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -86,7 +86,7 @@ public class PhotoLayoutView extends Activity
 	private GridView gridView;
 
 	private long entryID = -1;
-	private dbAdapter dbHelper;
+	private DatabaseAdapter dbHelper;
 
 	private Cursor entriesCursor;
 
@@ -121,7 +121,7 @@ public class PhotoLayoutView extends Activity
 
 		pHolder = new PhotoHolder();
 
-		dbHelper = new dbAdapter(this);
+		dbHelper = new DatabaseAdapter(this);
 
 		folderName = getIntent().getStringExtra("FolderName");
 		currentFolder.setText(folderName);
@@ -306,7 +306,7 @@ public class PhotoLayoutView extends Activity
 		startManagingCursor(entriesCursor);
 
 		// Create an array to specify the fields we want to display in the list (only DATE)
-		String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.DATE};
+		String[] from = new String[] { DatabaseAdapter.PHOTO, DatabaseAdapter.DATE};
 		int[] to = new int[] { R.id.image1, R.id.text1 };
 
 		// Create an array adapter and set it to display
@@ -408,7 +408,7 @@ public class PhotoLayoutView extends Activity
 					startManagingCursor(tagCursor);
 
 					// Create an array to specify the fields we want to display in the list (only DATE)
-					String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.DATE};
+					String[] from = new String[] { DatabaseAdapter.PHOTO, DatabaseAdapter.DATE};
 					int[] to = new int[] { R.id.image1, R.id.text1 };
 
 					// Create an array adapter and set it to display

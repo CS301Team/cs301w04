@@ -1,4 +1,4 @@
-package bia.foo;
+package skinConditionsTracker.Model;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -59,7 +59,7 @@ public class DisplayPhotoView extends Activity {
 	private Button addAnnotate;
 	private Button addTag;
 
-	private dbAdapter dbHelper;
+	private DatabaseAdapter dbHelper;
 	private Cursor cursor;
 
 	static final int DIALOG_NEW_ANNOTATE_ID = 0;
@@ -80,7 +80,7 @@ public class DisplayPhotoView extends Activity {
 		addAnnotate = (Button) findViewById(R.id.new_annotation);
 		addTag = (Button) findViewById(R.id.new_tag);
 
-		dbHelper = new dbAdapter(this);
+		dbHelper = new DatabaseAdapter(this);
 
 		rowId = getIntent().getLongExtra("rowId", 0);
 
@@ -115,24 +115,24 @@ public class DisplayPhotoView extends Activity {
 
 		//Sets the image view to the enlarged bitmap of the photo that
 		//was clicked.        
-		byte[] photo = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
+		byte[] photo = cursor.getBlob(cursor.getColumnIndex(DatabaseAdapter.PHOTO));
 		Bitmap bitmap = BitmapFactory.decodeByteArray(photo, 0, photo.length);
 		imagePreview.setImageBitmap(bitmap);
 
 		//Set the folder name at top of screen to correct folder.
-		String folder = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
+		String folder = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.FOLDER));
 		photoGroupName.setText(folder);
 
 		//Set the time stamp at bottom of screen to correct time stamp.
-		String time = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+		String time = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.DATE));
 		photoTimeStamp.setText(time);
 
 		//Set the tag at bottom of screen to correct tag.
-		String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
+		String tag = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.TAG));
 		photoTag.setText(tag);
 
 		//Set the annotation at bottom of screen to correct annotation.
-		String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
+		String annotate = cursor.getString(cursor.getColumnIndex(DatabaseAdapter.ANNOTATE));
 		photoAnnotate.setText(annotate);
 	}
 
