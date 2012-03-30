@@ -61,13 +61,8 @@ public class MoleFinderActivity extends Activity {
 	
 	private Button addFolderButton;
 	private String folderName;
-	@SuppressWarnings("unused")
-	private EditText input;
 	private ListView list;
 
-	static final int DIALOG_NEW_FOLDER_ID = 0;
-	static final int DIALOG_DELETE_FOLDER_ID = 1;
-	
 	private long entryID = -1;
 	private dbAdapter dbHelper;
 	
@@ -87,6 +82,8 @@ public class MoleFinderActivity extends Activity {
 
         dbHelper = new dbAdapter(this);
         
+        final Dialog deleteFolder = deleteFolderDialog(); 
+        final Dialog addFolder = addFolderDialog();
 		/** OnItemClickListener for the listview. When an item is clicked in the
          * list it moves to the PhotoLayoutView and passes the folder name
          * that was clicked. 
@@ -112,7 +109,7 @@ public class MoleFinderActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				entryID = id;
 				
-				showDialog(DIALOG_DELETE_FOLDER_ID);
+				deleteFolder.show();
 				
 				return true;
 			}
@@ -124,7 +121,7 @@ public class MoleFinderActivity extends Activity {
          * */
         addFolderButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        			showDialog(DIALOG_NEW_FOLDER_ID);
+        		addFolder.show();
         	}
         });
     }
@@ -182,90 +179,84 @@ public class MoleFinderActivity extends Activity {
      * user to make their final decision. They can confirm the delete or cancel.
      * Both cases return the created dialogs.
      * @return dialog.create() */
-    @Override
-    protected Dialog onCreateDialog(int id) {
-    	switch(id) {
-    	case DIALOG_NEW_FOLDER_ID:
-    		final EditText input = new EditText(MoleFinderActivity.this);
+    
+    private Dialog addFolderDialog() {
+    	final EditText input = new EditText(MoleFinderActivity.this);
 
-    		Builder addDialog = new AlertDialog.Builder(MoleFinderActivity.this);
-    		// do the work to define the addDialog
-    		addDialog.setView(input);
-    		addDialog.setTitle("Adding a new folder...")
-    		.setIcon(R.drawable.dialog_add)
-    		.setMessage("Please specify the folder name to add.")
-    		// Setting Positive "Add folder" Button
-    		.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog,int which) {
-    				//actions to complete when clicking Add folder
-    				folderName = input.getText().toString();
-    				
-    				if(folderName.equals("")){
-    					Toaster("Please insert text for folder name");
-    				}
-    				else if (folderName.contains("\n")){
-    					Toaster("Please make folder name one line.");
-    				}
-    				else if (folderName.contains("'")){
-    					Toaster("Please do not include single quotes.");
-    				}
-    				else if (folderName.length() > 50){
-    					Toaster("Please make the folder name shorter.");
-    				}
-    				else{
-    					dbHelper.createFolder(folderName);
-    					fillData();
-    				
-    					dialog.dismiss();
-    					//input.setText("");
-    				}
-    				input.setText("");
-    			}
-    		})
+		Builder addDialog = new AlertDialog.Builder(MoleFinderActivity.this);
+		// do the work to define the addDialog
+		addDialog.setView(input);
+		addDialog.setTitle("Adding a new folder...");
+		addDialog.setIcon(R.drawable.dialog_add);
+		addDialog.setMessage("Please specify the folder name to add.");
+		// Setting Positive "Add folder" Button
+		addDialog.setPositiveButton("Add folder", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int which) {
+				//actions to complete when clicking Add folder
+				folderName = input.getText().toString();
+				
+				if(folderName.equals("")){
+					toaster("Please insert text for folder name.");
+				}
+				else if (folderName.contains("\n")){
+					toaster("Please make folder name one line.");
+				}
+				else if (folderName.contains("'")){
+					toaster("Please do not include single quotes.");
+				}
+				else if (folderName.length() > 50){
+					toaster("Please make the folder name shorter.");
+				}
+				else{
+					dbHelper.createFolder(folderName);
+					fillData();
+				}
+				input.setText("");
+			}
+		});
 
-    		// Setting Negative "NO" Button
-    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int which) {
-    				//actions to complete when clicking cancel
-    				input.setText("");
-    				dialog.dismiss();
-    			}
-    		});
-    		return addDialog.create();
-    	case DIALOG_DELETE_FOLDER_ID:
-    		Builder deleteDialog = new AlertDialog.Builder(this);
-
-    		// do the work to define the deleteDialog
-    		deleteDialog.setTitle("Confirm Delete...")
-    		.setIcon(R.drawable.dialog_cancel)
-    		.setMessage("Are you sure you want to delete this group?")
-    		// Setting Positive "Yes" Button
-    		.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog,int which) {
-    				//actions to complete when clicking yes
-    				if(entryID != -1) {
-    					//only deletes from the folders table, we need
-    					//to implement deletion of the values from the
-    					//entries table as well later
-    					dbHelper.deleteFolder(entryID);
-    					fillData();
-    				}
-    				dialog.dismiss();
-    			}
-    		})
-
-            // Setting Negative "NO" Button
-            	.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            	public void onClick(DialogInterface dialog, int which) {
-            		//actions to complete when clicking no
-            		dialog.dismiss();
-            	}
-            });
-        	return deleteDialog.create();
-        }
-        return null;
+		// Setting Negative "NO" Button
+		addDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				//actions to complete when clicking cancel
+				input.setText("");
+			}
+		});
+		
+		return addDialog.create();	
     }
-    private void Toaster(String s) {
+    
+    private Dialog deleteFolderDialog() {
+    	Builder deleteDialog = new AlertDialog.Builder(this);
+
+		// do the work to define the deleteDialog
+		deleteDialog.setTitle("Confirm Delete...");
+		deleteDialog.setIcon(R.drawable.dialog_cancel);
+		deleteDialog.setMessage("Are you sure you want to delete this group?");
+		// Setting Positive "Yes" Button
+		deleteDialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int which) {
+				//actions to complete when clicking yes
+				if(entryID != -1) {
+					//only deletes from the folders table, we need
+					//to implement deletion of the values from the
+					//entries table as well later
+					dbHelper.deleteFolder(entryID);
+					fillData();
+				}
+			}
+		});
+
+        // Setting Negative "NO" Button
+        	deleteDialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        	public void onClick(DialogInterface dialog, int which) {
+        		//actions to complete when clicking no
+        	}
+        });
+    	return deleteDialog.create(); 	
+    }
+    
+    private void toaster(String s) {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.toast_layout,
 				(ViewGroup) findViewById(R.id.toast_layout_root));
