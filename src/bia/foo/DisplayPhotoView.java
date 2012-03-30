@@ -144,8 +144,8 @@ public class DisplayPhotoView extends Activity {
 	}
 	
 	@Override
-	protected void onStop() {
-		super.onStop();
+	protected void onPause() {
+		super.onPause();
 		cursor.close();
 		dbHelper.close();
 	}

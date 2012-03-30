@@ -47,9 +47,7 @@ public class ComparePhotoView extends Activity{
 	private TextView photoGroupName1;
 	private ImageView imagePreview2;
 	private TextView photoGroupName2;
-	
-	private dbAdapter dbHelper;
-	private Cursor cursor;
+
 	private long rowIdOne;
 	private long rowIdTwo;
 	
@@ -57,9 +55,7 @@ public class ComparePhotoView extends Activity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.comparephotos);
-        
-        dbHelper = new dbAdapter(this);
-        
+
         rowIdOne = getIntent().getLongExtra("RowIdOne", 0);
         rowIdTwo = getIntent().getLongExtra("RowIdTwo", 0);
         
@@ -77,8 +73,11 @@ public class ComparePhotoView extends Activity{
 	@Override
 	protected void onStart() {
 		super.onStart();
+		dbAdapter dbHelper;
+		dbHelper = new dbAdapter(this);
 		dbHelper.open();
 		
+		Cursor cursor;
 		// Call cursor for first photo
 		cursor = dbHelper.fetchPhoto(rowIdOne);
 		//Sets the image view to the enlarged bitmap of the photo that
@@ -91,6 +90,8 @@ public class ComparePhotoView extends Activity{
         String dateOne = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
         photoGroupName1.setText(dateOne);
         
+        cursor.close();
+        
         // Update cursor for second photo
         cursor = dbHelper.fetchPhoto(rowIdTwo);
         //Sets the image view to the enlarged bitmap of the photo that
@@ -101,18 +102,9 @@ public class ComparePhotoView extends Activity{
         imagePreview2.setImageBitmap(bitmapTwo);
         //Set the folder name at middle of screen to correct folder.
         String dateTwo = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
-        photoGroupName2.setText(dateTwo);		
-	}
-
-	/**
-	 * Close the database on stop to prevent errors
-	 * 
-	 */
-	@Override
-	protected void onStop() {
-		super.onStop();
-		
-		cursor.close();
-		dbHelper.close();
+        photoGroupName2.setText(dateTwo);
+        
+        cursor.close();
+        dbHelper.close();
 	}
 }

@@ -219,7 +219,7 @@ public class dbAdapter
     public Cursor fetchPhotosUnderTag(String tag) {
     	Cursor mCursor =
             mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, 
-            		TAG, ANNOTATE, PHOTO}, TAG + "=" + tag, null, null, null, null, null);
+            		TAG, ANNOTATE, PHOTO}, TAG + "='" + tag +"'", null, null, null, null, null);
     	
         return mCursor;
     }
