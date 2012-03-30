@@ -59,7 +59,7 @@ public class DisplayPhotoView extends Activity {
 	private Button addAnnotate;
 	private Button addTag;
 	
-	private dbAdapter dbHelper;
+	private DbAdapter dbHelper;
 	
 	static final int DIALOG_NEW_ANNOTATE_ID = 0;
 	static final int DIALOG_NEW_TAG_ID = 1;
@@ -81,7 +81,7 @@ public class DisplayPhotoView extends Activity {
         addAnnotate = (Button) findViewById(R.id.new_annotation);
         addTag = (Button) findViewById(R.id.new_tag);
         
-        dbHelper = new dbAdapter(this);
+        dbHelper = new DbAdapter(this);
         
         rowId = getIntent().getLongExtra("rowId", 0);
         
