@@ -144,12 +144,12 @@ public class PhotoLayoutView extends Activity
 			public void onClick(View v) {
 				if(comparePhotoIsSet == false){
 					comparePhotoIsSet = true;
-					comparePhotoToast();
+					Toaster("Please select two photos to compare.\nPress Compare again to cancel.");
 				}
 				else if (comparePhotoIsSet == true){
 					comparePhotoIsSet = false;
 					pHolder.clearPhotoHolder(pHolder);
-					cancelCompareToast();
+					Toaster("Photo Comparision Cancelled.");
 				}
 			}
 		});
@@ -317,41 +317,6 @@ public class PhotoLayoutView extends Activity
 
         gridView.setAdapter(entries);
     }
-
-	
-	private void comparePhotoToast() {
-		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.toast_layout,
-				(ViewGroup) findViewById(R.id.toast_layout_root));
-		
-		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
-		image.setImageResource(R.drawable.info_notice);
-		TextView text = (TextView) layout.findViewById(R.id.toast_text);
-		text.setText("Please select two photos to compare.\nPress Compare again to cancel.");
-		
-		Toast toast = new Toast(getApplicationContext());
-		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
-		toast.setDuration(Toast.LENGTH_SHORT);
-		toast.setView(layout);
-		toast.show();
-	}
-	
-	private void cancelCompareToast() {
-		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.toast_layout,
-				(ViewGroup) findViewById(R.id.toast_layout_root));
-		
-		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
-		image.setImageResource(R.drawable.info_notice);
-		TextView text = (TextView) layout.findViewById(R.id.toast_text);
-		text.setText("Photo Comparision Cancelled.");
-		
-		Toast toast = new Toast(getApplicationContext());
-		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
-		toast.setDuration(Toast.LENGTH_SHORT);
-		toast.setView(layout);
-		toast.show();
-	}
 	
 	/** OnCreateDialog method to create the dialogs when called.
      * Uses a switch case mechanism to decide which dialog to display.
@@ -467,4 +432,25 @@ public class PhotoLayoutView extends Activity
 		tagCursor.close();
 		return sortDialog.create();
 	}
+	
+	/** Toaster creates toasts when called and supploed with a string
+     * @param String s (string to be toasted)
+     */
+	private void Toaster(String s) {
+		LayoutInflater inflater = getLayoutInflater();
+		View layout = inflater.inflate(R.layout.toast_layout,
+				(ViewGroup) findViewById(R.id.toast_layout_root));
+		
+		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
+		image.setImageResource(R.drawable.info_notice);
+		TextView text = (TextView) layout.findViewById(R.id.toast_text);
+		text.setText(s);
+		
+		Toast toast = new Toast(getApplicationContext());
+		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
+		toast.setDuration(Toast.LENGTH_SHORT);
+		toast.setView(layout);
+		toast.show();
+	}
+	
 }
