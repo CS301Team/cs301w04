@@ -81,8 +81,8 @@ public class MoleFinderActivity extends Activity {
 
         dbHelper = new dbAdapter(this);
         
-        final Dialog deleteFolder = deleteFolderDialog(); 
-        final Dialog addFolder = addFolderDialog();
+        final Dialog deleteFolderDialog = deleteFolderDialog(); 
+        final Dialog addFolderDialog = addFolderDialog();
 		/** OnItemClickListener for the listview. When an item is clicked in the
          * list it moves to the PhotoLayoutView and passes the folder name
          * that was clicked. 
@@ -108,7 +108,7 @@ public class MoleFinderActivity extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				entryID = id;
 				
-				deleteFolder.show();
+				deleteFolderDialog.show();
 				
 				return true;
 			}
@@ -120,7 +120,7 @@ public class MoleFinderActivity extends Activity {
          * */
         addFolderButton.setOnClickListener(new View.OnClickListener() {
         	public void onClick(View v) {
-        		addFolder.show();
+        		addFolderDialog.show();
         	}
         });
     }

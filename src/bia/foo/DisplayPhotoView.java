@@ -86,20 +86,15 @@ public class DisplayPhotoView extends Activity {
         
         rowId = getIntent().getLongExtra("rowId", 0);
         
-        Context context = getApplicationContext();
-        CharSequence text = String.valueOf(rowId);
-        int duration = Toast.LENGTH_SHORT;
-
-        Toast toast = Toast.makeText(context, text, duration);
-        toast.show();
-
+        final Dialog addAnnotationDialog = addAnnotateDialog(); 
+        final Dialog addTagDialog = addTagDialog();
         
         // Allow user to add annotation to currently displayed photo
 		addAnnotate.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v) 
 			{
-				showDialog(DIALOG_NEW_ANNOTATE_ID);
+				addAnnotationDialog.show();
 			}
 		});
         
@@ -108,7 +103,7 @@ public class DisplayPhotoView extends Activity {
 		{
 			public void onClick(View v) 
 			{
-				showDialog(DIALOG_NEW_TAG_ID);
+				addTagDialog.show();
 			}
 		});
     }
@@ -150,71 +145,69 @@ public class DisplayPhotoView extends Activity {
 		dbHelper.close();
 	}
 	
-	@Override
-    protected Dialog onCreateDialog(int id) {
+	private Dialog addAnnotateDialog() {
 		final EditText input = new EditText(DisplayPhotoView.this);
-    	switch(id) {
-    	case DIALOG_NEW_ANNOTATE_ID:
-    		Builder addAnnotateDialog = new AlertDialog.Builder(DisplayPhotoView.this);
-    		// do the work to define the addDialog
-    		addAnnotateDialog.setView(input);
-    		addAnnotateDialog.setTitle("Adding a new annotation...")
-    		.setIcon(R.drawable.dialog_add)
-    		.setMessage("Please specify the annotation to add.")
-    		// Setting Positive "Add folder" Button
-    		.setPositiveButton("Add Annotation", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog,int which) {
-    				//actions to complete when clicking Add folder
-    				String annotation = input.getText().toString();
-    		
-    				dbHelper.addAnnotationToPhoto(annotation, rowId);
-    				
-    				photoAnnotate.setText(annotation);
-    				
-    				dialog.dismiss();
-    				input.setText("");
-    			}
-    		})
+		Builder addAnnotateDialog = new AlertDialog.Builder(DisplayPhotoView.this);
+		// do the work to define the addDialog
+		addAnnotateDialog.setView(input);
+		addAnnotateDialog.setTitle("Adding a new annotation...")
+		.setIcon(R.drawable.dialog_add)
+		.setMessage("Please specify the annotation to add.")
+		// Setting Positive "Add folder" Button
+		.setPositiveButton("Add Annotation", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int which) {
+				//actions to complete when clicking Add folder
+				String annotation = input.getText().toString();
+		
+				dbHelper.addAnnotationToPhoto(annotation, rowId);
+				
+				photoAnnotate.setText(annotation);
+				
+				dialog.dismiss();
+				input.setText("");
+			}
+		})
 
-    		// Setting Negative "NO" Button
-    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int which) {
-    				//actions to complete when clicking cancel
-    				dialog.dismiss();
-    			}
-    		});
-    		return addAnnotateDialog.create();
-    	case DIALOG_NEW_TAG_ID:
-    		Builder addTagDialog = new AlertDialog.Builder(this);
-    		// do the work to define the addDialog
-    		addTagDialog.setView(input);
-    		addTagDialog.setTitle("Adding a new tag...")
-    		.setIcon(R.drawable.dialog_add)
-    		.setMessage("Please specify the tag to add.")
-    		// Setting Positive "Add tag" Button
-    		.setPositiveButton("Add tag", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog,int which) {
-    				//actions to complete when clicking Add folder
-    				String tag = input.getText().toString();
-    		
-    				dbHelper.addTagToPhoto(tag, rowId);
-    				
-    				photoTag.setText(tag);
-    				
-    				dialog.dismiss();
-    				input.setText("");
-    			}
-    		})
+		// Setting Negative "NO" Button
+		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				//actions to complete when clicking cancel
+				dialog.dismiss();
+			}
+		});
+		return addAnnotateDialog.create();
+	}
+	
+	private Dialog addTagDialog() {
+		final EditText input = new EditText(DisplayPhotoView.this);
+		Builder addTagDialog = new AlertDialog.Builder(this);
+		// do the work to define the addDialog
+		addTagDialog.setView(input);
+		addTagDialog.setTitle("Adding a new tag...")
+		.setIcon(R.drawable.dialog_add)
+		.setMessage("Please specify the tag to add.")
+		// Setting Positive "Add tag" Button
+		.setPositiveButton("Add tag", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog,int which) {
+				//actions to complete when clicking Add folder
+				String tag = input.getText().toString();
+		
+				dbHelper.addTagToPhoto(tag, rowId);
+				
+				photoTag.setText(tag);
+				
+				dialog.dismiss();
+				input.setText("");
+			}
+		})
 
-    		// Setting Negative "NO" Button
-    		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-    			public void onClick(DialogInterface dialog, int which) {
-    				//actions to complete when clicking cancel
-    				dialog.dismiss();
-    			}
-    		});
-    		return addTagDialog.create();
-        }
-        return null;
-    }
+		// Setting Negative "NO" Button
+		.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int which) {
+				//actions to complete when clicking cancel
+				dialog.dismiss();
+			}
+		});
+		return addTagDialog.create();
+	}
 }
