@@ -90,7 +90,7 @@ public class PhotoLayoutView extends Activity
 	private GridView gridView;
 
 	private long entryID = -1;
-	private DbAdapter dbHelper;
+	private dbAdapter dbHelper;
     
     private Cursor entriesCursor;
     
@@ -124,7 +124,7 @@ public class PhotoLayoutView extends Activity
         
         pHolder = new PhotoHolder();
         
-		dbHelper = new DbAdapter(this);
+		dbHelper = new dbAdapter(this);
         
         folderName = getIntent().getStringExtra("FolderName");
         currentFolder.setText(folderName);
@@ -220,7 +220,7 @@ public class PhotoLayoutView extends Activity
 							startManagingCursor(tagCursor);
 					        
 					        // Create an array to specify the fields we want to display in the list (only DATE)
-					        String[] from = new String[] { DbAdapter.PHOTO, DbAdapter.DATE};
+					        String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.DATE};
 					        int[] to = new int[] { R.id.image1, R.id.text1 };
 					        
 					        // Create an array adapter and set it to display
@@ -258,9 +258,9 @@ public class PhotoLayoutView extends Activity
 				Bitmap bitmap = drawable.getBitmap();
 				
 				Cursor cursor = dbHelper.fetchPhoto(id);
-				String date = cursor.getString(cursor.getColumnIndex(DbAdapter.DATE));
-				String tag = cursor.getString(cursor.getColumnIndex(DbAdapter.TAG));
-				String annotate = cursor.getString(cursor.getColumnIndex(DbAdapter.ANNOTATE));
+				String date = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+				String tag = cursor.getString(cursor.getColumnIndex(dbAdapter.TAG));
+				String annotate = cursor.getString(cursor.getColumnIndex(dbAdapter.ANNOTATE));
 				cursor.close();
 
 				if (comparePhotoIsSet == true) {
@@ -408,7 +408,7 @@ public class PhotoLayoutView extends Activity
         startManagingCursor(entriesCursor);
         
         // Create an array to specify the fields we want to display in the list (only DATE)
-        String[] from = new String[] { DbAdapter.PHOTO, DbAdapter.DATE};
+        String[] from = new String[] { dbAdapter.PHOTO, dbAdapter.DATE};
         int[] to = new int[] { R.id.image1, R.id.text1 };
         
         // Create an array adapter and set it to display

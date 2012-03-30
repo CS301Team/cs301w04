@@ -46,7 +46,7 @@ import android.util.Log;
  * 
  */
 
-public class DbAdapter
+public class dbAdapter
 {
 	public static final String ID = "_id";
 	public static final String DATE = "date";
@@ -107,7 +107,7 @@ public class DbAdapter
      * 
      * @param ctx the Context within which to work
      */
-    public DbAdapter(Context ctx) {
+    public dbAdapter(Context ctx) {
         this.mCtx = ctx;
     }
 
@@ -120,7 +120,7 @@ public class DbAdapter
      *         initialization call)
      * @throws SQLException if the database could be neither opened or created
      */
-    public DbAdapter open() throws SQLException {
+    public dbAdapter open() throws SQLException {
         mDbHelper = new DatabaseHelper(mCtx);
         mDb = mDbHelper.getWritableDatabase();
         return this;

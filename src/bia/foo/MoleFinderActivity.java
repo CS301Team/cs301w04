@@ -69,7 +69,7 @@ public class MoleFinderActivity extends Activity {
 	static final int DIALOG_DELETE_FOLDER_ID = 1;
 	
 	private long entryID = -1;
-	private DbAdapter dbHelper;
+	private dbAdapter dbHelper;
 	
 	private Cursor entriesCursor;
     
@@ -85,7 +85,7 @@ public class MoleFinderActivity extends Activity {
         addFolderButton = (Button) findViewById(R.id.add_group);
         list = (ListView) findViewById(R.id.photo_grouping_list);
 
-        dbHelper = new DbAdapter(this);
+        dbHelper = new dbAdapter(this);
         
 		/** OnItemClickListener for the listview. When an item is clicked in the
          * list it moves to the PhotoLayoutView and passes the folder name
@@ -161,7 +161,7 @@ public class MoleFinderActivity extends Activity {
         startManagingCursor(entriesCursor);
         
         // Create an array to specify the fields we want to display in the list
-        String[] from = new String[] { DbAdapter.FOLDER };
+        String[] from = new String[] { dbAdapter.FOLDER };
         int[] to = new int[] { R.id.folder_name };
         
         // Create an array adapter and set it to display
