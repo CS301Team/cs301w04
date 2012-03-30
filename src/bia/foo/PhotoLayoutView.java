@@ -86,7 +86,6 @@ public class PhotoLayoutView extends Activity
 	private Button newPhoto;
 	private Button compPhoto;
 	private Button sortByTag;
-	private Button sortBy;
 	private TextView currentFolder;
 	private GridView gridView;
 
@@ -114,7 +113,6 @@ public class PhotoLayoutView extends Activity
 		newPhoto = (Button) findViewById(R.id.new_photo);
 		compPhoto = (Button) findViewById(R.id.compare_photo);
 		sortByTag = (Button) findViewById(R.id.sort_tag);
-		sortBy = (Button) findViewById(R.id.sort_by);
         gridView = (GridView) findViewById(R.id.gridView1);
         currentFolder = (TextView) findViewById(R.id.current_folder);
         final Intent intent = new Intent(PhotoLayoutView.this, ComparePhotoView.class);
@@ -197,95 +195,6 @@ public class PhotoLayoutView extends Activity
 
 				ArrayList <String> tagList = new ArrayList<String>();
 				tagList.add(def);
-				if (tagCursor != null) {
-					if (tagCursor.moveToFirst()) {
-						do {
-							String tagName = tagCursor.getString(tagCursor.getColumnIndex("tag"));
-							if (!tagName.equals("")) {
-								tagList.add(tagName); 
-							}
-						} while (tagCursor.moveToNext());
-					}
-				}
-				
-				ArrayAdapter<String> adapter =  new ArrayAdapter<String>(PhotoLayoutView.this, android.R.layout.simple_spinner_item, tagList);
-				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				spinner.setAdapter(adapter);
-				
-				spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-					@Override
-					public void onItemSelected (AdapterView<?> parent, View v, int position, long id) {
-						String selectedTag = ((TextView)v.findViewById(android.R.id.text1)).getText().toString();
-						if (!selectedTag.equals(def)) {
-							Cursor tagCursor = dbHelper.fetchPhotosUnderTag(selectedTag);
-							
-							startManagingCursor(tagCursor);
-					        
-					        // Create an array to specify the fields we want to display in the list (only DATE)
-					        String[] from = new String[] { DbAdapter.PHOTO, DbAdapter.DATE};
-					        int[] to = new int[] { R.id.image1, R.id.text1 };
-					        
-					        // Create an array adapter and set it to display
-					        SimpleCursorAdapter entries =
-					        		new SimpleCursorAdapter(PhotoLayoutView.this, R.layout.entry_row, tagCursor, from, to);                         
-							
-					        entries.setViewBinder(new PhotoViewBinder());
-					        
-					        gridView.setAdapter(entries);	
-						} else {
-							fillData();
-						}
-					}
-					
-					@Override
-					public void onNothingSelected(AdapterView<?> parent) {
-						
-					}
-				});
-				
-				tagCursor.close();
-				sortDialog.show();
-			}
-		});
-		
-		sortBy.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-//				showDialog(DIALOG_SORT_TAG_ID);
-				Builder sortDialog = new AlertDialog.Builder(PhotoLayoutView.this);
-				
-				LayoutInflater inflater = LayoutInflater.from(PhotoLayoutView.this);
-				final View layout = inflater.inflate(R.layout.tag_spinner, null);
-				sortDialog.setView(layout);
-				Spinner spinner = (Spinner) layout.findViewById(R.id.spinner);
-				
-				sortDialog.setTitle("Sort by...")
-				// Setting Neutral Button
-				.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog,int which) {
-						//actions to complete when clicking neutral
-						dialog.dismiss();
-					}
-				});
-				
-				Cursor tagCursor = dbHelper.fetchUniqueTags();
-				startManagingCursor(tagCursor);
-				
-//				String[] from = new String[] {dbAdapter.TAG };
-//				int[] to = new int [] {android.R.id.text1 };
-//				
-//				SimpleCursorAdapter adapter = 
-//					new SimpleCursorAdapter(this, android.R.layout.simple_spinner_item, tagCursor, from, to);
-				//			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-				//			spinner.setAdapter(adapter);
-
-				final String def = "Default Folder Photos";
-				final String date = "Date";
-				final String tag = "Tag";
-
-				ArrayList <String> tagList = new ArrayList<String>();
-				tagList.add(date);
-				tagList.add(tag);
 				if (tagCursor != null) {
 					if (tagCursor.moveToFirst()) {
 						do {
