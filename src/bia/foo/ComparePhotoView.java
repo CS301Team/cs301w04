@@ -36,7 +36,7 @@ import android.widget.TextView;
  * 
  * Friday, March 16, 2012
  * 
- *
+ * 
  */
 
 public class ComparePhotoView extends Activity{
