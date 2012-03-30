@@ -70,7 +70,6 @@ import android.widget.Toast;
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
- * @author Kongxiao Zhao: kongxiao
  * 
  * Friday, March 16, 2012
  * 
@@ -269,7 +268,6 @@ public class PhotoLayoutView extends Activity
 					}
 				});
 				
-//To be deleted
 				Cursor tagCursor = dbHelper.fetchUniqueTags();
 				startManagingCursor(tagCursor);
 				
@@ -281,14 +279,23 @@ public class PhotoLayoutView extends Activity
 				//			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 				//			spinner.setAdapter(adapter);
 
-				final String def = "Default";
+				final String def = "Default Folder Photos";
 				final String date = "Date";
 				final String tag = "Tag";
 
-				//To be deleted
 				ArrayList <String> tagList = new ArrayList<String>();
 				tagList.add(date);
 				tagList.add(tag);
+				if (tagCursor != null) {
+					if (tagCursor.moveToFirst()) {
+						do {
+							String tagName = tagCursor.getString(tagCursor.getColumnIndex("tag"));
+							if (!tagName.equals("")) {
+								tagList.add(tagName); 
+							}
+						} while (tagCursor.moveToNext());
+					}
+				}
 				
 				ArrayAdapter<String> adapter =  new ArrayAdapter<String>(PhotoLayoutView.this, android.R.layout.simple_spinner_item, tagList);
 				adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -299,15 +306,9 @@ public class PhotoLayoutView extends Activity
 					public void onItemSelected (AdapterView<?> parent, View v, int position, long id) {
 						String selectedTag = ((TextView)v.findViewById(android.R.id.text1)).getText().toString();
 						if (!selectedTag.equals(def)) {
-							Cursor cursor = null;
-							if(selectedTag.equals(date)){
-								cursor = dbHelper.fetchPhotoSortByDate();
-							}
-							if(selectedTag.equals(tag)){
-								cursor = dbHelper.fetchPhotoSortByTag();
-							}
+							Cursor tagCursor = dbHelper.fetchPhotosUnderTag(selectedTag);
 							
-							startManagingCursor(cursor);
+							startManagingCursor(tagCursor);
 					        
 					        // Create an array to specify the fields we want to display in the list (only DATE)
 					        String[] from = new String[] { DbAdapter.PHOTO, DbAdapter.DATE};
@@ -315,7 +316,7 @@ public class PhotoLayoutView extends Activity
 					        
 					        // Create an array adapter and set it to display
 					        SimpleCursorAdapter entries =
-					        		new SimpleCursorAdapter(PhotoLayoutView.this, R.layout.entry_row, cursor, from, to);                         
+					        		new SimpleCursorAdapter(PhotoLayoutView.this, R.layout.entry_row, tagCursor, from, to);                         
 							
 					        entries.setViewBinder(new PhotoViewBinder());
 					        

@@ -226,38 +226,6 @@ public class DbAdapter
     }
     
     /**
-     * Returns a cursor that points to data by the order of date
-     * 
-     * @param tag retrieve photos with given tag
-     * @return Cursor that traverses photos with given tag
-     */
-    public Cursor fetchPhotoSortByDate() {
-    	Cursor mCursor = 
-                mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, 
-                		TAG, ANNOTATE, PHOTO}, null, null, null, null, DATE, null);
-    	if (mCursor != null) {
-    		mCursor.moveToFirst();
-    	}
-    	return mCursor;
-    }
-    
-    /**
-     * Returns a cursor that points to data by the order of date
-     * 
-     * @param tag retrieve photos with given tag
-     * @return Cursor that traverses photos with given tag
-     */
-    public Cursor fetchPhotoSortByTag() {
-    	Cursor mCursor = 
-                mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, 
-                		TAG, ANNOTATE, PHOTO}, null, null, null, null, TAG, null);
-    	if (mCursor != null) {
-    		mCursor.moveToFirst();
-    	}
-    	return mCursor;
-    }
-    
-    /**
      * Return a Cursor positioned at the entry that matches the given rowId
      * 
      * @param rowId id of entry to retrieve
