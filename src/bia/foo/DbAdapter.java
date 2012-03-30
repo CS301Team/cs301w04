@@ -41,7 +41,6 @@ import android.util.Log;
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
- * @author Kongxiao Zhao: kongxiao
  * 
  * Friday, March 16, 2012
  * 
@@ -220,7 +219,7 @@ public class DbAdapter
     public Cursor fetchPhotosUnderTag(String tag) {
     	Cursor mCursor =
             mDb.query(true, DATABASE_TABLE_PHOTOS, new String[] {ID, DATE, FOLDER, 
-            		TAG, ANNOTATE, PHOTO}, TAG + "='" + tag + "'", null, null, null, null, null);
+            		TAG, ANNOTATE, PHOTO}, TAG + "=" + tag, null, null, null, null, null);
     	
         return mCursor;
     }
