@@ -85,10 +85,11 @@ public class ComparePhotoView extends Activity{
         //was clicked.
 		byte[] photoOne = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
 		Bitmap bitmapOne = BitmapFactory.decodeByteArray(photoOne, 0, photoOne.length);
+		bitmapOne.setDensity(10);
         imagePreview1.setImageBitmap(bitmapOne);
         //Set the folder name at top of screen to correct folder.
-        String folderOne = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
-        photoGroupName1.setText(folderOne);
+        String dateOne = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+        photoGroupName1.setText(dateOne);
         
         // Update cursor for second photo
         cursor = dbHelper.fetchPhoto(rowIdTwo);
@@ -96,10 +97,11 @@ public class ComparePhotoView extends Activity{
         //was clicked.        
 		byte[] photoTwo = cursor.getBlob(cursor.getColumnIndex(dbAdapter.PHOTO));
 		Bitmap bitmapTwo = BitmapFactory.decodeByteArray(photoTwo, 0, photoTwo.length);
+		bitmapTwo.setDensity(10);
         imagePreview2.setImageBitmap(bitmapTwo);
         //Set the folder name at middle of screen to correct folder.
-        String folderTwo = cursor.getString(cursor.getColumnIndex(dbAdapter.FOLDER));
-        photoGroupName2.setText(folderTwo);		
+        String dateTwo = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
+        photoGroupName2.setText(dateTwo);		
 	}
 
 	/**
