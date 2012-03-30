@@ -110,7 +110,7 @@ public class ComparePhotoView extends Activity{
 	protected void onStop() {
 		super.onStop();
 		
-		dbHelper.close();
 		cursor.close();
+		dbHelper.close();
 	}
 }

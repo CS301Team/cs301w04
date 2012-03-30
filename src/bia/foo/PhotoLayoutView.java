@@ -1,7 +1,5 @@
 package bia.foo;
 
-import bia.foo.PhotoHolder;
-
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -11,14 +9,13 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.AlertDialog.Builder;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -254,22 +251,13 @@ public class PhotoLayoutView extends Activity
 		 */
 		gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				ImageView imageView = (ImageView) v.findViewById(R.id.image1); 
-				BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-				Bitmap bitmap = drawable.getBitmap();
-				
-				Cursor cursor = dbHelper.fetchPhoto(id);
-				String date = cursor.getString(cursor.getColumnIndex(dbAdapter.DATE));
-				cursor.close();
 
 				if (comparePhotoIsSet == true) {
 					if (pHolder.isNotSet(pHolder)){
-						pHolder.setPhoto(bitmap, 1);
-						pHolder.setDate(date, 1);
+						pHolder.setPhotoID(id, 1);
 					}
 					else if (pHolder.isPartiallySet(pHolder)){
-						pHolder.setPhoto(bitmap, 2);
-						pHolder.setDate(date, 2);
+						pHolder.setPhotoID(id, 2);
 						extractHolder(intent, pHolder);
 					}	
 				} else {
@@ -347,11 +335,8 @@ public class PhotoLayoutView extends Activity
     protected void extractHolder(Intent i, PhotoHolder p){
     	if (p.isFullySet(p)){
     		
-    		i.putExtra("BitmapImage1", p.getPhoto(1));
-    		i.putExtra("Date1", p.getDate(1));
-    		i.putExtra("BitmapImage2", p.getPhoto(2));
-    		i.putExtra("Date2", p.getDate(2));
-    		
+    		i.putExtra("RowIdOne", p.getPhotoID(1));
+    		i.putExtra("RowIdTwo", p.getPhotoID(2));
     		
     		p.clearPhotoHolder(p);
     		comparePhotoIsSet = false;

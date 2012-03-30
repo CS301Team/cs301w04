@@ -69,7 +69,7 @@ public class PhotoHolder {
 	}
 	
 	
-	public void setPhoto(long rowID, int photoID){
+	public void setPhotoID(long rowID, int photoID){
 		if(photoID == 1){
 			firstPhotoID = rowID;
 		}
