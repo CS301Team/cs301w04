@@ -9,8 +9,8 @@ import android.test.ActivityInstrumentationTestCase2;
 
 public class TestMoleFinderActivity extends ActivityInstrumentationTestCase2 {
 
-	private static final String TARGET_PACKAGE_ID="bia.foo";
-	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME="bia.foo.MoleFinderActivity";
+	private static final String TARGET_PACKAGE_ID="skinConditionsTracker.Model";
+	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME="skinConditionsTracker.Model.MoleFinderActivity";
 	private static Class launcherActivityClass;
 	static{
 		try{
@@ -43,7 +43,19 @@ public class TestMoleFinderActivity extends ActivityInstrumentationTestCase2 {
 		Assert.assertFalse(solo.searchText("Test Folder"));
 		solo.clickInList(1);
 		solo.assertCurrentActivity("Error: Photo Layout not Open", "PhotoLayoutView");
+		solo.clickOnScreen(50,250);
+		solo.assertCurrentActivity("Error: Photo Layout not Open", "DisplayPhotoView" );
 		
+	}
+	
+	public void testAddFolderStressTest(){
+		int x = 0;
+		while (x < 1000){
+			solo.clickOnButton("Add Folder");
+			solo.enterText(0, "Test Folder"+x);
+			solo.clickOnButton(0);
+			x++;
+		}
 	}
 	
 	@Override

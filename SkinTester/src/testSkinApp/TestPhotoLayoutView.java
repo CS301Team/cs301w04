@@ -9,8 +9,8 @@ import android.test.ActivityInstrumentationTestCase2;
 
 public class TestPhotoLayoutView extends ActivityInstrumentationTestCase2 {
 
-	private static final String TARGET_PACKAGE_ID="bia.foo";
-	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME="bia.foo.PhotoLayoutView";
+	private static final String TARGET_PACKAGE_ID="skinConditionsTracker.Model";
+	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME="skinConditionsTracker.Model.PhotoLayoutView";
 	private static Class launcherActivityClass;
 	static{
 		try{
