@@ -97,9 +97,6 @@ public class PhotoLayoutView extends Activity
 
 	boolean comparePhotoIsSet = false;
 
-	static final int DIALOG_DELETE_PHOTO_ID = 0;
-	static final int DIALOG_SORT_TAG_ID = 1;
-
 	/** onCreate called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

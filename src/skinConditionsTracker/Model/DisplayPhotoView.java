@@ -62,9 +62,6 @@ public class DisplayPhotoView extends Activity {
 	private DatabaseAdapter dbHelper;
 	private Cursor cursor;
 
-	static final int DIALOG_NEW_ANNOTATE_ID = 0;
-	static final int DIALOG_NEW_TAG_ID = 1;
-
 	private long rowId;
 
 	@Override
