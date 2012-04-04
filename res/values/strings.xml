@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Skin Conditions Tracker</string>
+    <string name="app_name">Skin Tracker</string>
     <string name="grouping_title">Skin Condition Folders</string>
     <string name="add_group">Add Folder</string>
     <string name="new_photo">New Photo</string>
@@ -39,5 +39,5 @@
 <string name="arrow">arrow</string>
 <string name="new_annotation">Modify Annotation</string>
 <string name="new_tag">Modify Tag</string>
-<string name="sort_tag">Sort by Tag</string>
+<string name="sort_tag">Filter by Tag</string>
 </resources>
