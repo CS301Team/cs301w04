@@ -52,7 +52,7 @@ import android.widget.Toast;
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
  * 
- * Friday, March 30, 2012
+ * April 06, 2012
  * 
  */
 
@@ -90,7 +90,9 @@ public class DisplayPhotoView extends Activity {
 		final Dialog addAnnotationDialog = addAnnotateDialog(); 
 		final Dialog addTagDialog = addTagDialog();
 
-		// Allow user to add annotation to currently displayed photo
+		/** 
+		 * Allow user to add annotation to currently displayed photo
+		 */
 		addAnnotate.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v) 
@@ -99,7 +101,9 @@ public class DisplayPhotoView extends Activity {
 			}
 		});
 
-		// Allow user to add tag to currently displayed photo
+		/**
+		 *  Allow user to add tag to currently displayed photo
+		 */
 		addTag.setOnClickListener(new View.OnClickListener()
 		{
 			public void onClick(View v) 
@@ -109,6 +113,12 @@ public class DisplayPhotoView extends Activity {
 		});
 	}
 
+	/**
+	 * Creates a database where it gets a bitmap from the rowID
+	 * passed into the activity and displays it in the imageview.
+	 * The tag, date, folder, and annotation are also retrieved and are
+	 * displayed.
+	 */
 	@Override
 	protected void onStart() {
 		super.onStart();
@@ -139,6 +149,9 @@ public class DisplayPhotoView extends Activity {
 		photoAnnotate.setText(annotate);
 	}
 
+	/**
+	 * Close the database and cursor on pause to prevent errors. 
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();
@@ -146,6 +159,14 @@ public class DisplayPhotoView extends Activity {
 		dbHelper.close();
 	}
 
+	/**
+	 * Creates the add annotation dialog when called.
+	 * When it is shown a dialog appears asking the
+	 * user to input an annotation. They can then confirm or cancel.
+	 * The function returns the created dialog.
+	 * 
+	 * @return addAnnotateDialog.create()
+	 */
 	private Dialog addAnnotateDialog() {
 		final EditText input = new EditText(DisplayPhotoView.this);
 		Builder addAnnotateDialog = new AlertDialog.Builder(DisplayPhotoView.this);
@@ -187,6 +208,14 @@ public class DisplayPhotoView extends Activity {
 		return addAnnotateDialog.create();
 	}
 
+	/**
+	 * Creates the add tag dialog when called.
+	 * When it is shown a dialog appears asking the
+	 * user to input a tag. They can then confirm or cancel.
+	 * The function returns the created dialog.
+	 * 
+	 * @return addTagDialog.create()
+	 */
 	private Dialog addTagDialog() {
 		final EditText input = new EditText(DisplayPhotoView.this);
 		Builder addTagDialog = new AlertDialog.Builder(this);
@@ -233,6 +262,15 @@ public class DisplayPhotoView extends Activity {
 		});
 		return addTagDialog.create();
 	}
+	
+	/**
+	 * A function that takes in a string and displays this
+	 * string in a toast. Whenever information is needed to be
+	 * displayed we create a string and use this method to give
+	 * the user feedback.
+	 * 
+	 * @param string
+	 */
 	private void toaster(String string) {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.toast_layout,
@@ -247,7 +285,6 @@ public class DisplayPhotoView extends Activity {
 		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
 		toast.setDuration(Toast.LENGTH_SHORT);
 		toast.setView(layout);
-		toast.show();
-		
+		toast.show();	
 	}
 }

@@ -36,7 +36,7 @@ import android.widget.SimpleCursorAdapter;
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
  * 
- * Friday, March 16, 2012
+ * April 06, 2012
  * 
  */
 

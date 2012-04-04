@@ -367,7 +367,7 @@ public class PhotoLayoutView extends Activity
 	 * user to select a tag. Once a tag is selected it populates the
 	 * gridview with photos that have that tag.
 	 * The function returns the created dialog.
-	 * @return deleteDialog.create() */
+	 * @return queryTagDialog.create() */
 	
 	private Dialog queryTagDialog() {
 		Builder queryTagDialog = new AlertDialog.Builder(PhotoLayoutView.this);
@@ -446,8 +446,13 @@ public class PhotoLayoutView extends Activity
 		return queryTagDialog.create();
 	}
 
-	/** Toaster creates toasts when called and supploed with a string
-	 * @param String s (string to be toasted)
+	/**
+	 * A function that takes in a string and displays this
+	 * string in a toast. Whenever information is needed to be
+	 * displayed we create a string and use this method to give
+	 * the user feedback.
+	 * 
+	 * @param string
 	 */
 	private void Toaster(String s) {
 		LayoutInflater inflater = getLayoutInflater();

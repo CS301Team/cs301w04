@@ -41,7 +41,7 @@ import android.database.sqlite.SQLiteDatabase;
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
  * 
- * Friday, March 16, 2012
+ * April 06, 2012
  * 
  */
 
@@ -57,15 +57,13 @@ public class DatabaseAdapter
    
     private SQLiteDatabase mDb;
 
-  //  private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE_PHOTOS = "photos";
     private static final String DATABASE_TABLE_FOLDERS = "folders";
-  //  private static final int DATABASE_VERSION = 2;
 
     /**
      * Constructor - takes the context to allow the database to be
-     * opened/created
-     * 
+     * opened/created and gives it to the model
+     * @see databaseModel setMCtx()
      * @param ctx the Context within which to work
      */
     public DatabaseAdapter(Context ctx) {
@@ -85,6 +83,9 @@ public class DatabaseAdapter
 		return databaseModel.open(this);
 	}
 
+    /**
+	 * Closes the database
+	 */
     public void close() {
 		databaseModel.close();
 	}
@@ -215,6 +216,8 @@ public class DatabaseAdapter
     
     
     /**
+     * Adds an annotation to the photo that was selected
+     * 
      * @param annotate set annotation on photo with given id
      * @param rowId the id of the photo entry
      */
@@ -226,6 +229,12 @@ public class DatabaseAdapter
     	mDb.update(DATABASE_TABLE_PHOTOS, args, ID +"="+rowId, null); 	
     }
     
+    /**
+     * Adds a tag to the selected photo.
+     * 
+     * @param tag on photo with given id
+     * @param rowId the id of the photo entry
+     */
     public void addTagToPhoto(String tag, long rowId)
     {
     	ContentValues args = new ContentValues();
@@ -234,6 +243,11 @@ public class DatabaseAdapter
     	mDb.update(DATABASE_TABLE_PHOTOS, args, ID +"="+rowId, null); 	
     }
 
+    /**
+     * Sets the database
+     * 
+     * @param Takes in the SQL database
+     */
 	public void setMDb(SQLiteDatabase mDb) {
 		this.mDb = mDb;
 	}

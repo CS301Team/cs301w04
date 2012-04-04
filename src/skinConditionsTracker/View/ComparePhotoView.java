@@ -39,8 +39,7 @@ import android.widget.TextView;
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
  * 
- * Friday, March 16, 2012
- * 
+ * April 06, 2012
  * 
  */
 
@@ -69,7 +68,9 @@ public class ComparePhotoView extends Activity{
     }
 	
 	/**
-	 * Recreate the database on start to prevent errors
+	 * Creates a database where it gets two bitmaps and sets them as
+	 * the imageviews to be displayed. It gets these bitmaps from the
+	 * rowIDs passed into the activity from selecting photos.
 	 * 
 	 */
 	@Override

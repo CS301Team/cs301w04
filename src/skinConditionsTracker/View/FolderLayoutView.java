@@ -54,7 +54,7 @@ import android.widget.Toast;
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
  * 
- * Friday, March 16, 2012
+ * April 06, 2012
  * 
  */
 
@@ -85,6 +85,7 @@ public class FolderLayoutView extends Activity {
 
 		final Dialog deleteFolderDialog = deleteFolderDialog(); 
 		final Dialog addFolderDialog = addFolderDialog();
+		
 		/** OnItemClickListener for the listview. When an item is clicked in the
 		 * list it moves to the PhotoLayoutView and passes the folder name
 		 * that was clicked. 
@@ -107,6 +108,7 @@ public class FolderLayoutView extends Activity {
 
 		/** OnItemLongClickListener for the listview. When clicked it gets
 		 * the entryID for the item clicked which is used later in deletion. 
+		 * @see deleteFolderDialog()
 		 * @return true*/
 		list.setOnItemLongClickListener(new OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
@@ -123,7 +125,7 @@ public class FolderLayoutView extends Activity {
 
 		/** OnClickListener for the add folder button. When its pressed
 		 * a dialog is shown which asks for input of a folder name 
-		 * @see onCreateDialog
+		 * @see addFolderDialog()
 		 * */
 		addFolderButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -145,7 +147,7 @@ public class FolderLayoutView extends Activity {
 	}
 
 	/**
-	 * Close the database on stop to prevent errors
+	 * Close the database and cursors on stop to prevent errors
 	 * 
 	 */
 	@Override
@@ -174,17 +176,14 @@ public class FolderLayoutView extends Activity {
 		list.setAdapter(adapter);
 	}
 
-	/** OnCreateDialog method to create the dialogs when called.
-	 * Uses a switch case mechanism to decide which dialog to display.
-	 * @param int id (Used for the switch/case)
-	 * When the ID is new folder it builds the dialog with an edit text
-	 * to receive input for the folder name. The user can then either select
-	 * add folder to create this folder or cancel to return to the main activity.
-	 * When the ID is delete folder a confirmation dialog appears asking the
-	 * user to make their final decision. They can confirm the delete or cancel.
-	 * Both cases return the created dialogs.
-	 * @return dialog.create() */
-
+	/**
+	 * Creates the add folder dialog when called.
+	 * When it is shown a dialog appears asking the
+	 * user to input a folder name. They can then confirm or cancel.
+	 * The function returns the created dialog.
+	 * 
+	 * @return addDialog.create()
+	 */
 	private Dialog addFolderDialog() {
 		final EditText input = new EditText(FolderLayoutView.this);
 
@@ -231,6 +230,14 @@ public class FolderLayoutView extends Activity {
 		return addDialog.create();	
 	}
 
+	/**
+	 * Creates the delete folder dialog when called.
+	 * When it is shown a dialog appears asking the
+	 * user to confirm deletion. They can then either confirm or cancel.
+	 * The function returns the created dialog.
+	 * 
+	 * @return deleteDialog.create()
+	 */
 	private Dialog deleteFolderDialog() {
 		Builder deleteDialog = new AlertDialog.Builder(this);
 
@@ -262,6 +269,14 @@ public class FolderLayoutView extends Activity {
 		return deleteDialog.create(); 	
 	}
 
+	/**
+	 * A function that takes in a string and displays this
+	 * string in a toast. Whenever information is needed to be
+	 * displayed we create a string and use this method to give
+	 * the user feedback.
+	 * 
+	 * @param string
+	 */
 	private void toaster(String s) {
 		LayoutInflater inflater = getLayoutInflater();
 		View layout = inflater.inflate(R.layout.toast_layout,
