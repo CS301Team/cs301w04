@@ -54,8 +54,7 @@ public class DatabaseAdapter
     public static final String PHOTO = "photo";
     public static final String ANNOTATE = "annotate";
     public static final String TAG = "tag";
-
-    
+   
     private SQLiteDatabase mDb;
 
   //  private static final String DATABASE_NAME = "data";
