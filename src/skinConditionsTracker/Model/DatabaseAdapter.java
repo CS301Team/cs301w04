@@ -48,6 +48,7 @@ import android.util.Log;
 
 public class DatabaseAdapter
 {
+	public DatabaseAdapterProduct databaseAdapterProduct = new DatabaseAdapterProduct();
 	public static final String ID = "_id";
 	public static final String DATE = "date";
     public static final String FOLDER = "folder";
@@ -55,51 +56,13 @@ public class DatabaseAdapter
     public static final String ANNOTATE = "annotate";
     public static final String TAG = "tag";
 
-    private static final String NAME = "dbAdapter";
     
-    private DatabaseHelper mDbHelper;
     private SQLiteDatabase mDb;
 
-    /**
-     * Database creation SQL statement.
-     */
-    private static final String DATABASE_CREATE_PHOTOS = 
-    	"create table photos (_id integer primary key autoincrement, "
-        + "date TEXT NOT NULL, folder TEXT NOT NULL, tag TEXT NOT NULL," +
-        		"annotate TEXT NOT NULL, photo BLOB NOT NULL);";
-    
-    private static final String DATABASE_CREATE_FOLDERS =
-    	"CREATE TABLE folders (_id integer primary key autoincrement, "
-        + "folder TEXT NOT NULL);";
-
-    private static final String DATABASE_NAME = "data";
+  //  private static final String DATABASE_NAME = "data";
     private static final String DATABASE_TABLE_PHOTOS = "photos";
     private static final String DATABASE_TABLE_FOLDERS = "folders";
-    private static final int DATABASE_VERSION = 2;
-
-    private final Context mCtx;
-
-    private static class DatabaseHelper extends SQLiteOpenHelper {
-
-        DatabaseHelper(Context context) {
-            super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        }
-
-        @Override
-        public void onCreate(SQLiteDatabase db) {
-            db.execSQL(DATABASE_CREATE_PHOTOS);
-            db.execSQL(DATABASE_CREATE_FOLDERS);
-        }
-
-        @Override
-        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-            Log.w(NAME, "Upgrading database from version " + oldVersion + " to "
-                    + newVersion + ", which will destroy all old data");
-            db.execSQL("DROP TABLE IF EXISTS photos");
-            db.execSQL("DROP TABLE IF EXISTS folders");
-            onCreate(db);
-        }
-    }
+  //  private static final int DATABASE_VERSION = 2;
 
     /**
      * Constructor - takes the context to allow the database to be
@@ -108,7 +71,7 @@ public class DatabaseAdapter
      * @param ctx the Context within which to work
      */
     public DatabaseAdapter(Context ctx) {
-        this.mCtx = ctx;
+        databaseAdapterProduct.setMCtx(ctx);
     }
 
     /**
@@ -121,14 +84,12 @@ public class DatabaseAdapter
      * @throws SQLException if the database could be neither opened or created
      */
     public DatabaseAdapter open() throws SQLException {
-        mDbHelper = new DatabaseHelper(mCtx);
-        mDb = mDbHelper.getWritableDatabase();
-        return this;
-    }
+		return databaseAdapterProduct.open(this);
+	}
 
     public void close() {
-        mDbHelper.close();
-    }
+		databaseAdapterProduct.close();
+	}
 
     /**
      * Create a new entry using the information provided. If the entry is
@@ -274,5 +235,9 @@ public class DatabaseAdapter
     	
     	mDb.update(DATABASE_TABLE_PHOTOS, args, ID +"="+rowId, null); 	
     }
+
+	public void setMDb(SQLiteDatabase mDb) {
+		this.mDb = mDb;
+	}
     
 }

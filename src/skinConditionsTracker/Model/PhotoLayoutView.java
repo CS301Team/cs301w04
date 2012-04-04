@@ -89,7 +89,8 @@ public class PhotoLayoutView extends Activity
 	private DatabaseAdapter dbHelper;
 
 	private Cursor entriesCursor;
-
+	private Cursor tagCursor;
+	
 	private String folderName;
 	private String _path;
 
@@ -221,6 +222,7 @@ public class PhotoLayoutView extends Activity
 
 		dbHelper.close();
 		entriesCursor.close();
+		tagCursor.close();
 	}
 
 
@@ -372,7 +374,7 @@ public class PhotoLayoutView extends Activity
 			}
 		});
 
-		Cursor tagCursor = dbHelper.fetchUniqueTags();
+		tagCursor = dbHelper.fetchUniqueTags();
 		startManagingCursor(tagCursor);
 
 		final String def = "Default Folder Photos";
@@ -390,6 +392,8 @@ public class PhotoLayoutView extends Activity
 			}
 		}
 
+		tagCursor.close();
+		
 		ArrayAdapter<String> adapter =  new ArrayAdapter<String>(PhotoLayoutView.this,
 				android.R.layout.simple_spinner_item, tagList);
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -400,7 +404,7 @@ public class PhotoLayoutView extends Activity
 			public void onItemSelected (AdapterView<?> parent, View v, int position, long id) {
 				String selectedTag = ((TextView)v.findViewById(android.R.id.text1)).getText().toString();
 				if (!selectedTag.equals(def)) {
-					Cursor tagCursor = dbHelper.fetchPhotosUnderTag(selectedTag);
+					tagCursor = dbHelper.fetchPhotosUnderTag(selectedTag);
 
 					startManagingCursor(tagCursor);
 
@@ -426,7 +430,6 @@ public class PhotoLayoutView extends Activity
 			}
 		});
 
-		tagCursor.close();
 		return queryTagDialog.create();
 	}
 
