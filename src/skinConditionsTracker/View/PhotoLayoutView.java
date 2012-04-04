@@ -61,17 +61,18 @@ import android.widget.Toast;
 /** 
  * PhotoLayoutView
  * This view allows the user to view photos in a selected folder.
- * The folder name is given to this activity from DisplayFolderView.
+ * The folder name is given to this activity from FolderLayoutView.
  * This activity calls DisplayPhotoView, when a photo is clicked.
- * This activity passes a bitmap, folder name and time stamp of
- * the clicked photo to DisplayPhotoView.
+ * This activity passes a rowID which the DisplayPhotoView uses to 
+ * populate its imageviews. The layout can also compare photos and
+ * query photos by tags.
  * 
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
  * @author Kurtis Morin: kmorin1
  * 
- * Friday, March 30, 2012
+ * April 06, 2012
  * 
  */
 
@@ -85,7 +86,7 @@ public class PhotoLayoutView extends Activity
 
 	private Button newPhoto;
 	private Button compPhoto;
-	private Button sortByTag;
+	private Button queryByTag;
 	private TextView currentFolder;
 	private GridView gridView;
 
@@ -110,7 +111,7 @@ public class PhotoLayoutView extends Activity
 
 		newPhoto = (Button) findViewById(R.id.new_photo);
 		compPhoto = (Button) findViewById(R.id.compare_photo);
-		sortByTag = (Button) findViewById(R.id.sort_tag);
+		queryByTag = (Button) findViewById(R.id.query_tag);
 		gridView = (GridView) findViewById(R.id.gridView1);
 		currentFolder = (TextView) findViewById(R.id.current_folder);
 		final Intent intent = new Intent(PhotoLayoutView.this, ComparePhotoView.class);
@@ -141,6 +142,11 @@ public class PhotoLayoutView extends Activity
 		});
 
 
+		/** 
+		 * When comparePhoto button is clicked, tells the user
+		 * to select two photos to compare or press compare button
+		 * again to cancel the comparison.
+		 */
 		compPhoto.setOnClickListener( new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -156,7 +162,11 @@ public class PhotoLayoutView extends Activity
 			}
 		});
 
-		sortByTag.setOnClickListener(new View.OnClickListener() {
+		/** 
+		 * This button makes a dialog appear that allows the user to
+		 * query the photos by tag.
+		 */
+		queryByTag.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Dialog queryTagDialog = queryTagDialog(); 
@@ -165,9 +175,10 @@ public class PhotoLayoutView extends Activity
 		});
 
 		/** 
-		 *  When item is clicked in the GridView it gets the bitmap of the image
-		 *  along with the foldername the item belongs to and the timestamp of the item.
-		 *  An activity to DisplayPhotoView is then called.
+		 *  When item is clicked in the GridView it gets the rowID of the image.
+		 *  If in photo compare mode it sets the rowID in a holder to wait for a
+		 *  second image to be clicked.
+		 *  An activity to DisplayPhotoView or ComparePhotoView is then called.
 		 */
 		gridView.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -190,14 +201,14 @@ public class PhotoLayoutView extends Activity
 		});
 
 		/**
-		 * When item is clicked in the GridView, it's id is recorded.
+		 * When item is long clicked in the GridView, it's id is recorded
+		 * and a dialog appears to allow deletion..
 		 *  @return true
 		 */
 		gridView.setOnItemLongClickListener(new android.widget.AdapterView.OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {	
 				entryID = id;
 
-				//showDialog(DIALOG_DELETE_PHOTO_ID);
 				deletePhotoDialog.show();
 				return true;
 			}
@@ -205,8 +216,7 @@ public class PhotoLayoutView extends Activity
 	}
 
 	/**
-	 * Recreate the database on start to prevent errors
-	 * 
+	 * Recreate the database on start and fill the gridview. 
 	 */
 	@Override
 	protected void onStart() {
@@ -217,16 +227,14 @@ public class PhotoLayoutView extends Activity
 	}
 
 	/**
-	 * Close the database on stop to prevent errors
-	 * 
+	 * Close the database on stop to prevent errors. 
 	 */
 	@Override
 	protected void onStop() {
 		super.onStop();
 		
-		//tagCursor.close();
-		dbHelper.close();
 		entriesCursor.close();
+		dbHelper.close();
 	}
 
 
@@ -321,13 +329,11 @@ public class PhotoLayoutView extends Activity
 		gridView.setAdapter(entries);
 	}
 
-	/** OnCreateDialog method to create the dialogs when called.
-	 * Uses a switch case mechanism to decide which dialog to display.
-	 * @param int id (Used for the switch/case)
-	 * When the ID is delete photo a confirmation dialog appears asking the
+	/** Method to create the deletePhotoDialog when called.
+	 * When it is shown a confirmation dialog appears asking the
 	 * user to make their final decision. They can confirm the delete or cancel.
 	 * The function returns the created dialog.
-	 * @return dialog.create() */
+	 * @return deleteDialog.create() */
 
 	private Dialog deletePhotoDialog() {
 		Builder deleteDialog = new AlertDialog.Builder(PhotoLayoutView.this);
@@ -356,6 +362,13 @@ public class PhotoLayoutView extends Activity
 		return deleteDialog.create();
 	}
 
+	/** Method to create the queryTagDialog when called.
+	 * When it is shown a spinner appears asking the
+	 * user to select a tag. Once a tag is selected it populates the
+	 * gridview with photos that have that tag.
+	 * The function returns the created dialog.
+	 * @return deleteDialog.create() */
+	
 	private Dialog queryTagDialog() {
 		Builder queryTagDialog = new AlertDialog.Builder(PhotoLayoutView.this);
 
@@ -368,7 +381,7 @@ public class PhotoLayoutView extends Activity
 		queryTagDialog.setMessage("Select tag to view photos from that group.");
 		// do the work to define the sortDialog
 		// Setting Neutral Button
-		queryTagDialog.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
+		queryTagDialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog,int which) {
 				//actions to complete when clicking neutral
 			}
@@ -406,7 +419,7 @@ public class PhotoLayoutView extends Activity
 				if (!selectedTag.equals(def)) {
 					tagCursor = dbHelper.fetchPhotosUnderTag(selectedTag);
 
-					startManagingCursor(tagCursor);
+					//startManagingCursor(tagCursor);
 
 					// Create an array to specify the fields we want to display in the list (only DATE)
 					String[] from = new String[] { DatabaseAdapter.PHOTO, DatabaseAdapter.DATE};
@@ -418,7 +431,7 @@ public class PhotoLayoutView extends Activity
 
 					entries.setViewBinder(new PhotoViewBinder());
 
-					gridView.setAdapter(entries);	
+					gridView.setAdapter(entries);
 				} else {
 					fillData();
 				}
@@ -426,7 +439,7 @@ public class PhotoLayoutView extends Activity
 
 			@Override
 			public void onNothingSelected(AdapterView<?> parent) {
-
+				
 			}
 		});
 

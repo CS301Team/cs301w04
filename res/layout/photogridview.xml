@@ -77,11 +77,11 @@
         style="@style/ButtonText" />
     
     <Button
-        android:id="@+id/sort_tag"
+        android:id="@+id/query_tag"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
-        android:text="@string/sort_tag"
+        android:text="@string/query_tag"
         android:background="@drawable/mybutton_background"
         style="@style/ButtonText" />
   

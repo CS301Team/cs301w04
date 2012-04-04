@@ -39,5 +39,5 @@
 <string name="arrow">arrow</string>
 <string name="new_annotation">Modify Annotation</string>
 <string name="new_tag">Modify Tag</string>
-<string name="sort_tag">Filter by Tag</string>
+<string name="query_tag">Filter by Tag</string>
 </resources>

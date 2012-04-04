@@ -44,7 +44,7 @@ import android.widget.Toast;
  */
 
 /** 
- * DisplayFolderView
+ * FolderLayoutView
  * This is the initial view which shows folders of photos.
  * This activity starts PhotoLayoutView when a folder is clicked.
  * This activity passes the folder name to PhotoLayoutView.
@@ -58,7 +58,7 @@ import android.widget.Toast;
  * 
  */
 
-public class DisplayFolderView extends Activity {
+public class FolderLayoutView extends Activity {
 
 	private Button addFolderButton;
 	private String folderName;
@@ -69,7 +69,7 @@ public class DisplayFolderView extends Activity {
 
 	private Cursor entriesCursor;
 
-	/** OnCreate method for the DisplayFolderView.
+	/** OnCreate method for the FolderLayoutView.
 	 * It initializes values for views and sets on 
 	 * click listeners for all buttons in the view. 
 	 * */
@@ -181,9 +181,9 @@ public class DisplayFolderView extends Activity {
 	 * @return dialog.create() */
 
 	private Dialog addFolderDialog() {
-		final EditText input = new EditText(DisplayFolderView.this);
+		final EditText input = new EditText(FolderLayoutView.this);
 
-		Builder addDialog = new AlertDialog.Builder(DisplayFolderView.this);
+		Builder addDialog = new AlertDialog.Builder(FolderLayoutView.this);
 		// do the work to define the addDialog
 		addDialog.setView(input);
 		addDialog.setTitle("Adding a new folder...");
@@ -242,6 +242,7 @@ public class DisplayFolderView extends Activity {
 					//to implement deletion of the values from the
 					//entries table as well later
 					dbHelper.deleteFolder(entryID);
+					
 					fillData();
 				}
 			}
