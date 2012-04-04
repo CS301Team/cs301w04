@@ -67,6 +67,11 @@ import android.widget.Toast;
  * populate its imageviews. The layout can also compare photos and
  * query photos by tags.
  * 
+ * An issue we have with class is closing the cursor for the 
+ * query tag dialog. After you use it you get a fill window error.
+ * It doesn't effect the running of the program. We've tried closing
+ * it multiple ways but it starts to crash our program so we've just
+ * left it as is.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
@@ -75,10 +80,6 @@ import android.widget.Toast;
  * April 06, 2012
  * 
  */
-
-//http://www.dibbus.com/2011/02/gradient-buttons-for-android/
-//http://www.typeoneerror.com/articles/post/android-changing-listview-background-colors
-//http://openiconlibrary.sourceforge.net/
 
 public class PhotoLayoutView extends Activity
 {
