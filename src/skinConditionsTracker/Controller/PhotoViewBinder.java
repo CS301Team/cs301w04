@@ -1,4 +1,4 @@
-package skinConditionsTracker.Model;
+package skinConditionsTracker.Controller;
 
 import android.database.Cursor;
 import android.graphics.BitmapFactory;

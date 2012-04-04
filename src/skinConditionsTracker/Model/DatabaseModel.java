@@ -1,18 +1,17 @@
 package skinConditionsTracker.Model;
 
 
-import skinConditionsTracker.Model.DatabaseAdapter;
+import skinConditionsTracker.Controller.DatabaseAdapter;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.content.Context;
 
-public class DatabaseAdapterProduct {
+public class DatabaseModel {
 	private DatabaseHelper mDbHelper;
 	private Context mCtx;
 	
-
     /**
      * Database creation SQL statement.
      */

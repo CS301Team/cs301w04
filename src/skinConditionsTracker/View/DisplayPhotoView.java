@@ -1,5 +1,7 @@
-package skinConditionsTracker.Model;
+package skinConditionsTracker.View;
 
+import skinConditionsTracker.Controller.DatabaseAdapter;
+import skinConditionsTracker.Model.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -158,7 +160,6 @@ public class DisplayPhotoView extends Activity {
 
 				photoAnnotate.setText(annotation);
 
-				dialog.dismiss();
 				input.setText("");
 			}
 		});
@@ -167,7 +168,6 @@ public class DisplayPhotoView extends Activity {
 		addAnnotateDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				//actions to complete when clicking cancel
-				dialog.dismiss();
 			}
 		});
 		return addAnnotateDialog.create();
@@ -191,7 +191,6 @@ public class DisplayPhotoView extends Activity {
 
 				photoTag.setText(tag);
 
-				dialog.dismiss();
 				input.setText("");
 			}
 		});
@@ -200,7 +199,6 @@ public class DisplayPhotoView extends Activity {
 		addTagDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				//actions to complete when clicking cancel
-				dialog.dismiss();
 			}
 		});
 		return addTagDialog.create();

@@ -1,5 +1,7 @@
-package skinConditionsTracker.Model;
+package skinConditionsTracker.View;
 
+import skinConditionsTracker.Controller.DatabaseAdapter;
+import skinConditionsTracker.Model.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -42,7 +44,7 @@ import android.widget.Toast;
  */
 
 /** 
- * MoleFinderActivity
+ * DisplayFolderView
  * This is the initial view which shows folders of photos.
  * This activity starts PhotoLayoutView when a folder is clicked.
  * This activity passes the folder name to PhotoLayoutView.
@@ -56,7 +58,7 @@ import android.widget.Toast;
  * 
  */
 
-public class MoleFinderActivity extends Activity {
+public class DisplayFolderView extends Activity {
 
 	private Button addFolderButton;
 	private String folderName;
@@ -67,7 +69,7 @@ public class MoleFinderActivity extends Activity {
 
 	private Cursor entriesCursor;
 
-	/** OnCreate method for the MoleFinderActivity.
+	/** OnCreate method for the DisplayFolderView.
 	 * It initializes values for views and sets on 
 	 * click listeners for all buttons in the view. 
 	 * */
@@ -179,9 +181,9 @@ public class MoleFinderActivity extends Activity {
 	 * @return dialog.create() */
 
 	private Dialog addFolderDialog() {
-		final EditText input = new EditText(MoleFinderActivity.this);
+		final EditText input = new EditText(DisplayFolderView.this);
 
-		Builder addDialog = new AlertDialog.Builder(MoleFinderActivity.this);
+		Builder addDialog = new AlertDialog.Builder(DisplayFolderView.this);
 		// do the work to define the addDialog
 		addDialog.setView(input);
 		addDialog.setTitle("Adding a new folder...");

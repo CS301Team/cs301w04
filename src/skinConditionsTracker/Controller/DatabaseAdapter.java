@@ -1,12 +1,11 @@
-package skinConditionsTracker.Model;
+package skinConditionsTracker.Controller;
 
+import skinConditionsTracker.Model.DatabaseModel;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 /**
  * 
@@ -48,7 +47,7 @@ import android.util.Log;
 
 public class DatabaseAdapter
 {
-	public DatabaseAdapterProduct databaseAdapterProduct = new DatabaseAdapterProduct();
+	public DatabaseModel databaseModel = new DatabaseModel();
 	public static final String ID = "_id";
 	public static final String DATE = "date";
     public static final String FOLDER = "folder";
@@ -71,7 +70,7 @@ public class DatabaseAdapter
      * @param ctx the Context within which to work
      */
     public DatabaseAdapter(Context ctx) {
-        databaseAdapterProduct.setMCtx(ctx);
+        databaseModel.setMCtx(ctx);
     }
 
     /**
@@ -84,11 +83,11 @@ public class DatabaseAdapter
      * @throws SQLException if the database could be neither opened or created
      */
     public DatabaseAdapter open() throws SQLException {
-		return databaseAdapterProduct.open(this);
+		return databaseModel.open(this);
 	}
 
     public void close() {
-		databaseAdapterProduct.close();
+		databaseModel.close();
 	}
 
     /**

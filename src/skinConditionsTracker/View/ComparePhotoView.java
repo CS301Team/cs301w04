@@ -1,5 +1,7 @@
-package skinConditionsTracker.Model;
+package skinConditionsTracker.View;
 
+import skinConditionsTracker.Controller.DatabaseAdapter;
+import skinConditionsTracker.Model.R;
 import android.app.Activity;
 import android.database.Cursor;
 import android.graphics.Bitmap;

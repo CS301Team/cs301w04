@@ -11,7 +11,7 @@
         android:icon="@drawable/aeskulap"
         android:label="@string/app_name" >
         <activity
-            android:name=".MoleFinderActivity"
+            android:name="skinConditionsTracker.View.DisplayFolderView"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +21,7 @@
         </activity>
         
         <activity
-            android:name=".PhotoLayoutView"
+            android:name="skinConditionsTracker.View.PhotoLayoutView"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -30,7 +30,7 @@
           </activity>
           
         <activity
-            android:name=".DisplayPhotoView"
+            android:name="skinConditionsTracker.View.DisplayPhotoView"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -39,7 +39,7 @@
           </activity>
                 
          <activity
-            android:name="skinConditionsTracker.Model.ComparePhotoView"
+            android:name="skinConditionsTracker.View.ComparePhotoView"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

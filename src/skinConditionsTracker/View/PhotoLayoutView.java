@@ -1,4 +1,4 @@
-package skinConditionsTracker.Model;
+package skinConditionsTracker.View;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -7,6 +7,10 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import skinConditionsTracker.Controller.DatabaseAdapter;
+import skinConditionsTracker.Controller.PhotoViewBinder;
+import skinConditionsTracker.Model.PhotoHolder;
+import skinConditionsTracker.Model.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -57,7 +61,7 @@ import android.widget.Toast;
 /** 
  * PhotoLayoutView
  * This view allows the user to view photos in a selected folder.
- * The folder name is given to this activity from MoleFinderActivity.
+ * The folder name is given to this activity from DisplayFolderView.
  * This activity calls DisplayPhotoView, when a photo is clicked.
  * This activity passes a bitmap, folder name and time stamp of
  * the clicked photo to DisplayPhotoView.
@@ -219,10 +223,10 @@ public class PhotoLayoutView extends Activity
 	@Override
 	protected void onStop() {
 		super.onStop();
-
+		
+		//tagCursor.close();
 		dbHelper.close();
 		entriesCursor.close();
-		tagCursor.close();
 	}
 
 
@@ -340,8 +344,6 @@ public class PhotoLayoutView extends Activity
 					dbHelper.deletePhoto(entryID);
 					fillData();
 				}
-
-				dialog.dismiss();
 			}
 		});
 
@@ -349,7 +351,6 @@ public class PhotoLayoutView extends Activity
 		deleteDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				//actions to complete when clicking cancel
-				dialog.dismiss();
 			}
 		});
 		return deleteDialog.create();
@@ -370,7 +371,6 @@ public class PhotoLayoutView extends Activity
 		queryTagDialog.setNeutralButton("Okay", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog,int which) {
 				//actions to complete when clicking neutral
-				dialog.dismiss();
 			}
 		});
 
