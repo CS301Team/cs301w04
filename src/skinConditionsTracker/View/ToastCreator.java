@@ -1,6 +1,5 @@
 package skinConditionsTracker.View;
 
-import skinConditionsTracker.Model.R;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.LayoutInflater;

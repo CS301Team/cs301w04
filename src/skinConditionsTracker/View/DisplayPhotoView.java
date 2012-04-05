@@ -1,7 +1,6 @@
 package skinConditionsTracker.View;
 
 import skinConditionsTracker.Controller.DatabaseAdapter;
-import skinConditionsTracker.Model.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

@@ -10,7 +10,6 @@ import java.util.Date;
 import skinConditionsTracker.Controller.DatabaseAdapter;
 import skinConditionsTracker.Controller.PhotoViewBinder;
 import skinConditionsTracker.Model.PhotoHolder;
-import skinConditionsTracker.Model.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;

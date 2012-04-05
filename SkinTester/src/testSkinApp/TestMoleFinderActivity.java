@@ -10,7 +10,7 @@ import android.test.ActivityInstrumentationTestCase2;
 public class TestMoleFinderActivity extends ActivityInstrumentationTestCase2 {
 
 	private static final String TARGET_PACKAGE_ID="skinConditionsTracker.Model";
-	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME="skinConditionsTracker.Model.MoleFinderActivity";
+	private static final String LAUNCHER_ACTIVITY_FULL_CLASSNAME="skinConditionsTracker.View.PhotoLayoutView";
 	private static Class launcherActivityClass;
 	static{
 		try{
