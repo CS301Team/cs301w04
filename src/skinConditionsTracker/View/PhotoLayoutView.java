@@ -24,20 +24,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
@@ -151,14 +147,16 @@ public class PhotoLayoutView extends Activity
 		compPhoto.setOnClickListener( new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				ToastCreator toast = new ToastCreator(PhotoLayoutView.this);
+				
 				if(comparePhotoIsSet == false){
 					comparePhotoIsSet = true;
-					Toaster("Please select two photos to compare.\nPress compare again to cancel.");
+					toast.toaster("Please select two photos to compare.\nPress compare again to cancel.");
 				}
 				else if (comparePhotoIsSet == true){
 					comparePhotoIsSet = false;
 					pHolder.clearPhotoHolder(pHolder);
-					Toaster("Photo Comparision Cancelled.");
+					toast.toaster("Photo Comparison Cancelled.");
 				}
 			}
 		});
@@ -446,30 +444,4 @@ public class PhotoLayoutView extends Activity
 
 		return queryTagDialog.create();
 	}
-
-	/**
-	 * A function that takes in a string and displays this
-	 * string in a toast. Whenever information is needed to be
-	 * displayed we create a string and use this method to give
-	 * the user feedback.
-	 * 
-	 * @param string
-	 */
-	private void Toaster(String s) {
-		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.toast_layout,
-				(ViewGroup) findViewById(R.id.toast_layout_root));
-
-		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
-		image.setImageResource(R.drawable.info_notice);
-		TextView text = (TextView) layout.findViewById(R.id.toast_text);
-		text.setText(s);
-
-		Toast toast = new Toast(getApplicationContext());
-		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
-		toast.setDuration(Toast.LENGTH_SHORT);
-		toast.setView(layout);
-		toast.show();
-	}
-
 }

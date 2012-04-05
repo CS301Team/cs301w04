@@ -177,16 +177,16 @@ public class DisplayPhotoView extends Activity {
 				//actions to complete when clicking Add folder
 				String annotation = input.getText().toString();
 				
-				ToastCreator toaster = new ToastCreator(DisplayPhotoView.this);
+				ToastCreator toast = new ToastCreator(DisplayPhotoView.this);
 				
 				if(annotation.equals("")){
-					toaster.toaster("Please insert text for an annotation.");
+					toast.toaster("Please insert text for an annotation.");
 				}
 				else if (annotation.contains("'")){
-					toaster.toaster("Please do not include single quotes in annotation.");
+					toast.toaster("Please do not include single quotes in annotation.");
 				}
 				else if (annotation.length() > 256){
-					toaster.toaster("Please make the annotation shorter.");
+					toast.toaster("Please make the annotation shorter.");
 				}
 				else{
 					dbHelper.addAnnotationToPhoto(annotation, rowId);
@@ -229,22 +229,22 @@ public class DisplayPhotoView extends Activity {
 				//actions to complete when clicking Add folder
 				String tag = input.getText().toString();
 				
-				ToastCreator toaster = new ToastCreator(DisplayPhotoView.this);
+				ToastCreator toast = new ToastCreator(DisplayPhotoView.this);
 				
 				if(tag.equals("")){
-					toaster.toaster("Please insert text for a tag.");
+					toast.toaster("Please insert text for a tag.");
 				}
 				else if (tag.contains("'")){
-					toaster.toaster("Please do not include single quotes in tag.");
+					toast.toaster("Please do not include single quotes in tag.");
 				}
 				else if (tag.length() > 30){
-					toaster.toaster("Please make the tag shorter.");
+					toast.toaster("Please make the tag shorter.");
 				}
 				else if (tag.contains("\n")){
-					toaster.toaster("Please make the tag one line.");
+					toast.toaster("Please make the tag one line.");
 				}
 				else if (tag.equals("Default Folder Photos")){
-					toaster.toaster("Don't get smart with me.");
+					toast.toaster("Don't get smart with me.");
 				}
 				else{
 					dbHelper.addTagToPhoto(tag, rowId);

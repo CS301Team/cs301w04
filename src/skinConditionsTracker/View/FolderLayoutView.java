@@ -10,19 +10,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
@@ -199,17 +194,19 @@ public class FolderLayoutView extends Activity {
 				//actions to complete when clicking Add folder
 				folderName = input.getText().toString();
 
+				ToastCreator toast = new ToastCreator(FolderLayoutView.this);
+				
 				if(folderName.equals("")){
-					toaster("Please insert text for folder name.");
+					toast.toaster("Please insert text for folder name.");
 				}
 				else if (folderName.contains("\n")){
-					toaster("Please make folder name one line.");
+					toast.toaster("Please make folder name one line.");
 				}
 				else if (folderName.contains("'")){
-					toaster("Please do not include single quotes.");
+					toast.toaster("Please do not include single quotes.");
 				}
 				else if (folderName.length() > 50){
-					toaster("Please make the folder name shorter.");
+					toast.toaster("Please make the folder name shorter.");
 				}
 				else{
 					dbHelper.createFolder(folderName);
@@ -265,30 +262,5 @@ public class FolderLayoutView extends Activity {
 			}
 		});
 		return deleteDialog.create(); 	
-	}
-
-	/**
-	 * A function that takes in a string and displays this
-	 * string in a toast. Whenever information is needed to be
-	 * displayed we create a string and use this method to give
-	 * the user feedback.
-	 * 
-	 * @param string
-	 */
-	private void toaster(String s) {
-		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.toast_layout,
-				(ViewGroup) findViewById(R.id.toast_layout_root));
-
-		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
-		image.setImageResource(R.drawable.info_notice);
-		TextView text = (TextView) layout.findViewById(R.id.toast_text);
-		text.setText(s);
-
-		Toast toast = new Toast(getApplicationContext());
-		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
-		toast.setDuration(Toast.LENGTH_SHORT);
-		toast.setView(layout);
-		toast.show();
 	}
 }
