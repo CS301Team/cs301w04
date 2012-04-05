@@ -86,16 +86,11 @@ public class FolderLayoutView extends Activity {
 		 * */
 		list.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				//Cursor folderCursor = ((SimpleCursorAdapter)parent.getAdapter()).getCursor();
-				//startManagingCursor(folderCursor);
-				//folderCursor.moveToPosition(position);
-				//String currentFolder = folderCursor.getString(1);
-
 				String currentFolder = ((TextView)v.findViewById(R.id.folder_name)).getText().toString();
 				
 				Intent intent = new Intent(v.getContext(), PhotoLayoutView.class);
 				intent.putExtra("FolderName", currentFolder);
-				//folderCursor.close();
+				
 				startActivity(intent);
 			}
 		});
@@ -108,8 +103,6 @@ public class FolderLayoutView extends Activity {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
 				folderName = ((TextView)v.findViewById(R.id.folder_name)).getText().toString();
 				entryID = id;
-
-				//toaster(currentFolder);
 				
 				deleteFolderDialog.show();
 

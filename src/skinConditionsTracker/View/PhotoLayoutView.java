@@ -87,17 +87,18 @@ public class PhotoLayoutView extends Activity
 	private GridView gridView;
 
 	private long entryID = -1;
+	
 	private DatabaseAdapter dbHelper;
 
 	private Cursor entriesCursor;
 	private Cursor tagCursor;
 	
 	private String folderName;
+	
 	private String _path;
-
 	private PhotoHolder pHolder;
 
-	boolean comparePhotoIsSet = false;
+	private boolean comparePhotoIsSet = false;
 
 	/** onCreate called when the activity is first created. */
 	@Override
@@ -110,19 +111,19 @@ public class PhotoLayoutView extends Activity
 		queryByTag = (Button) findViewById(R.id.query_tag);
 		gridView = (GridView) findViewById(R.id.gridView1);
 		currentFolder = (TextView) findViewById(R.id.current_folder);
+		
 		final Intent intent = new Intent(PhotoLayoutView.this, ComparePhotoView.class);
 
 		final Dialog deletePhotoDialog = deletePhotoDialog(); 
-		///
-		///
+		
 		_path = Environment.getExternalStorageDirectory() + "/images/temp_photo_holder.jpg";
-		///
 
 		pHolder = new PhotoHolder();
 
 		dbHelper = new DatabaseAdapter(this);
 
 		folderName = getIntent().getStringExtra("FolderName");
+		
 		currentFolder.setText(folderName);
 
 		/** 
@@ -143,16 +144,16 @@ public class PhotoLayoutView extends Activity
 		 * to select two photos to compare or press compare button
 		 * again to cancel the comparison.
 		 */
-		compPhoto.setOnClickListener( new View.OnClickListener() {
+		compPhoto.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				ToastCreator toast = new ToastCreator(PhotoLayoutView.this);
 				
-				if(comparePhotoIsSet == false){
+				if (comparePhotoIsSet == false) {
 					comparePhotoIsSet = true;
 					toast.toaster("Please select two photos to compare.\nPress compare again to cancel.");
 				}
-				else if (comparePhotoIsSet == true){
+				else if (comparePhotoIsSet == true) {
 					comparePhotoIsSet = false;
 					pHolder.clearPhotoHolder(pHolder);
 					toast.toaster("Photo Comparison Cancelled.");
@@ -166,7 +167,7 @@ public class PhotoLayoutView extends Activity
 		 */
 		queryByTag.setOnClickListener(new View.OnClickListener() {
 			@Override
-			public void onClick(View v) {
+			public void onClick (View v) {
 				Dialog queryTagDialog = queryTagDialog(); 
 				queryTagDialog.show();
 			}
@@ -185,12 +186,11 @@ public class PhotoLayoutView extends Activity
 					if (pHolder.isNotSet(pHolder)){
 						pHolder.setPhotoID(id, 1);
 					}
-					else if (pHolder.isPartiallySet(pHolder)){
+					else if (pHolder.isPartiallySet(pHolder)) {
 						pHolder.setPhotoID(id, 2);
 						extractHolder(intent, pHolder);
 					}	
 				} else {
-
 					Intent intent = new Intent(PhotoLayoutView.this, DisplayPhotoView.class);
 					intent.putExtra("rowId", id);
 					startActivity(intent);
@@ -292,7 +292,7 @@ public class PhotoLayoutView extends Activity
 
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inSampleSize = 1;
-				//Bitmap bitmap = (Bitmap) intent.getExtras().get("data");
+
 				Bitmap bitmap = BitmapFactory.decodeFile( _path, options );
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos); 
@@ -315,7 +315,7 @@ public class PhotoLayoutView extends Activity
 		startManagingCursor(entriesCursor);
 
 		// Create an array to specify the fields we want to display in the list (only DATE)
-		String[] from = new String[] { DatabaseAdapter.PHOTO, DatabaseAdapter.DATE};
+		String[] from = new String[] { DatabaseAdapter.PHOTO, DatabaseAdapter.DATE };
 		int[] to = new int[] { R.id.image1, R.id.text1 };
 
 		// Create an array adapter and set it to display
@@ -417,9 +417,7 @@ public class PhotoLayoutView extends Activity
 				if (!selectedTag.equals(def)) {
 					tagCursor = dbHelper.fetchPhotosUnderTag(selectedTag);
 
-					//startManagingCursor(tagCursor);
-
-					// Create an array to specify the fields we want to display in the list (only DATE)
+					// Create an array to specify the fields we want to display in the list
 					String[] from = new String[] { DatabaseAdapter.PHOTO, DatabaseAdapter.DATE};
 					int[] to = new int[] { R.id.image1, R.id.text1 };
 
