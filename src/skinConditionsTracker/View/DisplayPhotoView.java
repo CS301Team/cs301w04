@@ -11,15 +11,11 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 
@@ -180,14 +176,17 @@ public class DisplayPhotoView extends Activity {
 			public void onClick(DialogInterface dialog,int which) {
 				//actions to complete when clicking Add folder
 				String annotation = input.getText().toString();
+				
+				ToastCreator toaster = new ToastCreator(DisplayPhotoView.this);
+				
 				if(annotation.equals("")){
-					toaster("Please insert text for an annotation.");
+					toaster.toaster("Please insert text for an annotation.");
 				}
 				else if (annotation.contains("'")){
-					toaster("Please do not include single quotes in annotation.");
+					toaster.toaster("Please do not include single quotes in annotation.");
 				}
 				else if (annotation.length() > 256){
-					toaster("Please make the annotation shorter.");
+					toaster.toaster("Please make the annotation shorter.");
 				}
 				else{
 					dbHelper.addAnnotationToPhoto(annotation, rowId);
@@ -230,20 +229,22 @@ public class DisplayPhotoView extends Activity {
 				//actions to complete when clicking Add folder
 				String tag = input.getText().toString();
 				
+				ToastCreator toaster = new ToastCreator(DisplayPhotoView.this);
+				
 				if(tag.equals("")){
-					toaster("Please insert text for an annotation.");
+					toaster.toaster("Please insert text for a tag.");
 				}
 				else if (tag.contains("'")){
-					toaster("Please do not include single quotes in annotation.");
+					toaster.toaster("Please do not include single quotes in tag.");
 				}
 				else if (tag.length() > 30){
-					toaster("Please make the annotation shorter.");
+					toaster.toaster("Please make the tag shorter.");
 				}
 				else if (tag.contains("\n")){
-					toaster("Please make the annotation one line.");
+					toaster.toaster("Please make the tag one line.");
 				}
 				else if (tag.equals("Default Folder Photos")){
-					toaster("Don't get smart with me.");
+					toaster.toaster("Don't get smart with me.");
 				}
 				else{
 					dbHelper.addTagToPhoto(tag, rowId);
@@ -261,30 +262,5 @@ public class DisplayPhotoView extends Activity {
 			}
 		});
 		return addTagDialog.create();
-	}
-	
-	/**
-	 * A function that takes in a string and displays this
-	 * string in a toast. Whenever information is needed to be
-	 * displayed we create a string and use this method to give
-	 * the user feedback.
-	 * 
-	 * @param string
-	 */
-	private void toaster(String string) {
-		LayoutInflater inflater = getLayoutInflater();
-		View layout = inflater.inflate(R.layout.toast_layout,
-				(ViewGroup) findViewById(R.id.toast_layout_root));
-
-		ImageView image = (ImageView) layout.findViewById(R.id.toast_image);
-		image.setImageResource(R.drawable.info_notice);
-		TextView text = (TextView) layout.findViewById(R.id.toast_text);
-		text.setText(string);
-
-		Toast toast = new Toast(getApplicationContext());
-		toast.setGravity(Gravity.CENTER_VERTICAL, Gravity.CENTER_HORIZONTAL, 0);
-		toast.setDuration(Toast.LENGTH_SHORT);
-		toast.setView(layout);
-		toast.show();	
 	}
 }
