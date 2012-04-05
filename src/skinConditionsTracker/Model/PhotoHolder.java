@@ -21,12 +21,12 @@ package skinConditionsTracker.Model;
  */
 
 /** 
- * rowID Model
- * This holds the rowid for the photo layout view
+ * rowID Model<br>
+ * This holds the rowid for the photo layout view.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 
@@ -107,7 +107,7 @@ public class PhotoHolder {
 	
 	/** sets rowIDs for photo holder
 	 * 
-	 * @param rowID, photoID
+	 * @param rowID is the photoID
 	 */
 	public void setPhotoID(long rowID, int photoID){
 		if(photoID == 1){

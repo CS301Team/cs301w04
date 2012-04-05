@@ -54,7 +54,7 @@ import android.widget.TextView;
  */
 
 /** 
- * PhotoLayoutView
+ * PhotoLayoutView<br>
  * This view allows the user to view photos in a selected folder.
  * The folder name is given to this activity from FolderLayoutView.
  * This activity calls DisplayPhotoView, when a photo is clicked.
@@ -70,7 +70,7 @@ import android.widget.TextView;
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 

@@ -36,7 +36,7 @@ import android.widget.TextView;
  */
 
 /** 
- * DisplayPhotoView
+ * DisplayPhotoView<br>
  * This view is for displaying the photo that is selected.
  * This activity is started from PhotoLayoutView.
  * This activity returns no data.
@@ -45,7 +45,7 @@ import android.widget.TextView;
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 

@@ -29,13 +29,13 @@ import android.widget.Toast;
  */
 
 /** 
- * ToastCreator
+ * ToastCreator<br>
  * Creates toast items to display information to the user
  * when feedback is needed from the program.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 

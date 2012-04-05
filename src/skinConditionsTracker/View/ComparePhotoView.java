@@ -29,14 +29,14 @@ import android.widget.TextView;
  */
 
 /** 
- * ComparePhotoView
+ * ComparePhotoView<br>
  * This is the view for comparing two photos with each other.
  * It is called by PhotoLayoutView. It takes in two row ids.
  * It does not return anything.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 

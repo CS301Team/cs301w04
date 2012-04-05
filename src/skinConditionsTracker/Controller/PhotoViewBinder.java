@@ -27,14 +27,14 @@ import android.widget.SimpleCursorAdapter;
  */
 
 /** 
- * PhotoViewBinder
+ * PhotoViewBinder<br>
  * This class is an adapter used to display photos in gridView.
  * It is used by PhotoLayoutView to display photos.
  * To use setViewBinder of a SimpleCursorAdapter.
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 

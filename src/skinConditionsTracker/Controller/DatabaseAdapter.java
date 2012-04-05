@@ -27,7 +27,7 @@ import android.database.sqlite.SQLiteDatabase;
  */
 
 /** 
- * DatabaseAdapter
+ * DatabaseAdapter<br>
  * A simple SQLite database helper class. Gives the abilities needed
  * by the main application to access photos and available folders.
  * 
@@ -39,7 +39,7 @@ import android.database.sqlite.SQLiteDatabase;
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1 <br><br>
  * 
  * April 06, 2012
  * 
@@ -63,7 +63,6 @@ public class DatabaseAdapter
     /**
      * Constructor - takes the context to allow the database to be
      * opened/created and gives it to the model
-     * @see databaseModel setMCtx()
      * @param ctx the Context within which to work
      */
     public DatabaseAdapter(Context ctx) {
@@ -258,7 +257,7 @@ public class DatabaseAdapter
     /**
      * Sets the database
      * 
-     * @param Takes in the SQL database
+     * @param mDb Takes in the SQL database
      */
 	public void setMDb(SQLiteDatabase mDb) {
 		this.mDb = mDb;

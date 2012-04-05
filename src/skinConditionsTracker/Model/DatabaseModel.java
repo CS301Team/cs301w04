@@ -20,20 +20,18 @@ package skinConditionsTracker.Model;
  */
 
 /** 
- * DatabaseModel
- * 
+ * DatabaseModel<br>
  * Creates the tables in the database and opens and closes it to allow
  * it to be queried.
  * 
- * 
  * Much of the code of this class is from the Notepad Tutorial on
- * the Android Developer website.
+ * the Android Developer website.<br>
  * Found at:
  * http://developer.android.com/resources/tutorials/notepad/index.html
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 

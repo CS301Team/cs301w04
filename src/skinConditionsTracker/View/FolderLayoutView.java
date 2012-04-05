@@ -38,7 +38,7 @@ import android.widget.TextView;
  */
 
 /** 
- * FolderLayoutView
+ * FolderLayoutView<br>
  * This is the initial view which shows folders of photos.
  * This activity starts PhotoLayoutView when a folder is clicked.
  * This activity passes the folder name to PhotoLayoutView.
@@ -46,7 +46,7 @@ import android.widget.TextView;
  * 
  * @author Andrea Budac: abudac
  * @author Christian Jukna: jukna
- * @author Kurtis Morin: kmorin1
+ * @author Kurtis Morin: kmorin1<br><br>
  * 
  * April 06, 2012
  * 
