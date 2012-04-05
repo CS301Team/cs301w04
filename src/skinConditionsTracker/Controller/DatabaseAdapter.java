@@ -151,6 +151,18 @@ public class DatabaseAdapter
     }
     
     /**
+     * Delete all of the photos in the given folder
+     * Id of folder in folder table is given to streamline
+     * deletion process.
+     *
+     * @param folder name of folder to delete photos from
+     * @return true if deleted, false otherwise
+     */
+    public boolean deletePhotosInFolder(String folder) {
+        return mDb.delete(DATABASE_TABLE_PHOTOS, FOLDER + "='" + folder + "'", null) > 0;
+    }
+    
+    /**
      * Return a Cursor over the list of all folders in the table
      * 
      * @return Cursor over all folders

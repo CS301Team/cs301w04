@@ -112,7 +112,7 @@ public class FolderLayoutView extends Activity {
 		 * @return true*/
 		list.setOnItemLongClickListener(new OnItemLongClickListener() {
 			public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
-				String currentFolder = ((TextView)v.findViewById(R.id.folder_name)).getText().toString();
+				folderName = ((TextView)v.findViewById(R.id.folder_name)).getText().toString();
 				entryID = id;
 
 				//toaster(currentFolder);
@@ -250,9 +250,7 @@ public class FolderLayoutView extends Activity {
 			public void onClick(DialogInterface dialog,int which) {
 				//actions to complete when clicking yes
 				if(entryID != -1) {
-					//only deletes from the folders table, we need
-					//to implement deletion of the values from the
-					//entries table as well later
+					dbHelper.deletePhotosInFolder(folderName);
 					dbHelper.deleteFolder(entryID);
 					
 					fillData();
