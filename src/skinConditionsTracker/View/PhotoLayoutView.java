@@ -377,6 +377,7 @@ public class PhotoLayoutView extends Activity
 
 		queryTagDialog.setTitle("Tag selection...");
 		queryTagDialog.setMessage("Select tag to view photos from that group.");
+		queryTagDialog.setIcon(R.drawable.question_mark);
 		// do the work to define the sortDialog
 		// Setting Neutral Button
 		queryTagDialog.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
