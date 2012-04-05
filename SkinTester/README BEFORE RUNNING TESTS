@@ -1,0 +1,2 @@
+
+How To: The SkinTester folder in our project contains the new robotium testing. To run the test simply follow the same procedure used in part 3 of the project to run the old tests except first right click on the testing project and go to "Properties" --> "Java Build Path" --> "Add External JARs" now navigate to the folder where you have SkinTester and select "robotium-solo-3.1.jar". Now run the testing project as before.
